@@ -1,2 +1,4 @@
 .idea/
 node_modules/
+.writer.json
+.DS_Store
