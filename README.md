@@ -1,16 +1,11 @@
 ## Auth0 Blog for Guest Writers
 
-Actually, as this makes the process of starting a new article so easy, it will probably be used by all writers in a few
-weeks.
+Before executing the commands shown below, please, be sure that Docker is properly installed and that the `docker`
+command is available.
 
-Anyway, for the moment, there are two commands available. The first one asks a few questions and then generates a new
-article. The second one, which depends on Docker being installed and the `docker` command being available, starts the
-blog engine.
+- **checking docker:** `docker --version`
+- **create new article**: `node src`
+- **launch blog**: `node docker`
 
-```bash
-# create a new post
-node src/
-
-# launch blog engine
-node docker/
-```
+The blog engine might take a few seconds to start and generate the articles (usually less than 10). After started, we
+can check the blog at [`http://localhost:4000/blog/`](http://localhost:4000/blog/).
