@@ -38,7 +38,7 @@ async function newArticle() {
         .replace(/ARTICLE.DESCRIPTION/g, articleDescription)
         .replace(/ARTICLE.DATE/g, date);
 
-    await writeFile(`${__dirname}/../articles/${date}.markdown`, template);
+    await writeFile(`${__dirname}/../articles/${date}-title.markdown`, template);
 
     console.log('That\'s it. Happy writing! :)');
 }
