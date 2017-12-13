@@ -53,6 +53,13 @@ git clone git@github.com:brunokrebs/masks-js.git
 cd masks-js
 ```
 
+The last command will put our terminal in the project root. There, if we list the existing content, we will see four items:
+
+- A directory called `.git` that is used by Git to control the version of our code locally. Most probably, we will never touch this directory and its content manually.
+- A file called `.gitignore` where we keep entries that identify items that we do not want Git to version. For example, in the near future, we will add a `node_modules/` line to this file to make Git ignore modules installed locally.
+- A file called `LICENSE`. We don't have to touch this file, it contains a predefined content granting the [MIT License](https://opensource.org/licenses/MIT) to our code/package.
+- A file called `README.md` that contains, for now, just the name of our package (`masks-js`) and its description. We will edit this file later to include instructions on how to use our package and other handy information.
+
 ## IDEs (Integrated Development Environments)
 
 Developing good software, arguably, passes through a good IDE. Among other things, IDEs can help us refactor our code, be more productive (mainly if we know their shortcuts), and debug our code. They usually help us by pointing out possible problems before compiling and/or running our code either. Therefore, this is a topic that cannot be put aside.
@@ -66,3 +73,9 @@ On the Node.js/NPM environment, there is a good number of IDEs available. A few 
 Other options, although famous, cannot be really considered IDEs. That is, they can be considered IDEs if they are correctly configured with a bunch of plugins. However, why waste time on these kind of configuration when we can choose a good IDE that is ready to help us? If you are still interested on seeing what other "IDEs" are available, [there are resources out there show more options and their differences](https://www.google.com.br/search?q=node.js+ides).
 
 What is important in this section is that we understand that we _do_ need an IDE and choose one. This will help us a lot during the lifecycle of our package.
+
+## NPM Package Development
+
+Now that we have chosen our IDE, let's open our project and start configuring it. Throughout the next sections, we are going to create our project structure and configure tools that will help us produce high-quality code.
+
+###
