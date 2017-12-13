@@ -1,0 +1,62 @@
+---
+layout: post
+title: "NPM Package Development Tips"
+description: "Creating high quality NPM packages to share with the community is not hard. It's all about configuring the right tools to helps us keeping code quality high. Let's check what these tools are and how to configure them through a practical exercise."
+date: "2017-12-13 08:30"
+author:
+  name: "Bruno Krebs"
+  url: "brunoskrebs"
+  mail: "bruno.krebs@gmail.com"
+  avatar: "https://twitter.com/brunoskrebs/profile_image?size=original"
+related:
+- 2017-11-15-an-example-of-all-possible-elements
+---
+
+**TL;DR:**
+
+## What NPM Package Will We Build
+
+## Git and GitHub
+
+- ask to install git
+
+### Creating the GitHub Repository
+
+Great, we already decided where we will keep our source code safe. It's time to create the repository to start working on it. If we head to [the _Create a new repository_ web page on GitHub](https://github.com/new), we will see a form that asks for three things: repository name, description, and visibility. As we are building a module that handles masks, let's answer these questions as follows:
+
+- **Repository name**: masks-js
+- **Description**: A NPM package that exports functions to mask values.
+- **Visibility**: Public
+
+After that, GitHub gives us options to initialize the repository with a `README` file, to add a `.gitignore` file, and to add a license to our module. We will use all three options as follows:
+
+- **Create README**: Yes, let's check this box.
+- **Add .gitignore**: Why not? Less typing later. Let's choose `Node` in this combo.
+- **Add a license**: Again, less work later. Let's set this combo to `MIT License`.
+
+Done! We can hit the _Create repository_ button to finish the process.
+
+### Cloning the GitHub Repository
+
+After creating the repository (which should be instantaneous), GitHub will redirect us to the our repository's webpage. There, we can find a button called _Clone or download_ that gives a shortcut to the URL that we will need. Let's copy this URL and open a terminal. On this terminal, let's choose an appropriate directory to host the root directory of our project (e.g. `~/git`), and then let's clone the repository.
+
+The code snippet below shows the commands that have to be used to clone the repository:
+
+```bash
+# choosing a directory to clone our repo
+cd ~/git
+
+# using git to clone
+git clone git@github.com:brunokrebs/masks-js.git
+
+# moving cursor to project root
+cd masks-js
+```
+
+## IDEs (Integrated Development Environments)
+
+Developing good software, arguably, passes through a good IDE. Among other things, IDEs can help us refactor our code, be more productive (mainly if we know their shortcuts), and debug our code. They usually help us by pointing out possible problems with our code either. Therefore, this is a topic that cannot be put aside.
+
+On the Node.js and NPM packages environment, there is a good number of IDEs available. A few of them are paid, and lot free. The following list shows some of these IDEs, but there is no intention to make this list the single source of truth when its come to this topic:
+
+- _WebStorm_: 
