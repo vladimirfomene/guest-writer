@@ -113,3 +113,15 @@ We will stick with the second option, `npm init -y`, to get our file as fast as 
 ```
 
 Two properties in the file above may bring our attention. The `main` property now points to `build/index.js` and the `version` property labels our code as being on version `0.0.1`. Let's not worry about them now, we will discuss about these properties in the following sections.
+
+### Semantic Versioning
+
+In this section, we are not going to change anything in our project. The focus here is to talk about how to label new releases of our package. In the NPM and Node.js landscape, the most used strategy is by far [Semantic Versioning](https://semver.org/). What makes this strategy so special is that it has a well-defined schema that makes it easy to identify what versions are interoperable.
+
+Semantic Version, also known as SemVer, uses the following schema: `MAJOR.MINOR.PATCH`. As we can see, any version is divided into three parts:
+
+- `MAJOR`: A number that we increment when we make incompatible API changes.
+- `MINOR`: A number that we increment when we add features in a backwards-compatible manner.
+- `PATCH`: A number that we increment when we make small bug fixes.
+
+That is, if we have a problem with our code and fix it simply by changing an `if` statement, we have to increment the `PATCH` part: `1.0.0` => `1.0.1`. However, if we need to add a new function (without changing anything else) to handle this new scenario, then we increment the `MINOR` part: `1.0.0` => `1.1.0`. Lastly, if this bug is so big that requires a whole lot of refactoring and API changes, then we increment the `MAJOR` part: `1.0.0` => `2.0.0`.
