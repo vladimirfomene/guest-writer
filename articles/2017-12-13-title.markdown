@@ -155,7 +155,7 @@ __Note__: EditorConfig can handle multiple configuration blocks. In the example 
 
 Although subtle, EditorConfig _is_ a important step into producing high quality code. More often than not, more than one developer will work on a software, be it a NPM package or a Single Page App. Having EditorConfig in place, will minimize the chances of a developer messing with our code style and the encoding of our files.
 
-### Modern JavaScript (ES6+)
+### ES6+: Developing with Modern JavaScript
 
 JavaScript, as everybody knows, has gained mass adoption as the primary programming language over the last few years. Node.js, the responsible for this adoption, brought JavaScript to a horde of backend developers triggering a huge evolution on the language. These evolutions, although great, are not fully supported by every platform. [There are many JavaScript engines (and many different versions of these engines)](https://en.wikipedia.org/wiki/JavaScript_engine#Implementations) in the market ready to run code, but most of them do _not_ support the latest JavaScript features.
 
