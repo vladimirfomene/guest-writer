@@ -125,3 +125,30 @@ Semantic Version, also known as SemVer, uses the following schema: `MAJOR.MINOR.
 - `PATCH`: A number that we increment when we make small bug fixes.
 
 That is, if we have a problem with our code and fix it simply by changing an `if` statement, we have to increment the `PATCH` part: `1.0.0` => `1.0.1`. However, if we need to add a new function (without changing anything else) to handle this new scenario, then we increment the `MINOR` part: `1.0.0` => `1.1.0`. Lastly, if this bug is so big that requires a whole lot of refactoring and API changes, then we increment the `MAJOR` part: `1.0.0` => `2.0.0`.
+
+### EditorConfig
+
+[EditorConfig](http://editorconfig.org/) is a small configuration file that we put in the project root to define how IDEs and text editors must format our files. Many IDEs support EditorConfig out of the box (including WebStorm and Visual Studio Code). The ones that don't, usually have a plugin that can be installed.
+
+At the time of writing, EditorConfig contains only a small (but useful) set of properties. We will use most of them, but two are worth mentioning:
+
+- `indent_style`: Through this property, we define if we want our code to be indented with tabs or spaces.
+- `charset`: We use this property to state what charset (e.g. UTF-8) we want our files encoded into.
+
+To set up EditorConfig in our project, we need to create a file called `.editorconfig` in the project root. On it, we define how we want IDEs to handle our files:
+
+```bash
+# Editor configuration, see http://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+```
+
+__Note__: EditorConfig can handle multiple configuration blocks. In the example above, we added a single block defining that all files (`[*]`) must be encoded in `UTF-8`, indented with `spaces`, and so on. However, we could have defined that we wanted XML files (`[*.xml]`) to be indented with tabs, for example.
+
+Although subtle, EditorConfig _is_ a important step into producing high quality code. More often than not, more than one developer will work on a software, be it a NPM package or a Single Page App. Having EditorConfig in place, will minimize the chances of a developer messing with our code style and the encoding of our files.
