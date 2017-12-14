@@ -60,6 +60,8 @@ The last command will put our terminal in the project root. There, if we list th
 - A file called `LICENSE`. We don't have to touch this file, it contains a predefined content granting the [MIT License](https://opensource.org/licenses/MIT) to our code/package.
 - A file called `README.md` that contains, for now, just the name of our package (`masks-js`) and its description. We will edit this file later to include instructions on how to use our package and other handy information.
 
+### Ignoring Files with Git
+
 ## IDEs (Integrated Development Environments)
 
 Developing good software, arguably, passes through a good IDE. Among other things, IDEs can help us refactor our code, be more productive (mainly if we know their shortcuts), and debug our code. They usually help us by pointing out possible problems before compiling and/or running our code either. Therefore, this is a topic that cannot be put aside.
@@ -152,3 +154,21 @@ trim_trailing_whitespace = true
 __Note__: EditorConfig can handle multiple configuration blocks. In the example above, we added a single block defining that all files (`[*]`) must be encoded in `UTF-8`, indented with `spaces`, and so on. However, we could have defined that we wanted XML files (`[*.xml]`) to be indented with tabs, for example.
 
 Although subtle, EditorConfig _is_ a important step into producing high quality code. More often than not, more than one developer will work on a software, be it a NPM package or a Single Page App. Having EditorConfig in place, will minimize the chances of a developer messing with our code style and the encoding of our files.
+
+### ES6 and Babel
+
+### ESLint
+
+### Unit Tests
+
+### Coding
+
+### Test Coverage
+
+### Publishing the NPM Package
+
+### Continuous Integration
+
+## Conclusion
+
+As we can see, it's all about using the right tools, following the right processes, and applying best practices.
