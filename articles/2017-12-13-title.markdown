@@ -155,7 +155,70 @@ __Note__: EditorConfig can handle multiple configuration blocks. In the example 
 
 Although subtle, EditorConfig _is_ a important step into producing high quality code. More often than not, more than one developer will work on a software, be it a NPM package or a Single Page App. Having EditorConfig in place, will minimize the chances of a developer messing with our code style and the encoding of our files.
 
-### ES6 and Babel
+### Modern JavaScript (ES6+)
+
+JavaScript, as everybody knows, has gained mass adoption as the primary programming language over the last few years. Node.js, the responsible for this adoption, brought JavaScript to a horde of backend developers triggering a huge evolution on the language. These evolutions, although great, are not fully supported by every platform. [There are many JavaScript engines (and many different versions of these engines)](https://en.wikipedia.org/wiki/JavaScript_engine#Implementations) in the market ready to run code, but most of them do _not_ support the latest JavaScript features.
+
+This rich environment created one big challenge for the community. How do we support different engines and their versions while using JavaScript most recent features? One possible answer to this question is Babel. [Babel, as stated by their official website, is a JavaScript compiler](https://babeljs.io/) that allows developers to use next generation JavaScript today.
+
+> __Note__ that Babel is one alternative. There are others, like [TypeScript](https://www.typescriptlang.org/), for example.
+
+Using Babel is straightforward. We just have to install this library as a development dependency and create a file called `.babelrc` to hold its configuration:
+
+```bash
+npm install --save-dev babel-cli babel-preset-env
+
+echo '{
+  "presets": ["env"]
+}' >> .babelrc
+```
+
+With this file in place, we can configure a [NPM script](https://docs.npmjs.com/cli/run-script) to make Babel convert modern JavaScript in code supported by most environments. To do that, let's open the `./package.json` file and add to it a script called `build`:
+
+```json
+{
+  ...
+  "scripts": {
+    "build": "babel ./src -d ./lib",
+    ...
+  }
+  ...
+}
+```
+
+When we run this new script, Babel takes the source code found in the `./src` directory (which can be written in modern JavaScript) and transforms it to ECMAScript 5 (the most supported version of JavaScript). To see this in action, let's create the aforementioned `./src` directory in the project root and add a script called `index.js` into it. To this script, let's add the following code:
+
+```js
+function sayHiTo(name) {
+  return `Hi, ${name}`;
+}
+
+const message = sayHiTo('Bruno');
+
+console.log(message);
+```
+
+Although short, this script contains code that is not supported by ECMAScript 5. For example, there is no `const` in this version, nor it accepts `Hi, ${name}` as a string. Trying to run this code into an old engine would result in error. Therefore, let's use Babel to compile it:
+
+```bash
+npm run build
+```
+
+After asking NPM to run the `build` script, we will be able to see that Babel created the `./lib` directory with `index.js` in it. This script, instead of our code above, contains the following:
+
+```js
+'use strict';
+
+function sayHiTo(name) {
+  return 'Hi, ' + name;
+}
+
+var message = sayHiTo('Bruno');
+
+console.log(message);
+```
+
+Now we _do_ have a code that ECMAScript 5 engines can read and run. Now we can take advantage of the latest JavaScript features. So let's move on.
 
 ### ESLint
 
