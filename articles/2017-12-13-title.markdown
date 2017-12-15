@@ -297,7 +297,55 @@ Cool, we now know what type of tests we will write. What is still uncovered is w
 - [**Jasmine**: a platform-agnostic test framework](https://jasmine.github.io/) that contains 13.1 thousand stars on GitHub and was downloaded 22 million times during 2017;
 - [**Jest**: a test utility developed by Facebook](https://facebook.github.io/jest/) with 14 thousand stars on GitHub and that was downloaded 21 million times during 2017.
 
-In this case, the numbers were pretty similar. But Mocha, with more stars on GitHub and around three times more downloads on NPM during 2017, looks like a winner. We will probably be supported by a great community and a lot of resources if we choose Mocha. So let's focus on configuring it in our project.
+In this case, the numbers were pretty similar. But Mocha, with more stars on GitHub and around three times more downloads on NPM during 2017, looks like the winner. We will probably be supported by a great community and have access to a lot of resources if we choose Mocha. So let's configure it in our project.
+
+First, we need to install Mocha as a development dependency:
+
+```bash
+npm i -D mocha
+```
+
+Then, we need to _replace_ the `test` script in our `package.json` file by the following command:
+
+```json
+{
+  ...
+  "scripts": {
+    ...
+    "test": "mocha --compilers js:babel-core/register"
+  },
+  ...
+}
+```
+
+> [__Note that__, as we also want to use modern JavaScript in our tests, we used Mocha's `--compilers` option to register Babel as a compiler](http://jamesknelson.com/testing-in-es6-with-mocha-and-babel-6/).
+
+That's it! We can now write our tests. To see Mocha in action, let's create a directory called `./src` and add an `index.js` file to it with the following code:
+
+```js
+import assert from 'assert';
+
+describe('Array', () => {
+  describe('#indexOf()', () => {
+    it('should return -1 when the value is not present', () => {
+      assert.equal([1, 2, 3].indexOf(4), -1);
+    });
+  });
+});
+```
+
+If we issue `npm test` in the project root, we will see that Mocha manages to run our test properly. Even though we used modern syntax like `import` and arrow functions (`() => {}`).
+
+Using a good IDE will probably warn that there are no `describe` nor `it` functions available in the `./test/index.js` file. This happens because ESLint is not aware of these functions. To make ESLint recognize Mocha's functions, we need to make a small change into the `.eslintrc.json` file. We need to add a new property called `env` and add `mocha` into it:
+
+```json
+{
+  "extends": "airbnb-base",
+  "env": {
+    "mocha": true
+  }
+}
+```
 
 ### Coding
 
