@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "NPM Package Development Tips"
-description: "Creating high quality NPM packages to share with the community is not hard. It's all about configuring the right tools to helps us keeping code quality high. Let's check what these tools are and how to configure them through a practical exercise."
+title: "Developing NPM Packages"
+description: "Creating high quality NPM packages to share with the community is not hard. It's all about configuring the right tools to helps us keeping code quality high. Let's learn, through a practical exercise, what these tools are and how to configure them."
 date: "2017-12-13 08:30"
 author:
   name: "Bruno Krebs"
@@ -12,7 +12,7 @@ related:
 - 2017-11-15-an-example-of-all-possible-elements
 ---
 
-**TL;DR:**
+**TL;DR:** In this article, we are going to learn what tools and best practices we should take advantage of when developing NPM packages. We will start from scratch. We will create a GitHub Repository to host our code, then we will pass through multiple interesting and important topics. For example, we will talk about IDEs, we will configure ESLint in our project, and we will even add some nice badges to our README file. [The code that gave life to this article can be found in this GitHub repository](https://github.com/brunokrebs/masks-js).
 
 ## What NPM Package Will We Build
 
@@ -281,7 +281,17 @@ Now, the steps to integrate ESLint in our IDE will depend on what IDE we are usi
 
 > *__Note__: other IDEs and text editors probably provide support to ESLint as well.*
 
-### Unit Tests
+### Automated Tests
+
+One of the most important topics in this article is about tests. Developing high quality code without automated tests is impossible. That is, we could write code that executes flawlessly without writing a single line of automated tests. However, this code would still not be considered as having high standards.
+
+Why? Simple. Imagine a situation where we wrote a code that contains no bugs. One day, another developer decide that it's time to increment this code by adding some nice new feature. This feature, however, needs to reuse some pre-existing code and change it a little. How, without automated tests, is this developer supposed to test the new version? Manually testing is an alternative, but an arduous and error-prone one. That's why we invented automated tests.
+
+As everything in JavaScript, there are many tools that can help us automate our tests. Besides that, there are also different types of automated tests. For example, we could write [end-to-end tests](https://www.techopedia.com/definition/7035/end-to-end-test), [integration tests](https://en.wikipedia.org/wiki/Integration_testing), and [we could write unit tests](https://en.wikipedia.org/wiki/Unit_testing).
+
+The goal of our NPM package is to, based on an inputted string, return a masked value. This kind of package does not have external dependencies (like a RESTful API) nor it will be rendered in an interface (like a web browser). Therefore, writing only unit tests to guarantee that our functions do what they are supposed to do will be enough.
+
+Cool, we now know what type of tests we will write. What is still uncovered is what libraries will we use to write this tests.
 
 ### Coding
 
