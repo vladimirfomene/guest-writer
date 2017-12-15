@@ -305,20 +305,20 @@ First, we need to install Mocha as a development dependency:
 npm i -D mocha
 ```
 
-Then, we need to _replace_ the `test` script in our `package.json` file by the following command:
+Then, we need to _replace_ the `test` script in our `package.json` file by the following one:
 
 ```json
 {
   ...
   "scripts": {
     ...
-    "test": "mocha --compilers js:babel-core/register"
+    "test": "mocha --require babel-core/register"
   },
   ...
 }
 ```
 
-> [__Note that__, as we also want to use modern JavaScript in our tests, we used Mocha's `--compilers` option to register Babel as a compiler](http://jamesknelson.com/testing-in-es6-with-mocha-and-babel-6/).
+> [__Note that__, as we also want to use modern JavaScript in our tests, we used Mocha's `--require` option to make Babel compile our test code](http://jamesknelson.com/testing-in-es6-with-mocha-and-babel-6/).
 
 That's it! We can now write our tests. To see Mocha in action, let's create a directory called `./src` and add an `index.js` file to it with the following code:
 
@@ -334,9 +334,9 @@ describe('Array', () => {
 });
 ```
 
-If we issue `npm test` in the project root, we will see that Mocha manages to run our test properly. Even though we used modern syntax like `import` and arrow functions (`() => {}`).
+If we issue `npm test` in the project root, we will see that Mocha manages to run our test properly. Even though we used modern syntax like [`import`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) and [arrow functions (`() => {}`)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions).
 
-Using a good IDE will probably warn that there are no `describe` nor `it` functions available in the `./test/index.js` file. This happens because ESLint is not aware of these functions. To make ESLint recognize Mocha's functions, we need to make a small change into the `.eslintrc.json` file. We need to add a new property called `env` and add `mocha` into it:
+If we are using a good IDE, we will probably be warned that there are no `describe` nor `it` functions available in the `./test/index.js` file. This happens because ESLint is not aware of these functions. To make ESLint recognize Mocha's functions, we need to make a small change into the `.eslintrc.json` file. We need to add a new property called `env` and add `mocha` into it:
 
 ```json
 {
@@ -347,7 +347,67 @@ Using a good IDE will probably warn that there are no `describe` nor `it` functi
 }
 ```
 
-### Coding
+### Coding the NPM Package
+
+Hurray! We finally got into what maters, the code. We can create NPM packages without most of the tools shown in this article, but code is just necessary. No code, no NPM package. Although code is so important, it's not the focus of this article. So, to keep things short and easy to grasp, let's create just a very small prototype.
+
+We will create and export only one function that returns a masked US phone. Even for a specific and precise functionality like this, there are many scenarios to cover. But again, we will keep our focus on the tools and techniques we can use to produce high-quality code, not in the coding and testing tasks themselves.
+
+Enough said, let's work. First, let's replace the content of the `./src/index.js` file with the following:
+
+```js
+// regex that checks if value contains digits only
+const digitsOnly = /^\d+$/;
+
+// function to mask digits into US phone format
+function maskUSPhone(phone) {
+  // returning null when getting null, undefined, or an object that is no string as a parameter
+  if (!phone || typeof phone !== 'string') {
+    return null;
+  }
+
+  // returning the untouched value when it contains non-digit chars or when it has a length != 10
+  if (digitsOnly.test(phone) === false || phone.length !== 10) {
+    return phone;
+  }
+
+  // returning the masked value
+  const codeArea = phone.substring(0, 3);
+  const prefix = phone.substring(3, 6);
+  const sufix = phone.substring(6, 10);
+  return `(${codeArea}) ${prefix}-${sufix}`;
+}
+
+export default maskUSPhone;
+```
+
+Then, let's replace `./test/index.js` content with this:
+
+```js
+import * as assert from 'assert';
+import maskUSPhone from '../src/index';
+
+const testSamples = [
+  { input: null, expectedResult: null, description: 'should return null when receiving null' },
+  { input: undefined, expectedResult: null, description: 'should return null when receiving undefined' },
+  { input: 'abc', expectedResult: 'abc', description: 'should return pristine value when receiving "abc"' },
+  { input: 'abc1234567', expectedResult: 'abc1234567', description: 'should return pristine value when receiving "abc1234567"' },
+  { input: 'abcdefghij', expectedResult: 'abcdefghij', description: 'should return pristine value when receiving "abcdefghij"' },
+  { input: '1234567890', expectedResult: '(123) 456-7890', description: 'should return (123) 456-7890' },
+];
+
+describe('Array', () => {
+  testSamples.forEach((sample) => {
+    it(sample.description, () => {
+      assert.equal(maskUSPhone(sample.input), sample.expectedResult);
+    });
+  });
+});
+```
+
+Good. This creates a function to support the functionality mentioned, and probably covers enough tests. Issuing `npm test` in the project root will make Mocha execute our tests.
+
+![NPM Package Development: Green flags after running npm test with Mocha.](https://cdn.auth0.com/blog/npm-package-development/mocha-tests.png)
 
 ### Test Coverage
 
