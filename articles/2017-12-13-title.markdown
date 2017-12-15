@@ -220,7 +220,66 @@ console.log(message);
 
 Now we _do_ have a code that ECMAScript 5 engines can read and run. Now we can take advantage of the latest JavaScript features. So let's move on.
 
-### ESLint
+### Linting NPM Packages
+
+Another important tool to have around when developing software is a linting tool. [Lint is the process of statically analyzing code for common errors](https://en.wikipedia.org/wiki/Lint_%28software%29). Linting tools, therefore, are libraries (tools) that are specialized in this task. In the JavaScript world, there are at least three popular choices: [ESLint](https://eslint.org/), [JSHint](http://www.jslint.com/), and [JSLint](http://jshint.com/). We can use any of these three libraries to lint our JavaScript code, but we have to choose one.
+
+There are many strategies that we can follow to decide which tool we should use: from a simple random decision to a decision based on a thorough analysis. Though, to speed things up, let's take advantage of a fast (but still good) strategy: let's base our decision into data. The following list shows how many times each package was downloaded from NPM on Nov/2017, how many stars they have on GitHub, and what are their search volume in the US:
+
+- **ESLint** was downloaded 10 million times from NPM, has 9.6 thousand stars on GitHub, and is searched around 1300 times per month in the US.
+- **JSLint** was downloaded 94 thousand times from NPM, has 7.5 thousand stars on GitHub, and is searched around 750 times per month in the US.
+- **JSHint** was downloaded 2 million times from NPM, has 3 thousand stars on GitHub, and is searched around 750 times per month in the US.
+
+Following the strategy to base our decision on data results, without doubt, into choosing ESLint as the winner. The numbers don't lie, ESLint is the most popular tool in the JavaScript landscape. So let's configure it in our project.
+
+Installing and configuring ESLint is easy. We have to instruct NPM to install it for us, then we can use the `--init` option provided by ESLint to generate a configuration file:
+
+```bash
+# saving ESLint as a development dependency
+npm i -D eslint
+
+# initializing the configuration file
+./node_modules/.bin/eslint --init
+```
+
+The last command will trigger a series of questions. Let's answer them as follows:
+
+- How would you like to configure ESLint? _Use a popular style guide_
+- Which style guide do you want to follow? _Airbnb_
+- Do you use React? _No_
+- What format do you want your config file to be in? _JSON_
+
+This will generate a small file called `.eslintrc.json` with the following content:
+
+```json
+{
+    "extends": "airbnb-base"
+}
+```
+
+> What is nice about about ESLint is that it also enables us to adhere to popular style guides (in this case [the Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)). There are other popular styles available to JavaScript developers and we could even create our own. However, to play safe, we will stick to an existing and popular one.
+
+Great, sounds good to have a tool that help us avoid common mistakes and keep our code style consistent, but how do we use it? It's simple, we configure it in our build process and we make our IDE aware of it. This way we get alerts while using the IDE to develop and we guarantee that no developer, unaware of ESLint, generates a new release with inconsistencies.
+
+To add ESLint to our build process, we can create a new script that executes ESLint and make it run in the `build` script:
+
+```json
+{
+  ...
+  "scripts": {
+    "build": "npm run lint && babel ./src -d ./lib",
+    "lint": "eslint ./src",
+    ...
+  },
+  ...
+}
+```
+
+This way, when we execute the `build` script, the process will abort before starting Babel if ESLint finds issues in our code or code style.
+
+Now, the steps to integrate ESLint in our IDE will depend on what IDE we are using. Both [WebStorm](https://www.jetbrains.com/help/webstorm/eslint.html) and [Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) have special sections on their documentation to cover ESLint.
+
+> *__Note__: other IDEs and text editors probably provide support to ESLint as well.*
 
 ### Unit Tests
 
