@@ -388,12 +388,11 @@ import * as assert from 'assert';
 import maskUSPhone from '../src/index';
 
 const testSamples = [
-  { input: null, expectedResult: null, description: 'should return null when receiving null' },
-  { input: undefined, expectedResult: null, description: 'should return null when receiving undefined' },
   { input: 'abc', expectedResult: 'abc', description: 'should return pristine value when receiving "abc"' },
   { input: 'abc1234567', expectedResult: 'abc1234567', description: 'should return pristine value when receiving "abc1234567"' },
   { input: 'abcdefghij', expectedResult: 'abcdefghij', description: 'should return pristine value when receiving "abcdefghij"' },
   { input: '1234567890', expectedResult: '(123) 456-7890', description: 'should return (123) 456-7890' },
+  { input: '5431260987', expectedResult: '(543) 126-0987', description: 'should return (543) 126-0987' },
 ];
 
 describe('Array', () => {
@@ -407,9 +406,71 @@ describe('Array', () => {
 
 Good. This creates a function to support the functionality mentioned, and probably covers enough tests. Issuing `npm test` in the project root will make Mocha execute our tests.
 
-![NPM Package Development: Green flags after running npm test with Mocha.](https://cdn.auth0.com/blog/npm-package-development/mocha-tests.png)
+![NPM Package Development: Green flags after running NPM test with Mocha.](https://cdn.auth0.com/blog/npm-package-development/mocha-tests.png)
 
 ### Test Coverage
+
+Feels good to have our code in place with some tests to prove its functionality, but how confident are we of our code and our tests? Are we sure that our tests are covering all the scenarios that we thought about? It's hard to affirm that even in a small package like ours. So, what can we do? The answer is simple, we can use a test coverage tool to see how much of our code we are covering with tests.
+
+Test samples, like those showed in the previous section, exist to help us prove that our code handles all the scenarios that we thought about. Test coverage tools help the other way around. They show if we have enough test samples to cover all the scenarios that came to our mind when typing the code. Ok, we are convinced that we can take advantage of a test coverage tool, but which one?
+
+After searching for ["javascript test coverage tools" on Google](https://www.google.com.br/search?q=javascript+test+coverage+tools), we find out that [Istanbul webpage](https://istanbul.js.org) appears in first place, it's [NPM page appears in second](https://www.npmjs.com/package/nyc), and Karma (the test runner) appears in third place saying that it can generate test coverage using the awesome Istanbul. Probably enough proof that we can trust this tool. So let's use it.
+
+Instructions to use Istanbul are simple. First, we install Istanbul as a development dependency:
+
+```bash
+npm i -D nyc
+```
+
+After that, we just update the `test` script (in `package.json`) to make `nyc` (Istanbul's CLI) run Mocha for us:
+
+```json
+{
+  ...
+  "scripts": {
+    ...
+    "test": "nyc mocha --require babel-core/register"
+  }
+  ...
+}
+```
+
+Running `npm test` now will make Istanbul analyze how our tests are covering our source code.
+
+![NPM Package Development: Test Coverage with Istanbul.](https://cdn.auth0.com/blog/npm-package-development/istanbul-test-coverage.png)
+
+Cool, integrating Istanbul on our project was easy. But can Istanbul do more than just saying that we are covering X percent of our code? Sure! Istanbul can show what lines are covered, what lines are not. To get this information, we are going to configure on Istanbul [a reporter called `lcov`](http://gotwarlost.github.io/istanbul/public/apidocs/classes/LcovReport.html). This reporter will generate test data in two formats: one that is machine readable (`lcov` format), and one that is human readable (HTML in this case).
+
+To configure `lcov` on Istanbul, we can simply add the following property to our `package.json` file:
+
+```json
+{
+  ...
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text"
+    ]
+  }
+}
+```
+
+> __Note that__ we configured both `lcov` and `text` because we still want Istanbul to keep showing that nice summary that we saw before.
+
+Running `npm test` now will generate, besides that colorful summary on the terminal, a directory called `coverage` in the project root. If we inspect this directory, we will see that it contains two things: a `lcov.info` file with some characters inside that look meaningless (they actually show what lines were executed and how many times); and another directory called `lcov-report` with an `index.html` file inside. This is where we will get more data about what lines our tests are covering and what lines are being ignored.
+
+To see the report contained by the `lcov-report` directory in a browser, let's use a tool like [`http-server`](https://github.com/indexzero/http-server). In our project root, we can use it as follows:
+
+```bash
+# install (globally) http-server if needed
+npm i -g http-server
+
+http-server ./coverage/lcov-report/
+```
+
+Now we can browse to [`http://127.0.0.1:8080/`](http://127.0.0.1:8080/) and analyze what lines are being covered by our tests.
+
+![NPM Package Development: Browsing Istanbul HTML Report](https://cdn.auth0.com/blog/npm-package-development/istanbul-html-report.png)
 
 ### Publishing the NPM Package
 
