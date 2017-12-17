@@ -53,7 +53,7 @@ The only prerequisite is [Node.js (and NPM, but that comes with Node.js)](https:
 
 Before anything, we need [Git](https://git-scm.com) and [GitHub](https://github.com/). Why? Because [Git is the best, most advanced, and most used version control system](https://www.atlassian.com/git/tutorials/what-is-git) and [GitHub is the most used Git platform](https://github.com/). The best open source projects in the world are hosted in this platform. For example, [Node.js source code is versioned with Git on GitHub](https://github.com/nodejs/node).
 
-__Note__ that this article won't lecture about Git. If you are not familiar with Git, you will still be able to follow this article. However, every developer should learn how to properly use Git and GitHub. So, if needed, stop what you are doing and go [learn Git](https://git-scm.com/docs/gittutorial) (and install it too, of course :D). You can come back later.
+> __Note__ that this article won't lecture about Git. If you are not familiar with Git, you will still be able to follow this article. However, every developer should learn how to properly use Git and GitHub. So, if needed, stop what you are doing and go [learn Git](https://git-scm.com/docs/gittutorial) (and install it too, of course :D). You can come back later.
 
 ### Creating the GitHub Repository
 
