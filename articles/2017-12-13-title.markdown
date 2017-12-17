@@ -45,9 +45,13 @@ NPM Package Development
 Conclusion
 ```
 
+## Prerequisites
+
+The only prerequisite is [Node.js (and NPM, but that comes with Node.js)](https://nodejs.org/en/download/). However, the best way to install Node.js in a development machine is not through the official URL. [There is a package called NVM (Node Version Manager) that provides a simple bash script to manage multiple active node.js versions](https://github.com/creationix/nvm). It's the best option because, with just one command, we can switch Node.js and NPM versions.
+
 ## Git and GitHub
 
-- ask to install git
+Before anything, we need Git and GitHub.
 
 ### Creating the GitHub Repository
 
