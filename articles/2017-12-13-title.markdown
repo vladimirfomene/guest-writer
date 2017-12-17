@@ -548,6 +548,14 @@ Hurray! Looks like we are ready to publish our package. So let's run `npm publis
 
 ### Continuous Integration
 
+Well, well. We have published the first version of our NPM package. This is amazing. Looks like all we need to do to publish a new version is to write some code, cover it with tests
+
+### README and Badges
+
+One major flaw that we have right now is the lack of documentation on our `README` file. We don't have that much features to talk about, but at least we can give some hints on how to install the package and how to use its features.
+
+As we are going to update the `README` file, we will take advantage of the opportunity and add some nice badges to it. These badges together will form a small dashboard that exposes some status about our package. More precisely, we will add badges that indicate if our building is passing, how is our test coverage, what is the latest published version, and what kind of license we chose.
+
 ## Conclusion
 
 As we can see, it's all about using the right tools, following the right processes, and applying best practices.
