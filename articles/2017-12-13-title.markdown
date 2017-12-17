@@ -338,6 +338,8 @@ Now, the steps to integrate ESLint in our IDE will depend on what IDE we are usi
 
 > *__Note__: other IDEs and text editors probably provide support to ESLint as well.*
 
+{% include tweet_quote.html quote_text="Linting tools can help us identify potential errors on our code." %}
+
 ### Automated Tests
 
 One of the most important topics in software development is tests. Developing high quality code without automated tests is impossible. That is, we could write code that executes flawlessly without writing a single line of automated tests. However, this code would still not be considered as having high standards.
@@ -529,6 +531,8 @@ Now we can browse to [`http://127.0.0.1:8080/`](http://127.0.0.1:8080/) and anal
 
 ![NPM Package Development: Browsing Istanbul HTML Report](https://cdn.auth0.com/blog/npm-package-development/istanbul-html-report.png)
 
+{% include tweet_quote.html quote_text="Integrating test coverage tools on NPM packages is easy." %}
+
 ### Publishing the NPM Package
 
 After installing and checking our code coverage with Istanbul, we figure that we forgot to cover cases where no value (`null` or `undefined`) are passed into our function. Let's fix this by adding new test samples in the `./test/index.js` file:
@@ -690,6 +694,8 @@ git push --follow-tags origin
 ```
 
 This will make Travis CI build our project and release its second version.
+
+{% include asides/node.markdown %}
 
 ## Conclusion
 
