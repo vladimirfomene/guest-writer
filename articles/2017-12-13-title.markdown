@@ -4,21 +4,360 @@ title: "Processing Data Streams with RxPy"
 description: "Learn how to use reactive programming to process data streams asynchronously."
 date: "2017-12-13 08:30"
 author:
-  name: "Bruno Krebs"
-  url: "brunoskrebs"
-  mail: "bruno.krebs@gmail.com"
-  avatar: "https://twitter.com/brunoskrebs/profile_image?size=original"
+  name: "Valery Calderon"
+  url: "https://twitter.com/valerybriz"
+  mail: "valerybriz@gmail.com"
+  avatar: "https://twitter.com/valerybriz/profile_image?size=original"
+tags:
+- python
+- rxpy
+- reactive
+- functional
+- github
+- tornado
 related:
-- 2017-11-15-an-example-of-all-possible-elements
+- 2017-09-28-developing-restful-apis-with-python-and-flask
 ---
 
-**TL;DR:** Briefly describe what this article is about and what the reader will achieve/learn after reading it. Please,
-also provide the link to a GitHub repository that contains code related to this article.
+**TL;DR:** In this tutorial we’ll be learning how to use the [RxPy](https://rxpy.codeplex.com/) library to create asynchronous and event-based programs by implementing observables, observers/subscribers and subjects. We will start by getting our data stream from the [Github API](https://developer.github.com/v3/) with a [Tornado](http://www.tornadoweb.org) web socket and then filtering and processing it asynchrounosly. [Here](https://github.com/valerybriz/RxGithubSearcher) you can find the code we will be using for this tutorial. 
 
-## The Second Most Important Title
+## Why ReactiveX?
+In a way, reactive programming isn't a new thing. Our typical click events are an asynchronous data stream which we can observe and trigger some action from it. That's how it works, but ReactiveX makes things so much easier by adding a toolbox of operators to filter, create, transform or unify any of those streams. In just a few lines of maintainable code, we can have multiple web sockets which recieves multiple requests all handled by an asynchronous process that serves a filtered output.
 
-Usually, we start describing again what this article is about. The difference, however, is that here we can explain with
-more words. Another important thing that we should include in this first paragraph are the name of the main technologies
-that we will talk about, and add a link to them. For example, we could say that we are going to use
-[React](https://reactjs.org/) and [Redux](https://redux.js.org/) to develop a simple
-[SPA (Single Page Application)](https://en.wikipedia.org/wiki/Single-page_application).
+Web applications contains lots of database operations, network calls, nested callbacks and other computationally expensive tasks that might take a long time to complete or even block other threads until it's done, here is where ReactiveX enters, it doesn't only gives us the facility to convert almost anything to a stream; variables, properties, user inputs, caches, etc to manage it asynchronously. But it also gives us an easy way to handle errors which is a hard task within asynchronous programming. ReactiveX makes our code more flexible, readable, maintainable and easy to write.
+
+## But first of all, what does Reactive really means?
+The main difference between event-driven programming and reactive programming is the real trigger of the action. While the Event-driven programming focuses on handling any event such as a button click and then trigger the corresponding action. Reactive programming wraps data into the reactive system as events. So we could be listening to user inputs as events that triggers an action only if the input changed from the current one.
+
+**This means reactive is a dynamic reaction to change.**
+
+Reactive programming is a programming paradigm oriented around data flows and the propagation of change. This means that when a data flow is emmited by one component the ReactiveX library will automatically propagate those changes to another component an so on until it reaches the final reciever.
+
+## How does it all works from inside?
+
+ReactiveX is mainly based in two classes; the Observables and the Observers.
+The Observable class is the source of the data stream or events and the Observer class is the one that consumes or reacts to the emmited elements.
+
+* Observables
+	An Observable packs the incomming data so it can be passed from one thread to another. The Observable can be configured so it regulates when to supply data, it could be periodically or only once in their life cycle. There are also various functions that can be used to filter or transform the observable so the observer only emits certain data. All this is used instead of callbacks, which means that our code becomes more readable and less fallible.
+
+```python 
+from rx import Observable, Observer
+
+source = Observable.from_list([1,2,3,4,5,6])
+
+```
+
+It’s common to use Observables in such a way, that it doesn’t give data until some Observer subscribes to it. This is known as “call-by-need”, is an evaluation strategy which delays the evaluation of an event until its value is needed. 
+
+* Observer
+	The Observer consumes the data stream emitted by the observable. An Observable can have multiple Observers so each data item emitted by the Observable will be received by each Observer. The "listening" to the stream is called subscribing, Observers subscribe to the Observable with the subscribe() method to receive the emitted data.
+	The Observer can receive three types of events:
+	* **on_next()** When it is an element in the data stream.
+	* **on_error()** When there is an error thrown from observable, it also implies end of emission.
+	* **on_completed()** When no more items are coming, it implies end of emission.
+
+```python 
+
+class PrintObserver(Observer):
+
+    def on_next(self, value):
+        print("Received {0}".format(value))
+
+    def on_completed(self):
+        print("Done!")
+
+    def on_error(self, error):
+        print("Error Occurred: {0}".format(error))
+
+source.subscribe(PrintObserver())
+
+```
+
+We don't have to specify all three events types in the code. We can choose which events to observe using the named arguments, or simply providing a lambda for the on_next. Typically in production, we will want to provide an on_error so errors are explicitly handled by the subscriber.
+
+```python 
+source = Observable.from_list([1,2,3,4,5,6])
+
+source.subscribe(lambda value: print("Received {0}".format(value)))
+
+```
+
+* Subject
+	The Subject is the Observable extension that simultaneously implements the Observer interface. Subject acts like both Observer and Observable, it can receive messages about events (like Observers) and notify its subscribers (like Observables). This implies two things.
+
+	* We can subscribe to a Subject, just like an Observ­able.
+	* A Sub­ject can sub­scribe to other Observables.
+
+Therefore, the main dif­fer­ence between a Sub­ject and an Observable is that all of the Sub­ject subscribers share the same action of the Sub­ject. This means that when a Sub­ject pro­duces data, all of its sub­scribers will receive the same data. This is unlike Observ­ables, where each sub­scrip­tion causes an inde­pen­dent exe­cu­tion of the observable. 
+	
+
+A Subscriber can not only subscribe to an Observable but also unsubscribe from it. It is important to remember to unsubscribe from the asynchronous calls. When calling unsubscribe(), all the operators unsubscribe from one another in sequence from top to bottom. So we can avoid memory leaks. In the case of the Subjects we will use the dispose method which can be thought of as the subscription itself, or perhaps a token representing the subscription. Disposing it will dispose the subscription and also unsubscribe. The unsubscribe call can be placed in the socket on_close() method:
+
+```python
+def on_close(self):
+    self.combine_latest_sbs.dispose()
+    print("WebSocket closed")
+
+```
+
+## Data Operators
+The essence of reactive programming is working with streams. As we saw before, we have an Observable class that supplies the data stream and an Observer which consumes it. But along the way from the Observable to the subscriber we can apply many Operators to the stream, this defines how and when the Observable should emit the stream.
+
+Most operators executes a function on an Observable and return an Observable. So we can apply these operators one after the other, in a chain. Each operator in the chain modifies the Observable that results from the operation of the previous operator.
+
+There are plenty of operators so we will be exploring only the ones that we use for this tutorial. The operators can be classified by categories of their utility as:
+
+* Creating Observables
+* Transforming Observables
+* Filtering Observables
+* Combining Observables
+* Error Handling Operators
+* Observable Utility Operators
+* Conditional and Boolean Operators 
+* Mathematical and Aggregate Operators
+* Connectable Observable Operators
+
+* Creating Observables
+	* just():
+	As the name suggest, just operator emits an Observable with the same values provided in the arguments.
+	![Just operator marble diagram](https://cdn.auth0.com/blog/rxpy/just.png)
+	As we can see in this example, our Observable just emits a,b,c,d one after another.
+
+	```python
+	Observable.just(a,b,c,d)
+	```
+
+	* interval():
+	Create an Observable that emits a sequence of integers spaced by a given time interval
+	![Interval operator marble diagram](https://cdn.auth0.com/blog/rxpy/interval.png)
+	Refresh the value every 60 Seconds for periodic updates.
+
+	```python
+	Observable.interval( 60000 )
+	```
+
+
+* Filtering Observables
+	* filter():
+	Emit only those items from an Observable that pass a predicate test.
+	![ Filter operator marble diagram](https://cdn.auth0.com/blog/rxpy/filter.png)
+	Here we are filtering by the text size so it emits only the strings that exceed a length of 2 characters.
+
+	```python
+	Subject.filter( lambda text: not text or len(text) > 2 )
+	```
+
+	* ThrottleLast():
+	Emit the most recent items emitted by an Observable within periodic time intervals
+	![ ThrottleLast operator marble diagram](https://cdn.auth0.com/blog/rxpy/throttlelast.png)
+	Given the last value in a given time interval.
+
+	```python
+	Subject.throttle_last( 1000 )
+	```
+
+* Transforming Observables
+	* flat_map():
+	Transform the items emitted by an Observable into Observables, then flatten the emissions from those into a single Observable
+	![ Flat_Map operator marble diagram](https://cdn.auth0.com/blog/rxpy/flat_map.png)
+	Here we get the repositories information by the user input which is the name of the organization repository. As you can see, we are calling a from_future() Observable, since we use an asynchronous tornado web socket to request the API information.
+
+	```python
+	Subject.flat_map( lambda name: Observable.from_future(self.get_org_repos(name)) )
+	```
+
+* Observable Utility Operators
+	* do_action():
+	Register an action to take upon a variety of Observable lifecycle events.
+	![ Do_action operator marble diagram](https://cdn.auth0.com/blog/rxpy/do_action.png)
+	Here we call the "send_response" function  for each item in the data stream.
+
+	```python
+	Subject.do_action( lambda x: send_response('clear') )
+	```
+
+* Combining Observables
+	* combine_latest():	
+	When an item is emitted by either of two Observables, combine the latest item emitted by each Observable via a specified function and emit items based on the results of this function.
+	![ Combine_lastest operator marble diagram](https://cdn.auth0.com/blog/rxpy/combine_lastest.png)
+	Here we combine an interval Observable which will be sending the last input of the user every 60 seconds and the Input value Observable itself which will be emitted everytime it changes.
+
+	```python
+	user_input.combine_latest( interval_observable, lambda input_value, i: input_value )
+	```
+
+## Advantages of using ReactiveX
+With ReactiveX we can raise the level of abstraction of our code so we can focus on the interdependence of events that define the business logic, rather than having to constantly fiddle with a large amount of implementation details. With the help of the funcional programming the Code will also be more concise.
+
+We can use ReactiveX to process asynchronous incoming data, perhaps tasks with a lot of user interction (clicks, gestures, etc.) or processing system events (sensors, gyroscope, etc.). All kind of interactions where the events are portrayed as the object states. Such an approach allows better dynamic process description, also simplifying the asynchronous code writing. And finally we've got a best performance by the asynchronous context and the parallel processing of the data streams.
+
+
+## Building the app
+
+First of all we need to install the libraries that we are going to use in the code, to do that we can execute the following commands from the terminal:
+
+```bash
+# we might need to replace pip with pip3
+pip install tornado 
+
+pip install pycurl 
+
+pip install rx
+
+```
+
+Now that we are ready with the libraries we need to import certain modules from it:
+
+```python
+from rx import Observable
+from rx.subjects import Subject
+from tornado import ioloop
+from tornado.escape import json_decode
+from tornado.httpclient import AsyncHTTPClient
+from tornado.web import Application, RequestHandler, StaticFileHandler, url
+from tornado.websocket import WebSocketHandler
+
+```
+The Observable and Subject modules from the RxPy library and the async and websocket modules from tornado to handle the requests.
+
+It is important to notice that to use the Github API authentication we need to configure the Tornado HttpClient as a curl async client with the following line at the begining of the code:
+```python
+AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
+```
+
+### Obtaining the Data
+To obtain the data from the Github API first we need to define a function inside our web socket handler, this function will create an asynchronous httpClient which will take the organization names received and return the requested repository information asynchronously as a response. 
+
+```python
+def get_org_repos(self,org):
+    """request the repos to the Github API"""
+    http_client = AsyncHTTPClient()
+    response = http_client.fetch(GIT_ORG + org, headers=headers, method="GET")
+    return response
+```
+
+
+### Building the WebSocketHandler
+Our application will exchange messages with a browser using web sockets. Web sockets allow a bidirectional communication between the browser and server in real time. The main idea is to define a class inherited from the WebSocketHandler class. We can find more information about Tornado WebSockets [here](http://www.tornadoweb.org).
+
+In this class, we can override the following methods:
+
+* on_message()
+This happens when there is an incoming message on the web socket. As our response is formated as json we have to decode it and then push it to the Subject with the on_next() operator.
+* on_close()
+This happens once we closed the web socket. As we read before it is very important to unsuscribe the Observable once the operation has been terminated to avoid memory leaks, so in this method we are going to use the dispose() method.
+
+
+```python
+def on_message(self, message):
+    obj = json_decode(message)
+    self.subject.on_next(obj['term'])
+
+def on_close(self):
+    self.combine_latest_sbs.dispose()
+    print("WebSocket closed")
+```
+* open()
+This happens when the web socket is opened for the first time.
+
+Inside the open() method we are also going to define the methods send_response() and on_error() to handle this two kinds of events, in this case we are printing the message or the exception on the log.
+
+```python
+def open(self):
+    print("WebSocket opened")
+    self.write_message("connection opened")
+
+    def send_response(x):
+        self.write_message(json.dumps(x))
+
+    def on_error(ex):
+        print(ex)
+
+    self.subject = Subject()
+
+    user_input = self.subject.throttle_last(
+        1000  # Given the last value in a given time interval
+    ).start_with(
+        ''  # Immediately after the subscription sends the default value
+    ).filter(
+        lambda text: not text or len(text) > 2
+    )
+
+    interval_obs = Observable.interval(
+        60000  #refresh the value every 60 Seconds for periodic updates
+    ).start_with(0)
+
+    self.combine_latest_sbs = user_input.combine_latest(
+        interval_obs, lambda input_val, i: input_val
+    ).do_action(
+        lambda x: send_response('clear')
+    ).flat_map(
+        self.get_data
+    ).subscribe(send_response, on_error)
+
+```
+Once the data stream has been excited by the on_message() method we are going to filter the incoming user input by the size of the string, so only inputs with a length higher than 2 characters are going to be emitted.
+After that we are going to create an interval Observable which will help us to "refresh" the input every 60 seconds and push this input again to the Subject. 
+Finally we will combine both the interval Observable and the input value Subject so when either of it has a change it will be emitting a Subject to the chain. The chain will sent it to the send_response method and then to the get_data method to be filtered and showed as the result.
+
+* Filtering the incomming data
+To get the data filtered we are going to use a chain of Observable maps which are going to take the query (the user input) and evaluate it acording to the requirements we have set.
+
+```python
+def get_data(self,query):
+    """ query the data to the API and return the contet filtered"""
+    return Observable.from_list(
+        self.orgs
+    ).flat_map(
+        lambda name: Observable.from_future(self.get_org_repos(name))
+    ).flat_map(
+        lambda x: Observable.from_list(
+
+            self.get_info(x) #transform the response to a json list
+
+         ).filter(
+
+            lambda val: (val.get("description") is not None 
+		and (val.get("description").lower()).find(query.lower())!= -1)
+            	or (val.get("language") is not None 
+            	and (val.get("language").lower()).find(query.lower())!= -1)
+         ).take(10)  #just take 10 repos from each org
+
+    ).map(lambda x: {'name': x.get("name"), 
+	'stars': str(x.get("stargazers_count")),
+	'link': x.get("svn_url"),'description': x.get("description"), 
+	'language': x.get("language")})
+```
+First we are going to iterate by the organizations list defined on the config file. We get the organization repository information and then transform the response to the desirable format with the get_info method. After that we are making the query to the information we just got and take only the first 10 results that acomplish with this query. Finally we emit the Observable as a dictionary with the characteristics we will be showing in the page as a result.
+
+Finally the result of the request and the filtering is shown in the page with the feeder.js script.
+```javascript
+ws.onmessage = function(msg) {
+    var value = JSON.parse(msg.data);
+    if (value === "clear") {$results.empty(); return;}
+            $('<li><h3><a tabindex="-1" href="' + value.link +
+                '">' + value.name +'</a></h3> <p> Description : ' 
+		+ value.description +
+                '</p><p> Language : ' + value.language +
+                '</p><p> Stars : ' + value.stars + '</p></li>'
+            ).appendTo($results);
+            $results.show();
+}
+
+```
+
+
+## Conclusions
+Apps and systems nowadays have a lot of real-time computationally expensive events that enables a highly interactive experience to the user. Here is where ReactiveX shows up to help us properly dealing with that. And also with the help of the ReactiveX operators, we can not only manage this events but filter, unify and transform it on a inherent declarative style way.
+I hope this serves as a useful introduction to ReactiveX and an overview of its basic capabilities. It also has much more powerful tools. To learn more about ReactiveX I encourage you to browse the resources available at [ReactiveX](http://reactivex.io).
+
+Thanks for reading.
+
+
+
+
+
+
+
+
