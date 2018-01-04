@@ -167,14 +167,15 @@ Subject.throttle_last( 1000 )
 
 #### **Transforming Observables Category**
 
-	* flat_map():
-	Transform the items emitted by an Observable into Observables, then flatten the emissions from those into a single Observable
-	![ Flat_Map operator marble diagram](https://cdn.auth0.com/blog/rxpy/flat_map.png)
-	Here we get the repositories information by the user input which is the name of the organization repository. As you can see, we are calling a from_future() Observable, since we use an asynchronous tornado web socket to request the API information.
+The `flat_map()` operator transforms the items emitted by an `Observable` into `Observables`, then flatten the emissions from those into a single `Observable`.
 
-	```python
-	Subject.flat_map( lambda name: Observable.from_future(self.get_org_repos(name)) )
-	```
+![Flat_Map operator marble diagram](https://cdn.auth0.com/blog/rxpy/flat_map.png)
+
+Here we get the repositories information by the user input which is the name of the organization repository. As you can see, we are calling a `from_future()` observable, since we use an asynchronous tornado web socket to request the API information.
+
+```python
+Subject.flat_map( lambda name: Observable.from_future(self.get_org_repos(name)) )
+```
 
 #### **Observable Utility Operators Category**
 
