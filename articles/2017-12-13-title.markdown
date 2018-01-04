@@ -254,31 +254,28 @@ def get_org_repos(self,org):
 
 ### Building the WebSocketHandler
 
-Our application will exchange messages with a browser using web sockets. Web sockets allow a bidirectional communication between the browser and server in real time. The main idea is to define a class inherited from the WebSocketHandler class. We can find more information about Tornado WebSockets [here](http://www.tornadoweb.org).
+Our application will exchange messages with a browser using web sockets. Web sockets allow a bidirectional communication between the browser and server in real time. The main idea is to define a class inherited from the `WebSocketHandler` class. We can find more information about Tornado WebSockets [here](http://www.tornadoweb.org).
 
-In this class, we can override the following methods:
+In our implementation of this class, we will override the following methods:
 
-* on_message()
-This happens when there is an incoming message on the web socket. As our response is formated as json we have to decode it and then push it to the Subject with the on_next() operator.
-* on_close()
-This happens once we closed the web socket. As we read before it is very important to unsuscribe the Observable once the operation has been terminated to avoid memory leaks, so in this method we are going to use the dispose() method.
+* `on_message()`: This functon will be called when there is an incoming message on the web socket. As our response is formatted as JSON objects, we have to decode it and then push it to the `Subject` with the `on_next()` operator.
+* `on_close()`: This function will be called once we close the web socket. As we read before, it is very important to unsubscribe the `Observable` once the operation has been terminated to avoid memory leaks. As such, in this method we are going to use the `dispose()` method.
+* `open()`: This function will be called when the web socket is opened for the first time.
 
+Inside the `open()` method, we are also going to define the methods `send_response()` and `on_error()` to handle this two kinds of events. In this case, we are printing the message or the exception on the log.
 
 ```python
+
 def on_message(self, message):
-    obj = json_decode(message)
-    self.subject.on_next(obj['term'])
+        obj = json_decode(message)
+        self.subject.on_next(obj['term'])
 
-def on_close(self):
-    self.combine_latest_sbs.dispose()
-    print("WebSocket closed")
-```
-* open()
-This happens when the web socket is opened for the first time.
+    def on_close(self):
+        # Unsubscribe from observable
+        #  will stop the work of all observable
+        self.combine_latest_sbs.dispose()
+        print("WebSocket closed")
 
-Inside the open() method we are also going to define the methods send_response() and on_error() to handle this two kinds of events, in this case we are printing the message or the exception on the log.
-
-```python
 def open(self):
     print("WebSocket opened")
     self.write_message("connection opened")
@@ -312,11 +309,14 @@ def open(self):
     ).subscribe(send_response, on_error)
 
 ```
-Once the data stream has been excited by the on_message() method we are going to filter the incoming user input by the size of the string, so only inputs with a length higher than 2 characters are going to be emitted.
-After that we are going to create an interval Observable which will help us to "refresh" the input every 60 seconds and push this input again to the Subject.
-Finally we will combine both the interval Observable and the input value Subject so when either of it has a change it will be emitting a Subject to the chain. The chain will sent it to the send_response method and then to the get_data method to be filtered and showed as the result.
 
-### Filtering Incomming Data
+Once the data stream has been excited by the `on_message()` method, we are going to filter the incoming user input by the size of the string. So only inputs with a length higher than 2 characters are going to be emitted.
+
+After that, we are going to create an interval `Observable` which will help us to "refresh" the input every 60 seconds and push this input again to the Subject.
+
+Finally, we will combine both the interval Observable and the input value Subject so when either of it has a change it will be emitting a Subject to the chain. The chain will send it to the `send_response` method and then to the `get_data` method to be filtered and showed as the result.
+
+### Filtering Incoming Data
 
 To get the data filtered we are going to use a chain of Observable maps which are going to take the query (the user input) and evaluate it acording to the requirements we have set.
 
