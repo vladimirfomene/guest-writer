@@ -103,12 +103,13 @@ def on_close(self):
     print("WebSocket closed")
 ```
 
-## Data Operators
-The essence of reactive programming is working with streams. As we saw before, we have an Observable class that supplies the data stream and an Observer which consumes it. But along the way from the Observable to the subscriber we can apply many Operators to the stream, this defines how and when the Observable should emit the stream.
+### Data Operators in Reactive Programming
 
-Most operators executes a function on an Observable and return an Observable. So we can apply these operators one after the other, in a chain. Each operator in the chain modifies the Observable that results from the operation of the previous operator.
+The essence of Reactive Programmingis working with streams. As we saw before, we have an `Observable` class that supplies the data stream and an `Observer` which consumes it. But, along the way from the `Observable` to the subscriber, we can apply many `Operators` to the stream. These `Operators` define how and when the `Observables` should emit streams.
 
-There are plenty of operators so we will be exploring only the ones that we use for this tutorial. The operators can be classified by categories of their utility as:
+Most `Operators` execute a function on an `Observable` and return an `Observable`. So we can apply these operators one after the other, in a chain. Each operator in the chain modifies the `Observable` that results from the operation of the previous operator.
+
+There are plenty of operators available. We will be exploring only the ones that we use for this tutorial. The operators can be classified by categories of their utility as:
 
 * Creating Observables
 * Transforming Observables
