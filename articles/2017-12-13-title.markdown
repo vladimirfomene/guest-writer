@@ -37,32 +37,33 @@ The main difference between [Event-Driven programming](https://en.wikipedia.org/
 
 Reactive Programming is a programming paradigm oriented around data flows and the propagation of change. This means that, when a data flow is emitted by one component, the Reactive Programming library will automatically propagate those changes to other components until it reaches the final receiver.
 
-## How does it all works from inside?
+## What Does Reactive Programming Works?
 
-ReactiveX is mainly based in two classes; the Observables and the Observers.
-The Observable class is the source of the data stream or events and the Observer class is the one that consumes or reacts to the emmited elements.
+Let's take into consideration [ReactiveX](http://reactivex.io/), the most famous implementation of the Reactive Programming paradigm. ReactiveX is mainly based in two classes: the `Observable` and `Observer` classes. The `Observable` class is the source of data streams or events and the `Observer` class is the one that consumes (or reacts to) the emitted elements.
 
-* Observables
-	An Observable packs the incomming data so it can be passed from one thread to another. The Observable can be configured so it regulates when to supply data, it could be periodically or only once in their life cycle. There are also various functions that can be used to filter or transform the observable so the observer only emits certain data. All this is used instead of callbacks, which means that our code becomes more readable and less fallible.
+### Observables in Reactive Programming
+
+An `Observable` packs the incoming data so it can be passed from one thread to another. The `Observable` can be configured so it regulates when to supply data. For example, it could be triggered periodically or only once in their life cycle. There are also various functions that can be used to filter or transform the observable so the observer only emits certain data. All this is used instead of callbacks, which means that our code becomes more readable and less fallible.
 
 ```python
 from rx import Observable, Observer
 
 source = Observable.from_list([1,2,3,4,5,6])
-
 ```
 
-It’s common to use Observables in such a way, that it doesn’t give data until some Observer subscribes to it. This is known as “call-by-need”, is an evaluation strategy which delays the evaluation of an event until its value is needed.
+It’s common to use `Observables` in a way that it doesn’t give data until some `Observer` subscribes to it. Known as ["call by need"](https://en.wikipedia.org/wiki/Evaluation_strategy#Call_by_need), this is an evaluation strategy which delays the evaluation of an event until its value is needed.
 
-* Observer
-	The Observer consumes the data stream emitted by the observable. An Observable can have multiple Observers so each data item emitted by the Observable will be received by each Observer. The "listening" to the stream is called subscribing, Observers subscribe to the Observable with the subscribe() method to receive the emitted data.
-	The Observer can receive three types of events:
-	* **on_next()** When it is an element in the data stream.
-	* **on_error()** When there is an error thrown from observable, it also implies end of emission.
-	* **on_completed()** When no more items are coming, it implies end of emission.
+### Observers in Reactive Programming
+
+The `Observer` consumes the data stream emitted by the `Observable`. An `Observable` can have multiple `Observers` so each data item emitted will be received by each `Observer`. The "listening" to the stream is called subscribing. `Observers` subscribe to the `Observable` with the `subscribe()` method to receive the emitted data.
+
+The `Observer` can receive three types of events:
+
+* **on_next()**: when there is an element in the data stream;
+* **on_completed()**: when no more items are coming, it implies end of emission.
+* **on_error()**: when there is an error thrown from the `Observable` (it also implies end of emission);
 
 ```python
-
 class PrintObserver(Observer):
 
     def on_next(self, value):
@@ -75,16 +76,14 @@ class PrintObserver(Observer):
         print("Error Occurred: {0}".format(error))
 
 source.subscribe(PrintObserver())
-
 ```
 
-We don't have to specify all three events types in the code. We can choose which events to observe using the named arguments, or simply providing a lambda for the on_next. Typically in production, we will want to provide an on_error so errors are explicitly handled by the subscriber.
+We don't have to specify all three event types in the code. We can choose which events to observe using the named arguments, or simply providing a lambda for the `on_next` function. Typically, in production, we will want to provide an `on_error` handler so errors are explicitly handled by the subscriber.
 
 ```python
 source = Observable.from_list([1,2,3,4,5,6])
 
 source.subscribe(lambda value: print("Received {0}".format(value)))
-
 ```
 
 * Subject
