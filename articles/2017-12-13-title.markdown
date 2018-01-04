@@ -19,7 +19,7 @@ related:
 - 2017-09-28-developing-restful-apis-with-python-and-flask
 ---
 
-**TL;DR:** In this tutorial, we’ll be learning how to use the [RxPy](https://rxpy.codeplex.com/) library to create asynchronous and event-based programs by implementing observables, observers/subscribers, and subjects. We will start by getting our data stream from the [Github API](https://developer.github.com/v3/) with a [Tornado](http://www.tornadoweb.org) web socket and then we will filter and process it asynchronously. [In this GitHub repository](https://github.com/valerybriz/RxGithubSearcher), you can find the code we will be using for this tutorial.
+**TL;DR:** In this tutorial, we’ll be learning how to use the [RxPy](https://rxpy.codeplex.com/) library to create asynchronous and event-based programs by implementing observables, observers/subscribers, and subjects. We will start by getting our data stream from the [GitHub API](https://developer.github.com/v3/) with a [Tornado](http://www.tornadoweb.org) web socket and then we will filter and process it asynchronously. [In this GitHub repository](https://github.com/valerybriz/RxGithubSearcher), you can find the code we will be using for this tutorial.
 
 ## Why Reactive Programming?
 
@@ -242,11 +242,11 @@ AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
 
 ### Obtaining Data
 
-To obtain the data from the Github API, first we need to define a function inside our web socket handler. This function will create an asynchronous `http_client` which will take the organization names received and return the requested repository information asynchronously as a response.
+To obtain the data from the GitHub API, first we need to define a function inside our web socket handler. This function will create an asynchronous `http_client` which will take the organization names received and return the requested repository information asynchronously as a response.
 
 ```python
 def get_org_repos(self,org):
-    """request the repos to the Github API"""
+    """request the repos to the GitHub API"""
     http_client = AsyncHTTPClient()
     response = http_client.fetch(GIT_ORG + org, headers=headers, method="GET")
     return response
