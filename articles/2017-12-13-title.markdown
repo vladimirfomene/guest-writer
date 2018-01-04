@@ -203,9 +203,9 @@ user_input.combine_latest( interval_observable, lambda input_value, i: input_val
 
 ## Advantages of Reactive Programming
 
-With ReactiveX we can raise the level of abstraction of our code so we can focus on the interdependence of events that define the business logic, rather than having to constantly fiddle with a large amount of implementation details. With the help of the funcional programming the Code will also be more concise.
+With Reactive Programming we can raise the level of abstraction of our code so we can focus on the interdependence of events that define the business logic, rather than having to constantly fiddle with a large amount of implementation details. With the help of the functional programming the code will also be more concise.
 
-We can use ReactiveX to process asynchronous incoming data, perhaps tasks with a lot of user interction (clicks, gestures, etc.) or processing system events (sensors, gyroscope, etc.). All kind of interactions where the events are portrayed as the object states. Such an approach allows better dynamic process description, also simplifying the asynchronous code writing. And finally we've got a best performance by the asynchronous context and the parallel processing of the data streams.
+We can use Reactive Programming to process asynchronous incoming data—perhaps tasks with a lot of user interaction (clicks, gestures, etc.)—or processing system events (sensors, gyroscope, etc.). That is, we can use with all kind of interactions where the events are portrayed as the object states. Such an approach allows better dynamic process description, also simplifying the asynchronous code writing. Finally, we've got a best performance by the asynchronous context and the parallel processing of the data streams.
 
 ## Building an App with RxPy
 
