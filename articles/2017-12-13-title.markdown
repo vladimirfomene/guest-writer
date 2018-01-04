@@ -145,23 +145,25 @@ Observable.interval(60000)
 
 #### **Filtering Observables Category**
 
-	* filter():
-	Emit only those items from an Observable that pass a predicate test.
-	![ Filter operator marble diagram](https://cdn.auth0.com/blog/rxpy/filter.png)
-	Here we are filtering by the text size so it emits only the strings that exceed a length of 2 characters.
+The `filter()` operator emits only those items from an `Observable` that pass a predicate test.
 
-	```python
-	Subject.filter( lambda text: not text or len(text) > 2 )
-	```
+![ Filter operator marble diagram](https://cdn.auth0.com/blog/rxpy/filter.png)
 
-	* ThrottleLast():
-	Emit the most recent items emitted by an Observable within periodic time intervals
-	![ ThrottleLast operator marble diagram](https://cdn.auth0.com/blog/rxpy/throttlelast.png)
-	Given the last value in a given time interval.
+In the following example, we are filtering by the text size so it emits only the strings that exceed a length of 2 characters.
 
-	```python
-	Subject.throttle_last( 1000 )
-	```
+```python
+Subject.filter( lambda text: not text or len(text) > 2 )
+```
+
+The `throttle_last()` operator emits the most recent items emitted by an `Observable` within periodic time intervals.
+
+![ ThrottleLast operator marble diagram](https://cdn.auth0.com/blog/rxpy/throttlelast.png)
+
+For example, to get the last value in a given time interval we could use RxPy as follows:
+
+```python
+Subject.throttle_last( 1000 )
+```
 
 #### **Transforming Observables Category**
 
