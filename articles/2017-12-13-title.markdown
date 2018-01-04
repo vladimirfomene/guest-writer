@@ -121,25 +121,27 @@ There are plenty of operators available. We will be exploring only the ones that
 * Mathematical and Aggregate Operators
 * Connectable Observable Operators
 
-* Creating Observables
-	* just():
-	As the name suggest, just operator emits an Observable with the same values provided in the arguments.
-	![Just operator marble diagram](https://cdn.auth0.com/blog/rxpy/just.png)
-	As we can see in this example, our Observable just emits a,b,c,d one after another.
+#### **Creating Observables Category**
 
-	```python
-	Observable.just(a,b,c,d)
-	```
+The `just()` operator, as the name suggest, emits `Observables` with the same values provided in the arguments.
 
-	* interval():
-	Create an Observable that emits a sequence of integers spaced by a given time interval
-	![Interval operator marble diagram](https://cdn.auth0.com/blog/rxpy/interval.png)
-	Refresh the value every 60 Seconds for periodic updates.
+![Just operator marble diagram](https://cdn.auth0.com/blog/rxpy/just.png)
 
-	```python
-	Observable.interval( 60000 )
-	```
+As we can see in the following example, our `Observable` just emits `a`, `b`, `c`, `d` one after another:
 
+```python
+Observable.just(a,b,c,d)
+```
+
+The `interval()` operator creates an `Observable` that emits a sequence of integers spaced by a given time interval.
+
+![Interval operator marble diagram](https://cdn.auth0.com/blog/rxpy/interval.png)
+
+For example, the following `Observable` refreshes the value every 60 Seconds for periodic updates:
+
+```python
+Observable.interval(60000)
+```
 
 * Filtering Observables
 	* filter():
