@@ -143,7 +143,8 @@ For example, the following `Observable` refreshes the value every 60 Seconds for
 Observable.interval(60000)
 ```
 
-* Filtering Observables
+#### **Filtering Observables Category**
+
 	* filter():
 	Emit only those items from an Observable that pass a predicate test.
 	![ Filter operator marble diagram](https://cdn.auth0.com/blog/rxpy/filter.png)
@@ -162,7 +163,8 @@ Observable.interval(60000)
 	Subject.throttle_last( 1000 )
 	```
 
-* Transforming Observables
+#### **Transforming Observables Category**
+
 	* flat_map():
 	Transform the items emitted by an Observable into Observables, then flatten the emissions from those into a single Observable
 	![ Flat_Map operator marble diagram](https://cdn.auth0.com/blog/rxpy/flat_map.png)
@@ -172,7 +174,8 @@ Observable.interval(60000)
 	Subject.flat_map( lambda name: Observable.from_future(self.get_org_repos(name)) )
 	```
 
-* Observable Utility Operators
+#### **Observable Utility Operators Category**
+
 	* do_action():
 	Register an action to take upon a variety of Observable lifecycle events.
 	![ Do_action operator marble diagram](https://cdn.auth0.com/blog/rxpy/do_action.png)
@@ -182,7 +185,8 @@ Observable.interval(60000)
 	Subject.do_action( lambda x: send_response('clear') )
 	```
 
-* Combining Observables
+#### **Combining Observables Category**
+
 	* combine_latest():
 	When an item is emitted by either of two Observables, combine the latest item emitted by each Observable via a specified function and emit items based on the results of this function.
 	![ Combine_lastest operator marble diagram](https://cdn.auth0.com/blog/rxpy/combine_lastest.png)
@@ -192,13 +196,13 @@ Observable.interval(60000)
 	user_input.combine_latest( interval_observable, lambda input_value, i: input_value )
 	```
 
-## Advantages of using ReactiveX
+## Advantages of Reactive Programming
+
 With ReactiveX we can raise the level of abstraction of our code so we can focus on the interdependence of events that define the business logic, rather than having to constantly fiddle with a large amount of implementation details. With the help of the funcional programming the Code will also be more concise.
 
 We can use ReactiveX to process asynchronous incoming data, perhaps tasks with a lot of user interction (clicks, gestures, etc.) or processing system events (sensors, gyroscope, etc.). All kind of interactions where the events are portrayed as the object states. Such an approach allows better dynamic process description, also simplifying the asynchronous code writing. And finally we've got a best performance by the asynchronous context and the parallel processing of the data streams.
 
-
-## Building the app
+## Building an App with RxPy
 
 First of all we need to install the libraries that we are going to use in the code, to do that we can execute the following commands from the terminal:
 
@@ -231,7 +235,8 @@ It is important to notice that to use the Github API authentication we need to c
 AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
 ```
 
-### Obtaining the Data
+### Obtaining Data
+
 To obtain the data from the Github API first we need to define a function inside our web socket handler, this function will create an asynchronous httpClient which will take the organization names received and return the requested repository information asynchronously as a response.
 
 ```python
@@ -244,6 +249,7 @@ def get_org_repos(self,org):
 
 
 ### Building the WebSocketHandler
+
 Our application will exchange messages with a browser using web sockets. Web sockets allow a bidirectional communication between the browser and server in real time. The main idea is to define a class inherited from the WebSocketHandler class. We can find more information about Tornado WebSockets [here](http://www.tornadoweb.org).
 
 In this class, we can override the following methods:
@@ -306,7 +312,8 @@ Once the data stream has been excited by the on_message() method we are going to
 After that we are going to create an interval Observable which will help us to "refresh" the input every 60 seconds and push this input again to the Subject.
 Finally we will combine both the interval Observable and the input value Subject so when either of it has a change it will be emitting a Subject to the chain. The chain will sent it to the send_response method and then to the get_data method to be filtered and showed as the result.
 
-* Filtering the incomming data
+### Filtering Incomming Data
+
 To get the data filtered we are going to use a chain of Observable maps which are going to take the query (the user input) and evaluate it acording to the requirements we have set.
 
 ```python
@@ -352,8 +359,8 @@ ws.onmessage = function(msg) {
 
 ```
 
-
 ## Conclusions
+
 Apps and systems nowadays have a lot of real-time computationally expensive events that enables a highly interactive experience to the user. Here is where ReactiveX shows up to help us properly dealing with that. And also with the help of the ReactiveX operators, we can not only manage this events but filter, unify and transform it on a inherent declarative style way.
 I hope this serves as a useful introduction to ReactiveX and an overview of its basic capabilities. It also has much more powerful tools. To learn more about ReactiveX I encourage you to browse the resources available at [ReactiveX](http://reactivex.io).
 
