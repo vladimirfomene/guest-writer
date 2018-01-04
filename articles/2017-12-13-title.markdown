@@ -209,7 +209,7 @@ We can use Reactive Programming to process asynchronous incoming data—perhaps 
 
 ## Building an App with RxPy
 
-First of all we need to install the libraries that we are going to use in the code, to do that we can execute the following commands from the terminal:
+First of all, we need to install the libraries that we are going to use in the code. To do that we can execute the following commands from the terminal:
 
 ```bash
 # we might need to replace pip with pip3
@@ -218,10 +218,9 @@ pip install tornado
 pip install pycurl
 
 pip install rx
-
 ```
 
-Now that we are ready with the libraries we need to import certain modules from it:
+Now that we are ready with the libraries, we need to import certain modules from it:
 
 ```python
 from rx import Observable
@@ -231,18 +230,19 @@ from tornado.escape import json_decode
 from tornado.httpclient import AsyncHTTPClient
 from tornado.web import Application, RequestHandler, StaticFileHandler, url
 from tornado.websocket import WebSocketHandler
-
 ```
-The Observable and Subject modules from the RxPy library and the async and websocket modules from tornado to handle the requests.
 
-It is important to notice that to use the Github API authentication we need to configure the Tornado HttpClient as a curl async client with the following line at the begining of the code:
+Here we have imported the `Observable` and `Subject` modules from the RxPy library and the `async` and `websocket` modules from Tornado to handle the requests.
+
+It is important to notice that, to use the GitHub API authentication, we need to configure the Tornado HttpClient as a curl async client with the following line at the beginning of the code:
+
 ```python
 AsyncHTTPClient.configure("tornado.curl_httpclient.CurlAsyncHTTPClient")
 ```
 
 ### Obtaining Data
 
-To obtain the data from the Github API first we need to define a function inside our web socket handler, this function will create an asynchronous httpClient which will take the organization names received and return the requested repository information asynchronously as a response.
+To obtain the data from the Github API, first we need to define a function inside our web socket handler. This function will create an asynchronous `http_client` which will take the organization names received and return the requested repository information asynchronously as a response.
 
 ```python
 def get_org_repos(self,org):
@@ -251,7 +251,6 @@ def get_org_repos(self,org):
     response = http_client.fetch(GIT_ORG + org, headers=headers, method="GET")
     return response
 ```
-
 
 ### Building the WebSocketHandler
 
