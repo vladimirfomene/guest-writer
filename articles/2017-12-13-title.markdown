@@ -191,14 +191,15 @@ Subject.do_action( lambda x: send_response('clear') )
 
 #### **Combining Observables Category**
 
-	* combine_latest():
-	When an item is emitted by either of two Observables, combine the latest item emitted by each Observable via a specified function and emit items based on the results of this function.
-	![ Combine_lastest operator marble diagram](https://cdn.auth0.com/blog/rxpy/combine_lastest.png)
-	Here we combine an interval Observable which will be sending the last input of the user every 60 seconds and the Input value Observable itself which will be emitted everytime it changes.
+The `combine_latest()` operator combines, when an item is emitted by either of two `Observables`, the latest item emitted by each `Observable` via a specified function and emit items based on the results of this function.
 
-	```python
-	user_input.combine_latest( interval_observable, lambda input_value, i: input_value )
-	```
+![Combine_lastest operator marble diagram](https://cdn.auth0.com/blog/rxpy/combine_lastest.png)
+
+Here we combine an interval `Observable` which will be sending the last input of the user every 60 seconds and the `input_value` `Observable` itself which will be emitted every time it changes:
+
+```python
+user_input.combine_latest( interval_observable, lambda input_value, i: input_value )
+```
 
 ## Advantages of Reactive Programming
 
