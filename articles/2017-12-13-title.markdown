@@ -179,14 +179,15 @@ Subject.flat_map( lambda name: Observable.from_future(self.get_org_repos(name)) 
 
 #### **Observable Utility Operators Category**
 
-	* do_action():
-	Register an action to take upon a variety of Observable lifecycle events.
-	![ Do_action operator marble diagram](https://cdn.auth0.com/blog/rxpy/do_action.png)
-	Here we call the "send_response" function  for each item in the data stream.
+The `do_action()` operator registers an action to take upon a variety of `Observable` lifecycle events.
 
-	```python
-	Subject.do_action( lambda x: send_response('clear') )
-	```
+![ Do_action operator marble diagram](https://cdn.auth0.com/blog/rxpy/do_action.png)
+
+Here we call the `send_response` function for each item in the data stream.
+
+```python
+Subject.do_action( lambda x: send_response('clear') )
+```
 
 #### **Combining Observables Category**
 
