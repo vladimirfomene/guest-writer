@@ -86,22 +86,21 @@ source = Observable.from_list([1,2,3,4,5,6])
 source.subscribe(lambda value: print("Received {0}".format(value)))
 ```
 
-* Subject
-	The Subject is the Observable extension that simultaneously implements the Observer interface. Subject acts like both Observer and Observable, it can receive messages about events (like Observers) and notify its subscribers (like Observables). This implies two things.
+### Subjects in Reactive Programming
 
-	* We can subscribe to a Subject, just like an Observ­able.
-	* A Sub­ject can sub­scribe to other Observables.
+The `Subject` is the `Observable` extension that simultaneously implements the `Observer` interface. That is, `Subjects` acts like both `Observers` and `Observables`. They receive messages about events (like `Observers`) and notify their subscribers (like `Observables`). This implies two things:
 
-Therefore, the main dif­fer­ence between a Sub­ject and an Observable is that all of the Sub­ject subscribers share the same action of the Sub­ject. This means that when a Sub­ject pro­duces data, all of its sub­scribers will receive the same data. This is unlike Observ­ables, where each sub­scrip­tion causes an inde­pen­dent exe­cu­tion of the observable.
+* We can subscribe to a `Subject`, just like an `Observ­able`.
+* A `Sub­ject` can sub­scribe to other `Observables`.
 
+Therefore, the main dif­fer­ence between a `Sub­ject` and an `Observable` is that all of the `Sub­ject` subscribers share the same action. This means that, when a `Sub­ject` pro­duces data, all of its sub­scribers will receive the same data. This is unlike `Observ­ables`, where each sub­scrip­tion causes an inde­pen­dent exe­cu­tion of the observable.
 
-A Subscriber can not only subscribe to an Observable but also unsubscribe from it. It is important to remember to unsubscribe from the asynchronous calls. When calling unsubscribe(), all the operators unsubscribe from one another in sequence from top to bottom. So we can avoid memory leaks. In the case of the Subjects we will use the dispose method which can be thought of as the subscription itself, or perhaps a token representing the subscription. Disposing it will dispose the subscription and also unsubscribe. The unsubscribe call can be placed in the socket on_close() method:
+A `Subscriber` can not only subscribe to an `Observable` but also unsubscribe from it. It is important to remember to unsubscribe from the asynchronous calls. When calling `unsubscribe()`, all the operators unsubscribe from one another in sequence from top to bottom. So we can avoid memory leaks. In the case of the `Subjects`, we will use the `dispose` method which can be thought of as the subscription itself, or perhaps a token representing the subscription. Disposing it will dispose the subscription and also unsubscribe. The unsubscribe call can be placed in the socket `on_close()` method:
 
 ```python
 def on_close(self):
     self.combine_latest_sbs.dispose()
     print("WebSocket closed")
-
 ```
 
 ## Data Operators
