@@ -78,9 +78,8 @@ Overtime, there has been series of arguments and controversies as to which libra
 | Disk Caching          | It  downloads the image from the given URL, resize it to the size of the image view and stores it to the disk cache. | It ****downloads the image and stores the full-size image in the cache. |
 | Memory                | More memory efficient.                                                                                               | Less memory efficient as compared to Glide                              |
 | Image Load time       | Loads slower from remote `URLs` but faster from cache.                                                               | Faster from remote `URLs` but slower from cache.                        |
-| Other features        | Animated GIF support
-Thumbnail support
-configurations and customizations                                             |                                                                         |
+| Other features        | Animated GIF support, Thumbnail support, Configurations and customizations
+                                            |                                                                         
 
 *source: https://medium.com/@multidots/glide-vs-picasso-930eed42b81d*
 
