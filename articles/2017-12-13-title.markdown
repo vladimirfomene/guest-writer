@@ -29,12 +29,13 @@ Web applications contains lots of database operations, network calls, nested cal
 
 {% include tweet_quote.html quote_text="Reactive Programming makes our code more flexible, readable, maintainable, and easy to write." %}
 
-## But first of all, what does Reactive really means?
-The main difference between event-driven programming and reactive programming is the real trigger of the action. While the Event-driven programming focuses on handling any event such as a button click and then trigger the corresponding action. Reactive programming wraps data into the reactive system as events. So we could be listening to user inputs as events that triggers an action only if the input changed from the current one.
+## What Does Reactive Programming Really Means?
 
-**This means reactive is a dynamic reaction to change.**
+The main difference between [Event-Driven programming](https://en.wikipedia.org/wiki/Event-driven_programming) and Reactive Programming is the real trigger of the action. While the Event-Driven programming focuses on handling any event (such as a button click) to trigger the corresponding action, Reactive Programming wraps data into the reactive system as events. This enables us to do things like like listening to user inputs as events that triggers an action only if the input changed from the previous one.
 
-Reactive programming is a programming paradigm oriented around data flows and the propagation of change. This means that when a data flow is emmited by one component the ReactiveX library will automatically propagate those changes to another component an so on until it reaches the final reciever.
+{% include tweet_quote.html quote_text="Reactive, in Reactive Programming, means a dynamic reaction to change in streams." %}
+
+Reactive Programming is a programming paradigm oriented around data flows and the propagation of change. This means that, when a data flow is emitted by one component, the Reactive Programming library will automatically propagate those changes to other components until it reaches the final receiver.
 
 ## How does it all works from inside?
 
