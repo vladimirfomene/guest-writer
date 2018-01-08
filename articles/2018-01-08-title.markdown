@@ -1,0 +1,24 @@
+---
+layout: post
+title: "Developing Real-Time Apps with Wolkenkit"
+description: "Let's learn how to use wolkenkit to build a real-time web application and add authentication to it."
+date: "2018-01-08 08:30"
+author:
+  name: "Golo Roden"
+  url: "goloroden"
+  mail: "golo.roden@thenativeweb.io"
+  avatar: "https://twitter.com/goloroden/profile_image?size=original"
+related:
+- 2017-11-15-an-example-of-all-possible-elements
+---
+
+**TL;DR:** Briefly describe what this article is about and what the reader will achieve/learn after reading it. Please,
+also provide the link to a GitHub repository that contains code related to this article.
+
+## The Second Most Important Title
+
+Usually, we start describing again what this article is about. The difference, however, is that here we can explain with
+more words. Another important thing that we should include in this first paragraph are the name of the main technologies
+that we will talk about, and add a link to them. For example, we could say that we are going to use
+[React](https://reactjs.org/) and [Redux](https://redux.js.org/) to develop a simple
+[SPA (Single Page Application)](https://en.wikipedia.org/wiki/Single-page_application).
