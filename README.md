@@ -9,3 +9,5 @@ command is available.
 
 The blog engine might take a few seconds to start and generate the articles (usually less than 10). After started, we
 can check the blog at [`http://localhost:4000/blog/`](http://localhost:4000/blog/).
+
+__Important!!!__ The trailing slash is mandatory. This means that `http://localhost:4000/blog` won't work. You do have to go to [`http://localhost:4000/blog/`](http://localhost:4000/blog/).
