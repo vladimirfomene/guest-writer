@@ -636,7 +636,7 @@ Then our test file `EspressoSampleTest` looks like this:
 
 This test class checks to see if “Hello World!” is displayed when `MainActivity` is opened.
 
-From our study of the various test libraries, we deduce that, if we need to test our UI, we go for Espresso. Since JUnit works with all the test libraries, the tussle is now between Roboelectric and Mockito. They both offer the same capabilities but Roboelectric achieves it with lesser codes. Roboelectric also offers more functionalities like being able to test views while Mockito does not offer that. Roboelectric also enjoy the open source support of Google engineers.
+From our study of the various test libraries, we deduce that, JUnit competes with no one as it works together with other libraries. Espresso gives us a good platform for our UI tests. Both Mockito and Roboelectric have similar capabilities but Roboelectric achieves testing with lesser codes. Roboelectric also offers more functionalities for instance, being able to test views. Roboelectric also enjoy the open source support of Google engineers.
 
 # Database helpers
 
