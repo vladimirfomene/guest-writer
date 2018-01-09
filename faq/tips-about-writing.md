@@ -1,5 +1,11 @@
 ## Tips About Writing to Auth0
 
+### Originality
+
+Guest Authors have to produce **original articles**. That is, the content has be written with the authors' words and **no plagiarism will be accepted**. It is normal and totally ok to use and quote external references. Actually, this is desired, as it makes the article more reliable from an SEO perspective (we will rank better when linking trustworthy sources of information).
+
+However, authors have to study, learn, and understand the technologies involved to a point where they can explain these topics with their own words. Authors also have to strive to produce explanations better than those found on the web. This is what it makes an article valuable.
+
 ### Grammatical Person
 
 Choose one grammatical person and stick with it. Usually, writers tend to stick with "we" (first-person plural) when writing articles. For example:
