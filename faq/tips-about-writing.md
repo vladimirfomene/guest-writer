@@ -22,7 +22,7 @@ For example, _GitHub_ has two uppercase letters. So, it's important not to write
 
 **Note that** these are just two examples. Please, search how a proper noun is written and follow the convention.
 
-### Capitalization
+### Formatting
 
 Learn the different types of formatting on Markdown files and use them. Take special care when adding blocks of code. The following cheatsheets can help you learn how to format your article:
 
