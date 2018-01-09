@@ -499,7 +499,7 @@ We create an instance of a `CompositeDisposable` in our class. The `CompositeDis
                 }
             }));
 
-The disposable we just added consists of the data source which will emit one string, the thread where the process will take place, the thread where our observer will be notified of the result result and our subscriber/observer . The `DisposableObserver<String>` is our observer which provides us with three implemented methods. First is the `onNext` which is called whenever data is emitted, next is the `onError` to show that an error occured and finally `onCompleted` to show that the Observable has finished emitting data and won't call `onNext`.
+What we added to our `disposables` variable consists of the data source which will emit one string, the thread where the process will take place, the thread where our observer will be notified of the result result and our subscriber/observer . The `DisposableObserver<String>` is our observer which provides us with three implemented methods. First is the `onNext` which is called whenever data is emitted, next is the `onError` to show that an error occured and finally `onCompleted` to show that the Observable has finished emitting data and won't call `onNext`.
 
 We then clear resources when our activity is in the background to avoid memory leaks:
 
