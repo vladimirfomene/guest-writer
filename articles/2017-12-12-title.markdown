@@ -55,7 +55,7 @@ The `with` method can take a context, Activity, Fragment or View, the load metho
 
 [Picasso](http://square.github.io/picasso/) is an image library for Android. It's created and maintained by [Square](http://square.github.io/), that caters to image loading and processing. It simplifies the process of displaying images from external locations. Picasso supports complex image transformations, automatic caching to disk, `ImageView`  recycling, and download cancellation in an adapter.
 
-The library handles every stage of the process, from the initial HTTP request to the caching of the image just as Glide does. This can be quite verbose when writing code to perform these actions yourself.
+The library handles every stage of the process, from the initial HTTP request to the caching of the image just as Glide does.
 
 **Sample Usage**
 
@@ -85,7 +85,7 @@ Overtime, there has been series of arguments and controversies as to which libra
 
 # Videos
 
-Displaying videos poses to be another difficulty experienced during development. The process and details to take note of can be too numerous to handle. In this category, there are a few viable options to be considered in this category and we will just consider one of them.
+Displaying videos poses to be another difficulty experienced during development. The process and details to take note of can be too numerous to handle. In this category, there are a few viable options available and we will just consider one of them, Exoplayer.
 
 ## Exoplayer
 
@@ -122,7 +122,7 @@ We then initialize our `simpleExoPlayerView` in the `onCreate` method:
 
     simpleExoPlayerView = findViewById(R.id.simple_exoplayer_view);
 
-In the `onStart` method, we will call the `setupPlayer` method:
+In the `onStart` method, we call the `setupPlayer` method:
 
 
     @Override
@@ -131,7 +131,7 @@ In the `onStart` method, we will call the `setupPlayer` method:
         setupPlayer();
     }
 
-The  `setupPlayer` method is as follows:
+And the `setupPlayer` method:
 
 
     void setupPlayer(){
@@ -168,7 +168,7 @@ Here, we initialized the `player`  with some default configurations and then  as
 
     Uri videoUri = Uri.parse("any_remote_url");
 
-With this, we have a basic implementation of `ExoPlayer`. Google provides a [code](https://codelabs.developers.google.com/codelabs/exoplayer-intro)-lab on how to get started with this library.
+With this, we have a basic implementation of `ExoPlayer`. Google provides a [code-lab](https://codelabs.developers.google.com/codelabs/exoplayer-intro) on how to get started with this library.
 
 # Networking
 
@@ -190,7 +190,7 @@ You would also need to insert dependency for the converter you intend to use. Co
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
 
-The first converter is to map to and fro `JSON` while the second is used when we want to deal with primitive data types like type `String`. We create an interface to show the endpoints that will be accessed :
+The first converter is to map to and fro `JSON` while the second is used when we want to deal with primitive data types like type `String`. We then create an interface to show the endpoints that will be accessed :
 
 
     public interface ApiService {
@@ -198,7 +198,7 @@ The first converter is to map to and fro `JSON` while the second is used when we
         Call<ResponseClass> fetchData(@Body JsonObject jsonObject);
     }
 
-From the snippet, we have an endpoint `/data` that will require a `JsonObject` body for the request. We also have a `ResponseClass` which will be mapped to the expected response body of our request. However, the class is omitted here for brevity. We then create a Retrofit client:
+From the snippet, we have an endpoint `/data` that requires a `JsonObject` body for the request. We also have a `ResponseClass` which will be mapped to the expected response body of our request. However, the class is omitted here for brevity. You can use [JsonSchema2Pojo](jsonschema2pojo.org) to map JSON responses to POJOs. We then create a Retrofit client:
 
 
     public class RetrofitClient {    
