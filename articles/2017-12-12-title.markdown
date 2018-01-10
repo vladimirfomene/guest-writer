@@ -90,90 +90,100 @@ Overtime, there has been series of arguments and controversies as to which libra
 
 ## Android Libraries—Videos
 
-Displaying videos poses to be another difficult task during development. The process and details to take care of can be too numerous to handle. In this category, there are a few available options. However, as the most popular and powerful one is Exoplayer, we will focus this section on it.
+Displaying videos poses to be another difficult task during development. The process and details to take care of can be too numerous to handle. In this category, there are a few available options. However, as the most popular and powerful one is ExoPlayer, we will focus this section on it.
 
-## Exoplayer
+### ExoPlayer
 
-[ExoPlayer](https://github.com/google/ExoPlayer) is an Android media player library developed by Google. It provides an alternative to Android’s MediaPlayer API for playing audio and video both locally and over the Internet with some added advantages. ExoPlayer supports features not currently supported by Android’s MediaPlayer API  - including DASH and SmoothStreaming adaptive playbacks. One of ExoPlayer’s biggest advantage is its easy customization.
+[ExoPlayer](https://github.com/google/ExoPlayer) is an Android media player library developed by Google. It provides an alternative to Android’s MediaPlayer API for playing audio and video (both locally and over the internet) with some added advantages. ExoPlayer supports features not currently supported by Android’s MediaPlayer API, [like DASH and SmoothStreaming adaptive playbacks](https://google.github.io/ExoPlayer/guide.html). One of ExoPlayer’s biggest advantage is its easy customization.
 
-**Sample Usage**
-The first step is to make sure we have the `JCenter` and `Google` repositories included in the project  `build.gradle`. This is located in the root of our project.
+#### Using ExoPlayer
 
+The first step is to make sure we have the JCenter and Google repositories included in the project `build.gradle` configuration file:
 
-    repositories {
-        jcenter()
-        google()
-    }
+```groovy
+repositories {
+    jcenter()
+    google()
+}
+```
 
-Next we add a `gradle` compile dependency to our app-module `build.gradle` file:
+Next, we need to add a Gradle compile dependency to the same file:
 
-    implementation 'com.google.android.exoplayer:exoplayer:2.6.0'
+```groovy
+implementation 'com.google.android.exoplayer:exoplayer:2.6.0'
+```
 
-Then in our layout resource file, we add the `SimpleExoPlayerView` :
+Then, in our layout resource file, we add the `SimpleExoPlayerView` component:
 
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-       android:id="@+id/simple_exoplayer_view"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"/>
+```xml
+<com.google.android.exoplayer2.ui.SimpleExoPlayerView
+   android:id="@+id/simple_exoplayer_view"
+   android:layout_width="match_parent"
+   android:layout_height="wrap_content"/>
+```
 
-In the corresponding Activity class, we declare our class variables:
+After that, in the corresponding Activity class, we instantiate ExoPlayer's classes:
 
+```java
+SimpleExoPlayerView simpleExoPlayerView;
+SimpleExoPlayer player;
+```
 
-    SimpleExoPlayerView simpleExoPlayerView;
-    SimpleExoPlayer player;
+We then initialize our `simpleExoPlayerView` in the `onCreate` method of our Activity:
 
-We then initialize our `simpleExoPlayerView` in the `onCreate` method:
+```java
+simpleExoPlayerView = findViewById(R.id.simple_exoplayer_view);
+```
 
+And, in the `onStart` method, we call the `setupPlayer` method:
 
-    simpleExoPlayerView = findViewById(R.id.simple_exoplayer_view);
-
-In the `onStart` method, we call the `setupPlayer` method:
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        setupPlayer();
-    }
+```java
+@Override
+protected void onStart() {
+    super.onStart();
+    setupPlayer();
+}
+```
 
 And the `setupPlayer` method:
 
+```java
+void setupPlayer(){
+    BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+    TrackSelection.Factory videoTrackSelectionFactory =
+            new AdaptiveTrackSelection.Factory(bandwidthMeter);
+    TrackSelector trackSelector =
+            new DefaultTrackSelector(videoTrackSelectionFactory);
 
-    void setupPlayer(){
+    //initialize the player with default configurations
+    player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
 
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory =
-                new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector =
-                new DefaultTrackSelector(videoTrackSelectionFactory);
+    //Assign simpleExoPlayerView
+    simpleExoPlayerView.setPlayer(player);
 
-        //initialize the player with default configurations
-        player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+    // Produces DataSource instances through which media data is loaded.
+    DataSource.Factory dataSourceFactory =
+            new DefaultDataSourceFactory(this, Util.getUserAgent(this, "CloudinaryExoplayer"));
 
-        //Assign simpleExoPlayerView
+    // Produces Extractor instances for parsing the media data.
+    ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
-        simpleExoPlayerView.setPlayer(player);
+    // This is the MediaSource representing the media to be played.
+    MediaSource videoSource = new ExtractorMediaSource(videoUri,
+            dataSourceFactory, extractorsFactory, null, null);
 
-        // Produces DataSource instances through which media data is loaded.
-        DataSource.Factory dataSourceFactory =
-                new DefaultDataSourceFactory(this, Util.getUserAgent(this, "CloudinaryExoplayer"));
+    // Prepare the player with the source.
+    player.prepare(videoSource);
+}
+```
 
-        // Produces Extractor instances for parsing the media data.
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+Here, we initialized the `player` with some default configurations and then assigned it to the `SimpleExoPlayerView` instance. The `videoUri` is of type `Uri`. Every file stored our device has a `Uri` turning it into a unique address to that file. If we intend to display a video from a remote `URL`, we have to parse it this way:
 
-        // This is the MediaSource representing the media to be played.
-        MediaSource videoSource = new ExtractorMediaSource(videoUri,
-                dataSourceFactory, extractorsFactory, null, null);
+```java
+Uri videoUri = Uri.parse("any_remote_url");
+```
 
-        // Prepare the player with the source.
-        player.prepare(videoSource);
-    }
-
-Here, we initialized the `player`  with some default configurations and then  assigned it to the `SimpleExoPlayerView`  instance. The `videoUri` is of type `Uri` . Every file stored our device has a `Uri` so this is the unique address to that file. If we intend to display a video from a remote `URL`, we have to parse it this way:
-
-    Uri videoUri = Uri.parse("any_remote_url");
-
-With this, we have a basic implementation of `ExoPlayer`. Google provides a [code-lab](https://codelabs.developers.google.com/codelabs/exoplayer-intro) on how to get started with this library.
+With this, we have a basic implementation of `ExoPlayer`. Google provides a [great tutorial with more information on how to get started with this library](https://codelabs.developers.google.com/codelabs/exoplayer-intro).
 
 # Networking
 
