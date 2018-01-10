@@ -380,108 +380,116 @@ From our brief example, if we run the app, we should see `I love Auth0` printed 
 - [New Android Injector with Dagger 2 — part 1](https://medium.com/@iammert/new-android-injector-with-dagger-2-part-1-8baa60152abe)
 - [Dagger 2.11 with Android](https://medium.com/@idee4ril/dagger-2-11-with-android-a606c132826c)
 
-# View Binding
+## Android Libraries—View Binding
 
-View binding libraries emerged when there was a need to reduce the boilerplate code when assigning views to variables and having access to them in the activity class. Libraries in this area are limited and we have mainly two; ButterKnife and Android Databinding library.
+View binding libraries emerged when there was a need to reduce the boilerplate code when assigning views to variables and having access to them in the activity class. Libraries in this area are limited. Basically, there are two that worth mentioning: ButterKnife and Android Databinding.
 
-## Butterknife
+### Butterknife
 
-[ButterKnife](http://jakewharton.github.io/butterknife/) is a view binding library developed by Jake Wharton. This means that Butterknife is a library that helps us assign `ids` to views easily thereby avoiding the excess `findViewById`. According to the documentation. “Butterknife is a dagger only infinitely less sharp”. This means that view binding can be seen as a form of dependency injection. In ButterKnife, annotations are used to generate boilerplate code for us instead.
+[ButterKnife](http://jakewharton.github.io/butterknife/) is a view binding library developed by [Jake Wharton](https://twitter.com/JakeWharton). Butterknife is a library that helps us assign `ids` to views easily thereby avoiding the excess `findViewById`. According to the documentation, “Butterknife is like Dagger only infinitely less sharp”. This means that view binding can be seen as a form of dependency injection. In ButterKnife, annotations are used to generate boilerplate code for us instead.
 
-**Sample usage**
-We add the dependencies in our app-module `build.gradle`  file:
+### Using Butterknife
 
+to use Butterknife, we need to add the dependencies in our app-module `build.gradle` file as follows:
 
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+```groovy
+implementation 'com.jakewharton:butterknife:8.8.1'
+annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+```
 
-Then in our activity, we use the `@BindView` annotation to assign an `id` to its view:
+Then, in our activity, we use the `@BindView` annotation to assign an `id` to its view:
 
+```java
+class MainActivity extends AppCompatActivity {
+    @BindView(R.id.firstname) EditText firstName;
 
-    class MainActivity extends AppCompatActivity {
-      @BindView(R.id.firstname) EditText firstName;
-
-      @Override public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         ButterKnife.bind(this);
         // TODO ...
-      }
     }
+}
+```
 
+Note that, in the code snippet above, we initialized ButterKnife in our `onCreate` method by using its `bind` method. Alternatively, if we want to use `ButterKnife` in a `Fragment` we initialize it in the `onCreateView` method this way:
 
-We then went on to initialize ButterKnife in our `onCreate` method. Alternatively, if we want to use `ButterKnife` in a `Fragment` we initialize it in the `onCreateView` method this way:
+```java
+View view = inflater.inflate(R.layout.sample_fragment, container, false);
+ButterKnife.bind(this,view);
+```
 
+With ButterKnife, we also avoid creating `OnClickListeners`. For instance, we can use an `@OnClick` annotation together with the view to add a click listener to a view:
 
-    View view = inflater.inflate(R.layout.sample_fragment, container, false);
-    ButterKnife.bind(this,view);
+```java
+@OnClick(R.id.button)
+void buttonClicked() {
+  // TODO ...
+}
+```
 
-With ButterKnife, we also avoid creating `OnClickListeners` for instance, we use an `@OnClick` annotation together with the view to add a click listener to a view:
+We can access the full documentation of ButterKnife [here](http://jakewharton.github.io/butterknife/) to explore more functionalities of the library.
 
+### Android Databinding Library
 
-      @OnClick(R.id.button) void buttonClicked() {
-        // TODO ...
-      }
+The [Android Databinding Library](https://developer.android.com/topic/libraries/data-binding/index.html) is inbuilt to the Android Support Library. It requires at least Android studio version `1.3` to work. This library, unlike ButterKnife, does not make use annotations.
 
-You can access the full docs of ButterKnife [here](http://jakewharton.github.io/butterknife/) to explore more functionalities of the library.
+### Using Databinding Library
 
-## Android Databinding Library
-
-The [Android Databinding Library](https://developer.android.com/topic/libraries/data-binding/index.html) is inbuilt to the Android Support Library. It requires at least Android studio version 1.3 to work. This library unlike ButterKnife does not make use annotations.
-
-**Sample usage**
 Enable data binding in the app-module `build.gradle` file and sync:
 
-
-    android {
-        ....
-        dataBinding {
-            enabled = true
-        }
+```java
+android {
+    ....
+    dataBinding {
+        enabled = true
     }
+}
+```
 
-Thereafter, we set the root tag of our layout file to `layout` :
+Thereafter, we set the root tag of our layout file to `layout`:
 
-    <?xml version="1.0" encoding="utf-8"?>
-    <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
 
-    </layout>    
+</layout>
+```
 
+An activity binding class is then generated for us (`ActivityMainBinding`) based on the naming of the layout: `activity.main.xml`. We will use an instance of this class to access our views. We also have another class, `DataBindingUtil`, generated to handle other utilities.
 
-An activity binding class is then generated for us - `ActivityMainBinding` based on the naming of the layout, `activity.main.xml` . We will use an instance of this class to access our views. We also have another class `DataBindingUtil` generated to handle other utilities.
+Then in our activity class:
 
-Then our activity class:
+```java
+public class MainActivity extends AppCompatActivity {
 
+    ActivityMainBinding binding;
 
-    public class MainActivity extends AppCompatActivity {
-
-        ActivityMainBinding binding;
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-            binding.textview.setText("Hello world!");
-        }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.textview.setText("Hello world!");
     }
+}
+```
 
+The Android Databinding Library offers a replacement for `onClick` listeners together with a whole lot of other features. These features can be found in the official [docs](https://developer.android.com/topic/libraries/data-binding/index.html).
 
-The Android Databinding library offers a replacement for `onClick` listeners together with a whole lot of other features as found in the official [docs](https://developer.android.com/topic/libraries/data-binding/index.html).
-
-These two libraries significantly reduce the amount of codes written to access views, however, the Android DataBinding library wins here because it is easier to setup, it achieves the result with less codes as compared to ButterKnife and offers more functionalities.
+These two libraries, ButterKnife and Android Databinding Library, significantly reduce the amount of code written to access views. However, the Android DataBinding library looks like a winner here because it is easier to setup, it achieves the result with less codes as compared to ButterKnife and offers more functionalities.
 
 # Reactive Programming
 
