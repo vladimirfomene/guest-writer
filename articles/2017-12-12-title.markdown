@@ -185,68 +185,78 @@ Uri videoUri = Uri.parse("any_remote_url");
 
 With this, we have a basic implementation of `ExoPlayer`. Google provides a [great tutorial with more information on how to get started with this library](https://codelabs.developers.google.com/codelabs/exoplayer-intro).
 
-# Networking
+## Android Libraries—Networking
 
-Now a days, almost every mobile app needs some sort of network call to perform one function or the other. Previously, if we want to make a network request, we would have to execute an `Async` task class and use `HttpsUrlConnection` to fetch data. However, this is not very effective especially when you are dealing with APIs that return large data. The available networking libraries have helped to optimize this process while managing threads and the device’s resources properly. There are a number of alternatives available such as; Retrofit, Volley, etc.
+Nowadays, virtually every mobile app needs some sort of network communication to perform one function or the other. Previously, if we wanted to make a network request, we would have to execute an `Async` task class and use [`HttpsUrlConnection`](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html) to fetch data. However, this is not very effective especially when we are dealing with APIs that return large data.
 
-## Retrofit
+Luckily for us, there are great networking libraries available to help us optimize this process while managing threads and the device’s resources properly. Among the alternatives, there are two that stand out: Retrofit and Volley. As Retrofit is the most popular between the two, let's take a look into it.
 
-[Retrofit](http://square.github.io/retrofit/) is a Type-safe HTTP client for Android and Java developed and maintained by Square, Inc. Retrofit is the most used networking library in Android development. In Retrofit, with just annotations, you can easily add a request body, manipulate the endpoints, manipulate headers, add query parameters, and choose request methods. Retrofit also handles parsing to POJOs very well by use of its converters.
+### Retrofit
 
-**Sample Usage:**
-Add the dependency to our app `build.gradle` file :
+[Retrofit](http://square.github.io/retrofit/) is a [type-safe](https://en.wikipedia.org/wiki/Type_safety) HTTP client for Android and Java developed and maintained by Square (the same company that supports Picasso). Retrofit is the most used networking library in Android development. In Retrofit, with just annotations, you can easily add a request body, manipulate endpoints, manipulate headers, add query parameters, and choose request methods. Retrofit also handles parsing to POJOs very well by using converters.
 
+#### Using Retrofit
 
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+To use Retrofit, first we need to add the dependency to our app `build.gradle` file:
 
-You would also need to insert dependency for the converter you intend to use. Converters handle the mapping of java objects to the response body. You can read more about converters [here](https://www.google.com.ng/url?sa=t&rct=j&q=&esrc=s&source=web&cd=4&cad=rja&uact=8&ved=0ahUKEwjDqtWj1bTYAhWI4qQKHdPWCHgQFgg9MAM&url=https%3A%2F%2Fgithub.com%2Fsquare%2Fretrofit%2Fwiki%2FConverters&usg=AOvVaw3s3ONG1ayY1BXQpFkGEV4t).
+```groovy
+implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+```
 
+We would also need to insert dependency for converters that we intend to use. Converters handle the mapping of Java objects to the response body. You can read more about converters [here](https://github.com/square/retrofit/wiki/Converters).
 
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
+```groovy
+implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
+```
 
-The first converter is to map to and fro `JSON` while the second is used when we want to deal with primitive data types like type `String`. We then create an interface to show the endpoints that will be accessed :
+The first converter in the list above (`converter-gson`), as the name states, maps to and from the JSON format. The second is used when we want to deal with primitive data types like `String`. After importing the desired converters, we then create an interface to configure the endpoints that will be accessed :
 
+```java
+public interface ApiService {
+    @GET("/data")
+    Call<ResponseClass> fetchData(@Body JsonObject jsonObject);
+}
+```
 
-    public interface ApiService {
-        @GET("/data")
-        Call<ResponseClass> fetchData(@Body JsonObject jsonObject);
+From the snippet, we have an endpoint `/data` that requires a `JsonObject` `@Body` for the request. We also have a `ResponseClass` which will be mapped to the expected response body of our request. However, the class is omitted here for brevity. To map JSON objects to POJOs, we can use the [JsonSchema2Pojo](jsonschema2pojo.org) library.
+
+After defining the endpoints available, we then create a Retrofit client:
+
+```java
+public class RetrofitClient {    
+    static ApiService getService(){
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("http://127.0.0.1:5000/")
+                .addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit = builder
+                .client(httpClient.build())
+                .build();
+
+        return retrofit.create(ApiService.class);
+    }
+}
+```
+
+When building our Retrofit object, we can add as many converters as we want. This provides us a variety of options to parse our data. Thereafter, we make a network request by calling:
+
+```java
+RetrofitClient.getService().fetchData(jsonObject).enqueue(new Callback<ResponseClass>() {
+    @Override
+    public void onResponse(Call<ResponseClass> call, Response<ResponseClass> response) {
+
     }
 
-From the snippet, we have an endpoint `/data` that requires a `JsonObject` body for the request. We also have a `ResponseClass` which will be mapped to the expected response body of our request. However, the class is omitted here for brevity. You can use [JsonSchema2Pojo](jsonschema2pojo.org) to map JSON responses to POJOs. We then create a Retrofit client:
+    @Override
+    public void onFailure(Call<ResponseClass> call, Throwable t) {
 
-
-    public class RetrofitClient {    
-        static ApiService getService(){
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            Retrofit.Builder builder = new Retrofit.Builder()
-                    .baseUrl("http://127.0.0.1:5000/")
-                    .addConverterFactory(GsonConverterFactory.create());
-
-            Retrofit retrofit = builder
-                    .client(httpClient.build())
-                    .build();
-
-            return retrofit.create(ApiService.class);
-        }
     }
+});
+```
 
-When building your retrofit object, we can add as many converters as we want to give us variety of options in parsing our data. Thereafter, we make a network request by calling:
-
-
-    RetrofitClient.getService().fetchData(jsonObject).enqueue(new Callback<ResponseClass>() {
-        @Override
-        public void onResponse(Call<ResponseClass> call, Response<ResponseClass> response) {
-
-        }
-
-        @Override
-        public void onFailure(Call<ResponseClass> call, Throwable t) {
-
-        }
-    });
-
-Where `jsonObject` contains the request parameters. This request will be made to the `http://127.0.0.1:5000/data` endpoint. Retrofit also provides us callback methods to give us the status of the request.
+Where `jsonObject` contains the request parameters. This request will be made to the `http://127.0.0.1:5000/data` endpoint, as defined in the previous code snippet. As we can see in this last snippet, Retrofit also provides us callback methods to give us the status of the request.
 
 # Dependency Injection
 
