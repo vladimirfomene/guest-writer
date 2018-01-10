@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Android Development: 15 Libraries You Should Be Using"
-description: "Let's take a look into some awesome libraries that can help us create better Android apps."
+description: "Let's take a look at some awesome libraries that can help us create better Android apps."
 date: "2018-01-17 08:30"
 author:
   name: "Idorenyin Obong"
@@ -12,7 +12,7 @@ related:
 - 2017-11-15-an-example-of-all-possible-elements
 ---
 
-**TL;DR:** In this article, we will take a brief look into 15 libraries that can help us on our day-to-day Android development. With them, we will be able to create app that perform better and that provide better user experience.
+**TL;DR:** In this article, we will take a brief look at 15 libraries that can help us in our day-to-day Android development. With them, we will be able to create apps that perform better and that provide better user experience.
 
 ## Popular Android Libraries
 
@@ -20,7 +20,7 @@ Libraries are major game changers in software development irrespective of platfo
 
 ## Android Libraries—Image Loading
 
-Image loading libraries come in very handy to avoid high memory consumption cause by loading multiple images at the same time. Images are the greatest source of Out of Memory errors in Android development. These libraries, therefore, reduce the hassle of loading and caching images together with minimizing memory usage to provide a seamless user experience. Let's take a look at two of the commonly used image loading libraries: Glide and Picasso.
+Image loading libraries come in very handy to avoid high memory consumption caused by loading multiple images at the same time. Images are the greatest source of Out of Memory errors in Android development. These libraries, therefore, reduce the hassle of loading and caching images together with minimizing memory usage to provide a seamless user experience. Let's take a look at two of the commonly used image loading libraries: Glide and Picasso.
 
 ### Glide
 
@@ -65,7 +65,7 @@ The library handles every stage of the process. It starts by handling HTTP reque
 
 #### Using Picasso
 
-First thing we need to do is to add the Picasso dependency in our app-module `build.gradle` file:
+The first thing we need to do is to add the Picasso dependency in our app-module `build.gradle` file:
 
 ```groovy
 implementation 'com.squareup.picasso:picasso:2.5.2'
@@ -82,7 +82,7 @@ Picasso
 
 As we can see, the API provided by Picasso is very similar to the one provided by Glide.
 
-Overtime, there has been series of arguments and controversies as to which library performs better. Below is a table showing the strengths and flaws of them both.
+Over time, there has been series of arguments and controversies as to which library performs better. Below is a table showing the strengths and flaws of them both.
 
 ![Android Image Libraries Comparison](https://cdn.auth0.com/blog/android-libraries/glide-picasso-comparison.png)                                            
 
@@ -189,7 +189,7 @@ With this, we have a basic implementation of `ExoPlayer`. Google provides a [gre
 
 Nowadays, virtually every mobile app needs some sort of network communication to perform one function or the other. Previously, if we wanted to make a network request, we would have to execute an `Async` task class and use [`HttpsUrlConnection`](https://developer.android.com/reference/javax/net/ssl/HttpsURLConnection.html) to fetch data. However, this is not very effective especially when we are dealing with APIs that return large data.
 
-Luckily for us, there are great networking libraries available to help us optimize this process while managing threads and the device’s resources properly. Among the alternatives, there are two that stand out: Retrofit and Volley. As Retrofit is the most popular between the two, let's take a look into it.
+Luckily for us, there are great networking libraries available to help us optimize this process while managing threads and the device’s resources properly. Among the alternatives, there are two that stand out: Retrofit and Volley. As Retrofit is the most popular between the two, let's take a look at it.
 
 ### Retrofit
 
@@ -197,7 +197,7 @@ Luckily for us, there are great networking libraries available to help us optimi
 
 #### Using Retrofit
 
-To use Retrofit, first we need to add the dependency to our app `build.gradle` file:
+To use Retrofit, first, we need to add the dependency to our app `build.gradle` file:
 
 ```groovy
 implementation 'com.squareup.retrofit2:retrofit:2.3.0'
@@ -260,11 +260,11 @@ Where `jsonObject` contains the request parameters. This request will be made to
 
 ## Android Libraries—Dependency Injection
 
-[Dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) is a concept where an object does not need to configure its dependencies. Instead, dependencies are passed in by another object. This principle helps us to decouple our classes from their implementation. It is worthy noting that this is a good software engineering practice because it makes our code loosely-coupled, which makes it easier to maintain and test. There are a number of dependency injection libraries but Dagger2 seems to be the lord of them.
+[Dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) is a concept where an object does not need to configure its dependencies. Instead, dependencies are passed in by another object. This principle helps us to decouple our classes from their implementation. It is worth noting that this is a good software engineering practice because it makes our code loosely-coupled, which makes it easier to maintain and test. There are a number of dependency injection libraries but Dagger2 seems to be the lord of them.
 
 ### Dagger2
 
-[Dagger2](https://github.com/google/dagger) is a fully static, compile-time [dependency injection](http://en.wikipedia.org/wiki/Dependency_injection) framework for both Java and Android. It is an upgrade on the earlier [version (Dagger1)](https://github.com/square/dagger) created by [Square](http://square.github.io/) that is now maintained by Google. The recent Dagger version includes Android specific helpers for Android. Specifically, the auto generation of sub components using a new code generator. Dagger2 is very deep and may require just more than the brief sample usage for adequate understanding, but let's take a look into it anyway.
+[Dagger2](https://github.com/google/dagger) is a fully static, compile-time [dependency injection](http://en.wikipedia.org/wiki/Dependency_injection) framework for both Java and Android. It is an upgrade to the earlier [version (Dagger1)](https://github.com/square/dagger) created by [Square](http://square.github.io/) that is now maintained by Google. The recent Dagger version includes Android specific helpers for Android. Specifically, the auto-generation of subcomponents using a new code generator. Dagger2 is very deep and may require just more than the brief sample usage for adequate understanding, but let's take a look at it anyway.
 
 #### Using Dagger2
 
@@ -489,15 +489,15 @@ public class MainActivity extends AppCompatActivity {
 
 The Android Databinding Library offers a replacement for `onClick` listeners together with a whole lot of other features. These features can be found in the official [docs](https://developer.android.com/topic/libraries/data-binding/index.html).
 
-These two libraries, ButterKnife and Android Databinding Library, significantly reduce the amount of code written to access views. However, the Android DataBinding library looks like a winner here because it is easier to setup, it achieves the result with less codes as compared to ButterKnife and offers more functionalities.
+These two libraries, ButterKnife and Android Databinding Library, significantly reduce the amount of code written to access views. However, the Android DataBinding library looks like a winner here because it is easier to setup, it achieves the result with fewer code as compared to ButterKnife and offers more functionalities.
 
 ## Android Libraries—Reactive Programming
 
-Reactive programming is a paradigm where data is emitted from a component (a source) to another component (a subscriber). This helps us to handle asynchronous tasks effectively. Reactive programming libraries are, therefore, libraries that help in passing the data from sources to subscribers. The most popular alternative available for Android developers is RxJava2 and RxAndroid. As such, let's take a look into them.
+Reactive programming is a paradigm where data is emitted from a component (a source) to another component (a subscriber). This helps us to handle asynchronous tasks effectively. Reactive programming libraries are, therefore, libraries that help in passing the data from sources to subscribers. The most popular alternative available for Android developers is RxJava2 and RxAndroid. As such, let's take a look at them.
 
 ### RxJava2 & RxAndroid
 
-[RxJava](https://github.com/ReactiveX/RxJava) is a library that lets us implement reactive programming and, as such, create reactive applications. [RxJava2](https://github.com/ReactiveX/RxJava/wiki/What%27s-different-in-2.0) is an update to earlier version of RxJava. In RxJava2, we have `Observables`, `Observers`, and `Schedulers`.
+[RxJava](https://github.com/ReactiveX/RxJava) is a library that lets us implement reactive programming and, as such, create reactive applications. [RxJava2](https://github.com/ReactiveX/RxJava/wiki/What%27s-different-in-2.0) is an update to the earlier version of RxJava. In RxJava2, we have `Observables`, `Observers`, and `Schedulers`.
 
 `Observables` are the data sources and they exist in various types: `Observer`, `Single`, `Flowable`, `Maybe`, and `Completable`. Each of these types has a unique use case which we can read more about [here](https://mindorks.com/course/demo/learn-rxjava/chapter/id/2).
 
@@ -544,7 +544,7 @@ disposables.add(
 );
 ```
 
-In the code snippet above, what we added to our `disposables` variable consists of the data source which will emit one string, the thread where the process will take place, the thread where our observer will be notified of the result result, and our subscriber/observer. The `DisposableObserver<String>` is our observer, which provides us with three implemented methods. First is `onNext` which is called whenever data is emitted, next is `onError` to show that an error occurred, and finally `onCompleted` to show that the `Observable` has finished emitting data and won't call `onNext` anymore.
+In the code snippet above, what we added to our `disposables` variable consists of the data source which will emit one string, the thread where the process will take place, the thread where our observer will be notified of the result, and our subscriber/observer. The `DisposableObserver<String>` is our observer, which provides us with three implemented methods. First is `onNext` which is called whenever data is emitted, next is `onError` to show that an error occurred, and finally `onCompleted` to show that the `Observable` has finished emitting data and won't call `onNext` anymore.
 
 We then clear resources when our activity is in the background to avoid memory leaks:
 
@@ -560,11 +560,11 @@ There is a basic, but interesting, tutorial by Mindorks to help you get started 
 
 ## Android Libraries—Testing
 
-Testing is simply executing a software with the aim of finding bugs. Testing has evolved overtime and has gone beyond just being one of the final stages of a software development process. In fact, testing could be adopted as an early part of the coding stage where tests are written first, then the logic of the software is then implemented to only pass what the test expects. This is usually referred to as [_Test Driven Development_](https://en.wikipedia.org/wiki/Test-driven_development). It is good practice to write tests for our applications as it helps us to spot bugs quickly and enhance our application. There are a number of test libraries with different strengths available for Android development. Let's take a look into four of them: JUnit, Mockito, Roboelectric, and Espresso.
+Testing is simply executing a software with the aim of finding bugs. Testing has evolved over time and has gone beyond just being one of the final stages of a software development process. In fact, testing could be adopted as an early part of the coding stage where tests are written first, then the logic of the software is then implemented to only pass what the test expects. This is usually referred to as [_Test Driven Development_](https://en.wikipedia.org/wiki/Test-driven_development). It is good practice to write tests for our applications as it helps us to spot bugs quickly and enhance our application. There are a number of test libraries with different strengths available for Android development. Let's take a look at four of them: JUnit, Mockito, Roboelectric, and Espresso.
 
 ### JUnit
 
-[JUnit](http://junit.org/) is a framework used for unit testing. Unit testing is a type of testing where individual units of the source code is tested. The framework contains a set of `assert` methods to check an expected result against the actual result. JUnit makes heavy use of annotations. Just to name a few, we have `@Test` (to identify a test method), `@Before` (to declare a method that should be called before a test is called), and `@After` (to declare a method that should be called after a test).
+[JUnit](http://junit.org/) is a framework used for unit testing. Unit testing is a type of testing where individual units of the source code are tested. The framework contains a set of `assert` methods to check an expected result against the actual result. JUnit makes heavy use of annotations. Just to name a few, we have `@Test` (to identify a test method), `@Before` (to declare a method that should be called before a test is called), and `@After` (to declare a method that should be called after a test).
 
 #### Using JUnit
 
@@ -585,7 +585,7 @@ public class ExampleUnitTest {
 }
 ```
 
-Here, we checked to affirm that the addition of two and two equals four. JUnit test are usually very fast because they run on the JVM and don’t require the device or an emulator. We can learn more about JUnit testing [here](http://www.vogella.com/tutorials/JUnit/article.html).
+Here, we checked to affirm that the addition of two and two equals four. JUnit tests are usually very fast because they run on the JVM and don’t require the device or an emulator. We can learn more about JUnit testing [here](http://www.vogella.com/tutorials/JUnit/article.html).
 
 ### Mockito
 
@@ -697,7 +697,7 @@ public class EspressoSampleTest {
 
 This test class checks to see if "Hello World!" is displayed when `MainActivity` is opened.
 
-From our study of the various test libraries, we deduce that JUnit competes with no one as it works together with other libraries. Espresso gives us a good platform for our user interface tests. Both Mockito and Roboelectric have similar capabilities, but Roboelectric achieves testing with less codes. Roboelectric also offers more functionalities like being able to test views. Roboelectric also has the advantage of being supported by Google engineers.
+From our study of the various test libraries, we deduce that JUnit competes with no one as it works together with other libraries. Espresso gives us a good platform for our user interface tests. Both Mockito and Roboelectric have similar capabilities, but Roboelectric achieves testing with fewer code. Roboelectric also offers more functionalities like being able to test views. Roboelectric also has the advantage of being supported by Google engineers.
 
 ## Android Libraries—Database Helpers
 
@@ -707,7 +707,7 @@ Offline data persistence is very important to enhance user experience. We usuall
 
 [Room](https://developer.android.com/topic/libraries/architecture/room.html) is a persistence library which is part of the Android [Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html). Room provides local data persistence with minimal boilerplate code. It provides an abstraction layer over SQLite, thereby making it easier to work with databases in our app. This library comes with a lot of advantages such as verifying SQL queries at compile time, rejecting database queries on the main thread (except when explicitly stated while initializing the database), providing implementation best practices, etc.
 
-Room is composed of three main components: the Database, the DAO (Data Access Objects), and Entities. Each of them are co-related in order to make the library functional. The `Entity` class represents a database table and has to be annotated with `@Entity`. The variables in the class represent the columns the table will have. The DAO is an interface that contains the methods used for accessing the database. Room uses the interface to generate an implementation class for us.
+Room is composed of three main components: the Database, the DAO (Data Access Objects), and Entities. Each of them is co-related in order to make the library functional. The `Entity` class represents a database table and has to be annotated with `@Entity`. The variables in the class represent the columns the table will have. The DAO is an interface that contains the methods used for accessing the database. Room uses the interface to generate an implementation class for us.
 
 There are four specific annotations for the basic DAO operations: `@Insert`, `@Update`, `@Delete`, and `@Query`. Then, we have the Database class. This is an abstract class annotated with `@Database` and that extends `RoomDatabase`. This class defines the list of entities and their DAOs to be used.
 
@@ -731,7 +731,7 @@ implementation "android.arch.persistence.room:runtime:1.0.0"
 annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
 ```
 
-Next, we create our `Entity` class. As usual, we will go for something pretty simple. We will have two columns: `id` and `name`. The  `id` column will be our primary key and it will be auto generated to make every row added unique.
+Next, we create our `Entity` class. As usual, we will go for something pretty simple. We will have two columns: `id` and `name`. The  `id` column will be our primary key and it will be autogenerated to make every row added unique.
 
 ```java
 @Entity(tableName = Person.TABLE_NAME)
@@ -743,7 +743,7 @@ public class Person {
 }
 ```
 
-It's a best practice to name our tables with lowercase letters all through. As this is not the same convention when naming Java classes, we can use a custom name for our tables. Ordinarily, Room uses the class name as the table name. Thereafter, we create our DAO. The DAO is going to give an interface into the database itself, and will take care of querying and storing our data. Next, we create our DAO to contain the methods to be used for the database manipulation:
+It's a best practice to name our tables with lowercase letters all through. As this is not the same convention when naming Java classes, we can use a custom name for our tables. Ordinarily, Room uses the class name as the table name. Thereafter, we create our DAO. The DAO is going to give an interface into the database itself and will take care of querying and storing our data. Next, we create our DAO to contain the methods to be used for the database manipulation:
 
 ```java
 @Dao
@@ -811,7 +811,7 @@ Executors.newSingleThreadExecutor().execute(new Runnable() {
 
 Here, we created an instance of `Person` and inserted into the database. We only assigned the name because the `id`, as mentioned before, will be automatically generated for us. Notice that we also created a new thread to execute the query in a background. We can equally adopt the above pattern to perform other manipulating operations on the database.
 
-Google offers a [nice tutorial](https://codelabs.developers.google.com/codelabs/android-persistence/#0) to help use get started with this library.
+Google offers a [nice tutorial](https://codelabs.developers.google.com/codelabs/android-persistence/#0) to help us get started with this library.
 
 ## Android Libraries-Custom Fonts
 
@@ -829,7 +829,7 @@ As usual, we add the dependency in our app-module  `build.gradle` file and sync 
 implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
 ```
 
-Then, we create an `assets` folder and insert our custom font there. We can do that by right clicking the app root folder in our project directory in Android Studio, select "New", choose "Folder", and then "Assets Folder". This will generate an assets folder. Thereafter, we initialize the library and set our default font in the `Application` class:
+Then, we create an `assets` folder and insert our custom font there. We can do that by right-clicking the app root folder in our project directory in Android Studio, select "New", choose "Folder", and then "Assets Folder". This will generate an assets folder. Thereafter, we initialize the library and set our default font in the `Application` class:
 
 ```java
 public class App extends Application {
@@ -874,7 +874,7 @@ implementation 'com.android.support:appcompat-v7:26.1.0'
 
 #### Using Custom Fonts with Support Library
 
-First, we create a `fonts` resource folder. We can do this by right clicking the `res` folder and then choose "New → Android resource" directory. After that, we have to choose font as the resource type and select OK. We then add the desired font files in the `font` resource directory (e.g. `redvelvet`).
+First, we create a `fonts` resource folder. We can do this by right-clicking the `res` folder and then choose "New → Android resource" directory. After that, we have to choose font as the resource type and select OK. We then add the desired font files in the `font` resource directory (e.g. `redvelvet`).
 
 We can apply the custom fonts directly in our XML layouts:
 
@@ -905,7 +905,7 @@ More often than not, our Android applications might need to perform operations o
 
 Android has its own API for scheduling background tasks, [JobScheduler](https://developer.android.com/reference/android/app/job/JobScheduler.html), which comes with a drawback: it can only be used when supporting API 21 (Android 5.0) or later.
 
-Two other common options in this category includes: [Android-job library](https://github.com/evernote/android-job) by [Evernote](https://evernote.com) and [Firebase Jobdispatcher](https://github.com/firebase/firebase-jobdispatcher-android) by Firebase.
+Two other common options in this category are [Android-job library](https://github.com/evernote/android-job) by [Evernote](https://evernote.com) and [Firebase Jobdispatcher](https://github.com/firebase/firebase-jobdispatcher-android) by Firebase.
 
 Firebase Jobdispatcher comes at another cost which is the need for Google Play Services. However, it is compatible all the way back to API 9 (Android 2.3). Android-job combines the effort of Android's JobScheduler and Firebase Jobdispatcher to provide a firm job scheduling library. Little wonder, it has been widely adopted.
 
