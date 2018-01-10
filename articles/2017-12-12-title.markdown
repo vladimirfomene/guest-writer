@@ -258,122 +258,128 @@ RetrofitClient.getService().fetchData(jsonObject).enqueue(new Callback<ResponseC
 
 Where `jsonObject` contains the request parameters. This request will be made to the `http://127.0.0.1:5000/data` endpoint, as defined in the previous code snippet. As we can see in this last snippet, Retrofit also provides us callback methods to give us the status of the request.
 
-# Dependency Injection
+## Android Libraries—Dependency Injection
 
-[Dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) is a concept where a class/object is not allowed to configure its dependencies. Instead of this, dependencies are configured by another object. This principle helps us to decouple our classes from their implementation. It is worthy to note that this is a good software engineering practice because it makes our code loosely-coupled therefore making it easier to maintain and test. There are a number of dependency injection libraries but Dagger2 seems to be the lord of them all.
+[Dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) is a concept where an object does not need to configure its dependencies. Instead, dependencies are passed in by another object. This principle helps us to decouple our classes from their implementation. It is worthy noting that this is a good software engineering practice because it makes our code loosely-coupled, which makes it easier to maintain and test. There are a number of dependency injection libraries but Dagger2 seems to be the lord of them.
 
-## Dagger2
+### Dagger2
 
-[Dagger2](https://github.com/google/dagger) is a fully static, compile-time [dependency injection](http://en.wikipedia.org/wiki/Dependency_injection) framework for both Java and Android. It is an upgrade on the earlier [version](https://github.com/square/dagger) created by [Square](http://square.github.io/)(Dagger1) but now maintained by Google. The recent Dagger version includes Android specific helpers for Android, specifically the auto generation of sub components using a new code generator. Dagger2 is very deep and may require just more than the brief sample usage for adequate understanding.
+[Dagger2](https://github.com/google/dagger) is a fully static, compile-time [dependency injection](http://en.wikipedia.org/wiki/Dependency_injection) framework for both Java and Android. It is an upgrade on the earlier [version (Dagger1)](https://github.com/square/dagger) created by [Square](http://square.github.io/) that is now maintained by Google. The recent Dagger version includes Android specific helpers for Android. Specifically, the auto generation of sub components using a new code generator. Dagger2 is very deep and may require just more than the brief sample usage for adequate understanding, but let's take a look into it anyway.
 
-**Sample usage:**
-Add the dependencies to our app-module  `build.gradle` file:
+#### Using Dagger2
 
+As always, first, we need to add the dependencies to our app-module `build.gradle` file:
 
-    implementation 'com.google.dagger:dagger:2.14.1'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
-    // we add this so we can use the android support libraries
-    implementation 'com.google.dagger:dagger-android-support:2.14.1'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.14.1'
+```groovy
+implementation 'com.google.dagger:dagger:2.14.1'
+annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
+// we add this so we can use the android support libraries
+implementation 'com.google.dagger:dagger-android-support:2.14.1'
+annotationProcessor 'com.google.dagger:dagger-android-processor:2.14.1'
+```
 
-We create an activity builder module class to enable Dagger create sub-components for the activity that will need dependencies.
+After that, we can create an activity builder module class to enable Dagger create sub-components for the activity that will need dependencies.
 
+```java
+@Module
+public abstract class ActivityBindingModule {
+    @ContributesAndroidInjector()
+    abstract MainActivity mainActivity();
+}  
+```
 
-    @Module
-    public abstract class ActivityBindingModule {
-        @ContributesAndroidInjector()
-        abstract MainActivity mainActivity();
-    }    
+We can optionally create a module class with specific dependencies to an activity. We then have to add the modules to the constructor of the `@ContributesAndroidInjector` annotation for that activity, for instance:
 
+```java
+@ContributesAndroidInjector(modules = {MainActivityModule.class} )
+abstract MainActivity mainActivity();
+```
 
-> We can optionally create a module class with specific dependencies to an activity. We then have to add the modules to the constructor of the `@ContributesAndroidInjector` annotation for that activity, for instance:
-> `@ContributesAndroidInjector(modules = {MainActivityModule.class} )`
-> `abstract MainActivity mainActivity();`
+We can also create another module class to provide dependencies to be used beyond just one activity class.
 
-We can also optionally create another module class to provide dependencies to be used beyond just one activity class.
+A `module` class is annotated with `@Module` and is responsible for providing objects. Objects are provided by creating methods (usually annotated with `@Provides` or `@Binds`) that have the same return type as what is to be provided. The sample module class below provides a `String` for our app:
 
-A `module` class is annotated with `@Module` and is responsible for providing objects. Objects are provided by creating methods (usually annotated with `@Provides` or `@Binds`  ) that have the same return type as what is to be provided. A sample module class below provides a `String` for our app:
+```java
+  @Module
+  public abstract class AppModule {
+      @Provides
+      static String providesString(){
+          return "I love Auth0";
+      }
+  }
+```
 
+With `@Module` in place, we then create an abstract class or an interface. It will be named `AppComponent` in our case. The `AppComponent` is annotated with `@Component`. The annotation takes in the module classes created earlier including the `AndroidSupportInjection` class which is from the support library. Dagger generates a class which then implements this interface. The class provides the injected instances from the modules passed. The `Component` interface looks like this :
 
-    @Module
-    public abstract class AppModule {
-        @Provides
-        static String providesString(){
-            return "I love Auth0";
-        }
+```java
+@Singleton
+@Component(modules = {AndroidSupportInjectionModule.class, AppModule.class, ActivityBindingModule.class})
+public interface AppComponent extends AndroidInjector<AppController> {
+    @Override
+    void inject(App instance);
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        Builder application(Application application);
+        AppComponent build();
     }
-
-We then create an abstract class or an interface. It will be named `AppComponent` in our case. The `AppComponent` is annotated with `@Component`. The annotation takes in the module classes created earlier including the `AndroidSupportInjection` class which is from the support library. Dagger generates a class which then implements this interface. The class provides the injected instances from the modules passed. The `Component` interface looks like this :
-
-
-    @Singleton
-    @Component(modules = {AndroidSupportInjectionModule.class, AppModule.class, ActivityBindingModule.class})
-    public interface AppComponent extends AndroidInjector<AppController> {
-
-        @Override
-        void inject(App instance);
-
-        @Component.Builder
-        interface Builder {
-            @BindsInstance
-            Builder application(Application application);
-            AppComponent build();
-        }
-
-    }
+}
+```
 
 `AppController` is our application class for the app where objects are initialized once throughout the app life-cycle. Our `AppController` looks this way:
 
+```java
+public class App extends Application implements HasActivityInjector {
+      @Inject
+      DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
+      @Override
+      public void onCreate() {
+        super.onCreate();
+        DaggerAppComponent.builder().application(this)
+            .build().inject(this);
+      }
+      @Override
+      public DispatchingAndroidInjector<Activity> activityInjector() {
+        return activityDispatchingAndroidInjector;
+      }
+}
+```
 
-    public class App extends Application implements HasActivityInjector {
-          @Inject
-          DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
-          @Override
-          public void onCreate() {
-            super.onCreate();
-            DaggerAppComponent.builder().application(this)
-                .build().inject(this);
-          }
-          @Override
-          public DispatchingAndroidInjector<Activity> activityInjector() {
-            return activityDispatchingAndroidInjector;
-          }
-    }
-
-We had to create an instance of `DispatchingAndroidInjector<Activity>` and return it in the implemented method. The reason for this is to perform members-injection on activities. Then we built our Component and injected the Application class into it.
+We had to create an instance of `DispatchingAndroidInjector<Activity>` and return it in the implemented method. The reason for this is to perform members-injection on activities. Then, we built our `Component` and injected the `Application` class into it.
 
 Finally, in the activity where we intend to use dependencies, we implement `HasSupportFragmentInjector` and access our dependencies by just using the `@Inject` annotation:
 
+```java
+public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
-    public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
-        @Inject
-        DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
+    @Inject
+    String string;
 
-        @Inject
-        String string;
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            AndroidInjection.inject(this);
-            super.onCreate(savedInstanceState);
-            Log.d("TAG",string);
-        }
-
-        @Override
-        public AndroidInjector<Fragment> supportFragmentInjector() {
-            return fragmentDispatchingAndroidInjector;
-        }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+        super.onCreate(savedInstanceState);
+        Log.d("TAG",string);
     }
 
-We did something similar to what we did in the `App` class. The only difference is we are implementing `HasSupportFragmentInjector` so the `DispatchingAndroidInjector<T>` has `Fragment` in its type now. So the logic is this, the Application will contain Activities, and activities house Fragments. Thereafter, we called `AndroidInjection.inject(this)` in our `onCreate` method.  
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
+    }
+}
+```
 
-From our brief example, if we run the app, we should see `"``I love Auth0``"` printed on the log. We were able to inject the dependencies instead of initializing it in the class. This is just a bit of what Dagger2 has to offer. You can Inject classes and almost any other thing.
+We did something similar to what we did in the `App` class. The only difference is that we are implementing `HasSupportFragmentInjector` so the `DispatchingAndroidInjector<T>` has `Fragment` in its type now. The logic is this: the `Application` will contain `Activities`, and these will house `Fragments`. Thereafter, we called `AndroidInjection.inject(this)` in our `onCreate` method.
 
-**Other resources**
+From our brief example, if we run the app, we should see `I love Auth0` printed on the log. We were able to inject the dependencies instead of initializing it in the class. This is just a bit of what Dagger2 has to offer. For more information, there are two great articles on Medium that we can reference:
 
-- https://medium.com/@iammert/new-android-injector-with-dagger-2-part-1-8baa60152abe
-- https://medium.com/@idee4ril/dagger-2-11-with-android-a606c132826c
+- [New Android Injector with Dagger 2 — part 1](https://medium.com/@iammert/new-android-injector-with-dagger-2-part-1-8baa60152abe)
+- [Dagger 2.11 with Android](https://medium.com/@idee4ril/dagger-2-11-with-android-a606c132826c)
+
 # View Binding
 
 View binding libraries emerged when there was a need to reduce the boilerplate code when assigning views to variables and having access to them in the activity class. Libraries in this area are limited and we have mainly two; ButterKnife and Android Databinding library.
