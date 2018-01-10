@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "Android Development: 10 Libraries You Should Be Using"
-description: "Let's take a look into what libraries can help us creating Android apps."
-date: "2017-12-12 08:30"
+title: "Android Development: 15 Libraries You Should Be Using"
+description: "Let's take a look into some awesome libraries that can help us create better Android apps."
+date: "2018-01-17 08:30"
 author:
   name: "Idorenyin Obong"
   url: "kingidee"
@@ -12,7 +12,7 @@ related:
 - 2017-11-15-an-example-of-all-possible-elements
 ---
 
-**TL;DR:** We will consider the major libraries used today in Android development.
+**TL;DR:** In this article, we will take a brief look into 15 libraries that can help us on our day-to-day Android development. With them, we will be able to create app that perform better and that provide better user experience.
 
 # Common Libraries Used in Android Development
 Libraries are major game changers in software development irrespective of platform or stack. With libraries, we leverage the efforts of other developers to perform actions/functions faster, more effective and with lesser boilerplate codes. In this article, we will look at various categories in Android development and the common libraries used in them.
@@ -48,7 +48,7 @@ We can then load an image from a remote `URL` with a single line of code:
 The `with` method can take a context, Activity, Fragment or View, the load method takes a remote `URL` or a drawable file e.g `R.drawable.image` and the `imageView` should be of type `ImageView`.
 
 
-> If your `gradle` version is below 3.0, you should use the `compile` keyword  instead of `implementation` to add dependencies. 
+> If your `gradle` version is below 3.0, you should use the `compile` keyword  instead of `implementation` to add dependencies.
 
 
 ## Picasso
@@ -68,8 +68,8 @@ We sync our `gradle` file and load an image resource with also a single line of 
 
     Picasso.with(this).load("https://res.cloudinary.com/demo/video/upload/dog.png").into(imageView);
 
-The implementation of Picasso is very similar to that of Glide's. The only difference is with the starting word. 
- 
+The implementation of Picasso is very similar to that of Glide's. The only difference is with the starting word.
+
 Overtime, there has been series of arguments and controversies as to which library performs better. Below is a table showing the strengths and flaws of them both.
 
 | **Features**          | **Glide**                                                                                                            | **Picasso**                                                             |
@@ -135,31 +135,31 @@ And the `setupPlayer` method:
 
 
     void setupPlayer(){
-        
+
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory =
                 new AdaptiveTrackSelection.Factory(bandwidthMeter);
         TrackSelector trackSelector =
                 new DefaultTrackSelector(videoTrackSelectionFactory);
-    
+
         //initialize the player with default configurations
         player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
-    
+
         //Assign simpleExoPlayerView
-         
+
         simpleExoPlayerView.setPlayer(player);
-    
+
         // Produces DataSource instances through which media data is loaded.
         DataSource.Factory dataSourceFactory =
                 new DefaultDataSourceFactory(this, Util.getUserAgent(this, "CloudinaryExoplayer"));
-    
+
         // Produces Extractor instances for parsing the media data.
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-    
+
         // This is the MediaSource representing the media to be played.
         MediaSource videoSource = new ExtractorMediaSource(videoUri,
                 dataSourceFactory, extractorsFactory, null, null);
-    
+
         // Prepare the player with the source.
         player.prepare(videoSource);
     }
@@ -178,7 +178,7 @@ Now a days, almost every mobile app needs some sort of network call to perform o
 
 [Retrofit](http://square.github.io/retrofit/) is a Type-safe HTTP client for Android and Java developed and maintained by Square, Inc. Retrofit is the most used networking library in Android development. In Retrofit, with just annotations, you can easily add a request body, manipulate the endpoints, manipulate headers, add query parameters, and choose request methods. Retrofit also handles parsing to POJOs very well by use of its converters.
 
-**Sample Usage:** 
+**Sample Usage:**
 Add the dependency to our app `build.gradle` file :
 
 
@@ -207,13 +207,13 @@ From the snippet, we have an endpoint `/data` that requires a `JsonObject` body 
             Retrofit.Builder builder = new Retrofit.Builder()
                     .baseUrl("http://127.0.0.1:5000/")
                     .addConverterFactory(GsonConverterFactory.create());
-    
+
             Retrofit retrofit = builder
                     .client(httpClient.build())
                     .build();
-    
+
             return retrofit.create(ApiService.class);
-        } 
+        }
     }
 
 When building your retrofit object, we can add as many converters as we want to give us variety of options in parsing our data. Thereafter, we make a network request by calling:
@@ -222,12 +222,12 @@ When building your retrofit object, we can add as many converters as we want to 
     RetrofitClient.getService().fetchData(jsonObject).enqueue(new Callback<ResponseClass>() {
         @Override
         public void onResponse(Call<ResponseClass> call, Response<ResponseClass> response) {
-            
+
         }
-    
+
         @Override
         public void onFailure(Call<ResponseClass> call, Throwable t) {
-    
+
         }
     });
 
@@ -242,7 +242,7 @@ Where `jsonObject` contains the request parameters. This request will be made to
 [Dagger2](https://github.com/google/dagger) is a fully static, compile-time [dependency injection](http://en.wikipedia.org/wiki/Dependency_injection) framework for both Java and Android. It is an upgrade on the earlier [version](https://github.com/square/dagger) created by [Square](http://square.github.io/)(Dagger1) but now maintained by Google. The recent Dagger version includes Android specific helpers for Android, specifically the auto generation of sub components using a new code generator. Dagger2 is very deep and may require just more than the brief sample usage for adequate understanding.
 
 **Sample usage:**
-Add the dependencies to our app-module  `build.gradle` file: 
+Add the dependencies to our app-module  `build.gradle` file:
 
 
     implementation 'com.google.dagger:dagger:2.14.1'
@@ -265,7 +265,7 @@ We create an activity builder module class to enable Dagger create sub-component
 > `@ContributesAndroidInjector(modules = {MainActivityModule.class} )`
 > `abstract MainActivity mainActivity();`
 
-We can also optionally create another module class to provide dependencies to be used beyond just one activity class. 
+We can also optionally create another module class to provide dependencies to be used beyond just one activity class.
 
 A `module` class is annotated with `@Module` and is responsible for providing objects. Objects are provided by creating methods (usually annotated with `@Provides` or `@Binds`  ) that have the same return type as what is to be provided. A sample module class below provides a `String` for our app:
 
@@ -284,34 +284,34 @@ We then create an abstract class or an interface. It will be named `AppComponent
     @Singleton
     @Component(modules = {AndroidSupportInjectionModule.class, AppModule.class, ActivityBindingModule.class})
     public interface AppComponent extends AndroidInjector<AppController> {
-    
+
         @Override
         void inject(App instance);
-        
+
         @Component.Builder
         interface Builder {
             @BindsInstance
             Builder application(Application application);
             AppComponent build();
         }
-    
+
     }
 
 `AppController` is our application class for the app where objects are initialized once throughout the app life-cycle. Our `AppController` looks this way:
 
 
-    public class App extends Application implements HasActivityInjector { 
-          @Inject 
-          DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector; 
-          @Override 
-          public void onCreate() { 
-            super.onCreate(); 
+    public class App extends Application implements HasActivityInjector {
+          @Inject
+          DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
+          @Override
+          public void onCreate() {
+            super.onCreate();
             DaggerAppComponent.builder().application(this)
                 .build().inject(this);
           }
-          @Override 
-          public DispatchingAndroidInjector<Activity> activityInjector() { 
-            return activityDispatchingAndroidInjector; 
+          @Override
+          public DispatchingAndroidInjector<Activity> activityInjector() {
+            return activityDispatchingAndroidInjector;
           }
     }
 
@@ -321,20 +321,20 @@ Finally, in the activity where we intend to use dependencies, we implement `HasS
 
 
     public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
-        
+
         @Inject
         DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
-        
+
         @Inject
         String string;
-        
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             AndroidInjection.inject(this);
             super.onCreate(savedInstanceState);
             Log.d("TAG",string);
         }
-    
+
         @Override
         public AndroidInjector<Fragment> supportFragmentInjector() {
             return fragmentDispatchingAndroidInjector;
@@ -369,7 +369,7 @@ Then in our activity, we use the `@BindView` annotation to assign an `id` to its
 
     class MainActivity extends AppCompatActivity {
       @BindView(R.id.firstname) EditText firstName;
-      
+
       @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
@@ -378,7 +378,7 @@ Then in our activity, we use the `@BindView` annotation to assign an `id` to its
       }
     }
 
- 
+
 We then went on to initialize ButterKnife in our `onCreate` method. Alternatively, if we want to use `ButterKnife` in a `Fragment` we initialize it in the `onCreateView` method this way:
 
 
@@ -386,7 +386,7 @@ We then went on to initialize ButterKnife in our `onCreate` method. Alternativel
     ButterKnife.bind(this,view);
 
 With ButterKnife, we also avoid creating `OnClickListeners` for instance, we use an `@OnClick` annotation together with the view to add a click listener to a view:
- 
+
 
       @OnClick(R.id.button) void buttonClicked() {
         // TODO ...
@@ -415,20 +415,20 @@ Thereafter, we set the root tag of our layout file to `layout` :
     <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
-    
+
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            
+
             <TextView
                 android:id="@+id/textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            
+
         </android.support.constraint.ConstraintLayout>
-    
+
     </layout>    
-        
+
 
 An activity binding class is then generated for us - `ActivityMainBinding` based on the naming of the layout, `activity.main.xml` . We will use an instance of this class to access our views. We also have another class `DataBindingUtil` generated to handle other utilities.
 
@@ -436,9 +436,9 @@ Then our activity class:
 
 
     public class MainActivity extends AppCompatActivity {
-    
+
         ActivityMainBinding binding;
-    
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -458,9 +458,9 @@ Reactive programming is a paradigm where data is emitted from a component (sourc
 
 ## RxJava2 & RxAndroid
 
-[RxJava](https://github.com/ReactiveX/RxJava) is a library that lets you implement reactive programming and as such create reactive applications. [RxJava2](https://github.com/ReactiveX/RxJava/wiki/What%27s-different-in-2.0) is an update to earlier version of RxJava. In RxJava2, we have the Observables, Observers, and the Schedulers. 
+[RxJava](https://github.com/ReactiveX/RxJava) is a library that lets you implement reactive programming and as such create reactive applications. [RxJava2](https://github.com/ReactiveX/RxJava/wiki/What%27s-different-in-2.0) is an update to earlier version of RxJava. In RxJava2, we have the Observables, Observers, and the Schedulers.
 
-The Observables are  the data sources and they exist in various types - Observer, Single, Flowable, Maybe, and Completable. Each of them has its unique use case which you can read more about [here](https://mindorks.com/course/demo/learn-rxjava/chapter/id/2). Notably, the Flowable comes with a backpressure support. Backpressure is when an Observable emits values faster than an Observer is able to handle. The Observers are the data receivers/consumers while the Schedulers help to manage threads. 
+The Observables are  the data sources and they exist in various types - Observer, Single, Flowable, Maybe, and Completable. Each of them has its unique use case which you can read more about [here](https://mindorks.com/course/demo/learn-rxjava/chapter/id/2). Notably, the Flowable comes with a backpressure support. Backpressure is when an Observable emits values faster than an Observer is able to handle. The Observers are the data receivers/consumers while the Schedulers help to manage threads.
 
 [RxAndroid](https://github.com/ReactiveX/RxAndroid) on the other hand is an extension of RxJava2. It offers functionalities just peculiar to the Android framework like the provision of a `Scheduler` that schedules on the main thread or any given `Looper`.
 
@@ -469,7 +469,7 @@ We add the dependency to our app-module `build.gradle` file:
 
 
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    // Because RxAndroid releases are few and far between, it is recommended you also 
+    // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     compile 'io.reactivex.rxjava2:rxjava:2.1.7'
 
@@ -485,17 +485,17 @@ We create an instance of a `CompositeDisposable` in our class. The `CompositeDis
             .subscribeWith(new DisposableObserver<String>() {
                 @Override
                 public void onComplete() {
-    
+
                 }
-    
+
                 @Override
                 public void onError(Throwable e) {
-    
+
                 }
-    
+
                 @Override
                 public void onNext(String value) {
-    
+
                 }
             }));
 
@@ -557,11 +557,11 @@ Then we have a sample test class:
     @Test
     public void mockitoTest throws Exception {
         List mockedList = mock(List.class);
-        
+
         //using mock object
         mockedList.add("one");
         mockedList.clear();
-    
+
         //verification
         verify(mockedList).add("one");
         verify(mockedList).clear();
@@ -585,7 +585,7 @@ And a sample test class will look like this:
     @RunWith(RobolectricTestRunner.class)
     @Config(constants = BuildConfig.class)
     public class MyActivityTest {
-    
+
       @Test
       public void checkActivityNotNull() throws Exception {
         Activity activity = Robolectric.setupActivity(MyActivity.class);
@@ -615,9 +615,9 @@ Still in the same `gradle` file, we set the instrumentation runner. Sync your gr
             targetSdkVersion 26
             versionCode 1
             versionName "1.0"
-    
+
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        } 
+        }
 
 Then our test file `EspressoSampleTest` looks like this:
 
@@ -627,7 +627,7 @@ Then our test file `EspressoSampleTest` looks like this:
         @Rule
         public ActivityTestRule<MainActivity> mActivityRule =
                 new ActivityTestRule(MainActivity.class);
-    
+
         @Test
         public void isHelloWorldDisplayed() {
             onView(withText("Hello world!")).check(matches(isDisplayed()));
@@ -640,7 +640,7 @@ From our study of the various test libraries, we deduce that, JUnit competes wit
 
 # Database helpers
 
-Offline data persistence is very key to good user experience. It is almost always required in our applications to store an important information that will be required at next startup of the app or make data available when the user has no internet connection. Where data to be stored is more complex than just key value pairs results search for easier effective solutions. Numerous libraries have been created to make storing complex data easier in Android. In this article, we will look at one just released by Google in May, 2017, Room persistence library. 
+Offline data persistence is very key to good user experience. It is almost always required in our applications to store an important information that will be required at next startup of the app or make data available when the user has no internet connection. Where data to be stored is more complex than just key value pairs results search for easier effective solutions. Numerous libraries have been created to make storing complex data easier in Android. In this article, we will look at one just released by Google in May, 2017, Room persistence library.
 
 ## Room
 
@@ -680,19 +680,19 @@ It is best practice to name your tables with small letters all through and this 
 
     @Dao
     public interface PersonDao {
-        
+
         // Adds a person to the database
         @Insert
         void insert(Person person);
-        
+
         // Removes a person from the database
         @Delete
         void delete(Person person);
-        
+
         // Gets all people in the database
         @Query("SELECT * FROM "+Person.TABLE_NAME)
         List<Person> getAllPeople();
-      
+
     }
 
 The interface is self explanatory with the annotations placed on the various methods. Thereafter, we create the database class. This is an abstract class responsible for maintaining the database and providing instances to our DAOs :
@@ -703,7 +703,7 @@ The interface is self explanatory with the annotations placed on the various met
         public abstract PersonDao getPersonDao();
     }
 
-With this, we can get an instance of our database and start making queries. It is recommended to make just one instance of your database throughout the app life-cycle. We can do this in our `Application` class: 
+With this, we can get an instance of our database and start making queries. It is recommended to make just one instance of your database throughout the app life-cycle. We can do this in our `Application` class:
 
 
     public class App extends Application {
@@ -746,7 +746,7 @@ Almost every Android developer is passionate about the looks and feel of his/her
 [Calligraphy](https://github.com/chrisjenx/Calligraphy) is one of the most popular custom font library available and it is quite easy to get along with. With this library, we can easily declare a single font across our whole application or define fonts individually to a text.
 
 **Sample Usage**
-As usual, we add the dependency in our app-module  `build.gradle` file and sync it: 
+As usual, we add the dependency in our app-module  `build.gradle` file and sync it:
 
 
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
@@ -819,9 +819,9 @@ The support library is less cumbersome and definitely easier and faster to use w
 
 # Job Scheduling
 
-More often times than not, our android applications, might need to perform operations out of the user's interaction. This requires handling tasks asynchronously and intelligently to optimize the app’s performance and the device in general. This  can equally be called handling tasks in the background. 
+More often times than not, our android applications, might need to perform operations out of the user's interaction. This requires handling tasks asynchronously and intelligently to optimize the app’s performance and the device in general. This  can equally be called handling tasks in the background.
 
-Android has its API for scheduling background tasks, [JobScheduler](https://developer.android.com/reference/android/app/job/JobScheduler.html), which comes with a huge drawback which is having to support API 21 (Android 5.0) or later. Two other common options in this aspect includes: [android-job library](https://github.com/evernote/android-job) by [Evernote](https://evernote.com) and [Firebase Jobdispatcher](https://github.com/firebase/firebase-jobdispatcher-android) by Firebase. Firebase Jobdispatcher comes at another cost which is the need for google play services however it is compatible all the way back to API 9 (Android 2.3). Android-job combines the effort of Android’s JobScheduler and Firebase Jobdispatcher to provide a firm job scheduling library, little wonder, it has been widely adopted. 
+Android has its API for scheduling background tasks, [JobScheduler](https://developer.android.com/reference/android/app/job/JobScheduler.html), which comes with a huge drawback which is having to support API 21 (Android 5.0) or later. Two other common options in this aspect includes: [android-job library](https://github.com/evernote/android-job) by [Evernote](https://evernote.com) and [Firebase Jobdispatcher](https://github.com/firebase/firebase-jobdispatcher-android) by Firebase. Firebase Jobdispatcher comes at another cost which is the need for google play services however it is compatible all the way back to API 9 (Android 2.3). Android-job combines the effort of Android’s JobScheduler and Firebase Jobdispatcher to provide a firm job scheduling library, little wonder, it has been widely adopted.
 
 ## Android-job
 
@@ -871,19 +871,18 @@ And finally, our `Job` class named `FirstJob` looks like this :
             // run your job here
             return Result.SUCCESS;
         }
-    
+
         public static void scheduleJob(long timeJobShouldStart) {
             new JobRequest.Builder(ReviewStayJob.TAG)
                     .setExact(timeJobShouldStart)
                     .build()
                     .schedule();
         }
-    
+
     }
 
 We tell the Job what to do in the `onRunJob` method and then schedule a job by just calling :  `FirstJob.scheduleJob(timeinMills)` where `timeInMillis` is of datatype `long`. The GitHub repo gives us more complex scheduling options like telling your job just to run when the device is charging, among others.
 
 # Conclusion
 
-We have seen how libraries significantly reduce the amount of boilerplate code written to perform various functions in Android development. We were also able to get light implementation of the libraries in most cases. You can equally explore available resources to get yourself acquainted with advanced implementations of the various libraries. 
-
+We have seen how libraries significantly reduce the amount of boilerplate code written to perform various functions in Android development. We were also able to get light implementation of the libraries in most cases. You can equally explore available resources to get yourself acquainted with advanced implementations of the various libraries.
