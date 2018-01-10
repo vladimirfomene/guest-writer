@@ -899,71 +899,79 @@ Additionally, we can create a new font family. A font family is a set of font fi
 
 When we apply a font to our `XML` layout, the system picks the correct font based on the text style we used. Apart from applying the fonts in the `XML` layouts, we can also apply them programmatically and in multiple forms as we can see in the official [docs](https://developer.android.com/guide/topics/ui/look-and-feel/fonts-in-xml.html). Another great resource about using custom fonts with Support Library can be found [here](https://segunfamisa.com/posts/custom-fonts-with-android-support-library).
 
-# Job Scheduling
+## Job Scheduling
 
-More often times than not, our android applications, might need to perform operations out of the user's interaction. This requires handling tasks asynchronously and intelligently to optimize the app’s performance and the device in general. This  can equally be called handling tasks in the background.
+More often than not, our Android applications might need to perform operations out of the user's interaction. This requires handling tasks asynchronously and intelligently to optimize the app’s performance and the device in general. This can equally be called handling tasks in the background.
 
-Android has its API for scheduling background tasks, [JobScheduler](https://developer.android.com/reference/android/app/job/JobScheduler.html), which comes with a huge drawback which is having to support API 21 (Android 5.0) or later. Two other common options in this aspect includes: [android-job library](https://github.com/evernote/android-job) by [Evernote](https://evernote.com) and [Firebase Jobdispatcher](https://github.com/firebase/firebase-jobdispatcher-android) by Firebase. Firebase Jobdispatcher comes at another cost which is the need for google play services however it is compatible all the way back to API 9 (Android 2.3). Android-job combines the effort of Android’s JobScheduler and Firebase Jobdispatcher to provide a firm job scheduling library, little wonder, it has been widely adopted.
+Android has its own API for scheduling background tasks, [JobScheduler](https://developer.android.com/reference/android/app/job/JobScheduler.html), which comes with a drawback: it can only be used when supporting API 21 (Android 5.0) or later.
 
-## Android-job
+Two other common options in this category includes: [Android-job library](https://github.com/evernote/android-job) by [Evernote](https://evernote.com) and [Firebase Jobdispatcher](https://github.com/firebase/firebase-jobdispatcher-android) by Firebase.
 
-[Android-job](https://github.com/evernote/android-job) is an Android library used to handle jobs in the background. Depending on the Android version either the `JobScheduler`, `GcmNetworkManager` or `AlarmManager` is getting used. This is why this library wins the heart of all. Instead of using separate APIs within one codebase and checking for API versions to know which scheduling API to use, android-job reduces our code count together with the stress and does this for us. This library requires API 14(Android 4.0) or later.
+Firebase Jobdispatcher comes at another cost which is the need for Google Play Services. However, it is compatible all the way back to API 9 (Android 2.3). Android-job combines the effort of Android's JobScheduler and Firebase Jobdispatcher to provide a firm job scheduling library. Little wonder, it has been widely adopted.
 
-**Sample usage:**
-We add the dependencies in our app-module `build.gradle` file and sync it:
+### Android-job
 
+[Android-job](https://github.com/evernote/android-job) is an Android library used to handle jobs in the background. Depending on the Android version either the `JobScheduler`, `GcmNetworkManager` or `AlarmManager` will be used. This is why this library wins the heart of all. Instead of using separate APIs within one codebase and checking for API versions to know which scheduling API to use, Android-job reduces our code size together with the stress and does this for us. This library requires API 14 (Android 4.0) or later.
 
-    compile 'com.evernote:android-job:1.2.1'
+### Using Android-job
 
-We then initialize our `JobManager` in the `Application` class:
+To use Android-job, we add the dependency in our app-module `build.gradle` file and sync it:
 
+```groovy
+compile 'com.evernote:android-job:1.2.1'
+```
 
-    public class App extends Application {
-        @Override
-        public void onCreate() {
-            super.onCreate();
-            JobManager.create(this).addJobCreator(new SampleJobCreator());
+Then, we initialize our `JobManager` in the `Application` class:
+
+```java
+public class App extends Application {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        JobManager.create(this).addJobCreator(new SampleJobCreator());
+    }
+}
+```
+
+The `Application` class is used to initialize objects just once throughout the app lifecycle. The `SampleJobCreator` is a class which returns instances of a `Job` based on the job’s unique tag. The `SampleJobCreator` can look like this:
+
+```java
+public class SampleJobCreator implements JobCreator {
+    @Override
+    @Nullable
+    public Job create(@NonNull String tag) {
+        switch (tag) {
+            case FirstJob.TAG:
+                return new FirstJob();
+            default:
+                return null;
         }
     }
+}
+```
 
-The `Application` class is used to initialize objects just once throughout the app life-cycle. The `SampleJobCreator` is a class which returns instances of a `Job` based on the job’s unique tag. The `SampleJobCreator` looks like this:
+Finally, our `Job` class named `FirstJob` looks like this:
 
-
-    public class SampleJobCreator implements JobCreator {
-        @Override
-        @Nullable
-        public Job create(@NonNull String tag) {
-            switch (tag) {
-                case FirstJob.TAG:
-                    return new FirstJob();
-                default:
-                    return null;
-            }
-        }
+```java
+public class FirstJob extends Job {
+    public static final String TAG = "first_job_tag";
+    @Override
+    @NonNull
+    protected Result onRunJob(@NonNull Params params) {
+        // run your job here
+        return Result.SUCCESS;
     }
 
-And finally, our `Job` class named `FirstJob` looks like this :
-
-
-    public class FirstJob extends Job {
-        public static final String TAG = "first_job_tag";
-        @Override
-        @NonNull
-        protected Result onRunJob(@NonNull Params params) {
-            // run your job here
-            return Result.SUCCESS;
-        }
-
-        public static void scheduleJob(long timeJobShouldStart) {
-            new JobRequest.Builder(ReviewStayJob.TAG)
-                    .setExact(timeJobShouldStart)
-                    .build()
-                    .schedule();
-        }
-
+    public static void scheduleJob(long timeJobShouldStart) {
+        new JobRequest.Builder(ReviewStayJob.TAG)
+                .setExact(timeJobShouldStart)
+                .build()
+                .schedule();
     }
+}
+```
 
-We tell the Job what to do in the `onRunJob` method and then schedule a job by just calling :  `FirstJob.scheduleJob(timeinMills)` where `timeInMillis` is of datatype `long`. The GitHub repo gives us more complex scheduling options like telling your job just to run when the device is charging, among others.
+In the code snippet above, we tell the `Job` what to do in the `onRunJob` method. Then, we schedule a job by just calling  `FirstJob.scheduleJob(timeinMills)` (where `timeInMillis` is of datatype `long`). The [GitHub repo](https://github.com/evernote/android-job) gives us more complex scheduling options like telling our job just to run when the device is charging, among others.
 
 # Conclusion
 
