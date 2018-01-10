@@ -18,9 +18,9 @@ related:
 
 Libraries are major game changers in software development irrespective of platform or stack. With libraries, we leverage the efforts of other developers to perform actions/functions faster, more effective, and with lesser boilerplate codes. In this article, we will look at various categories in Android development and the common libraries used in them.
 
-# Image Loading
+## Image Loading
 
-Image loading libraries come in very handy because of the high consumption of memory when loading an image more-so when a prior information of the resource is not known. Images are the greatest source of Out of Memory(OOM) errors in Android development. These libraries therefore reduce the hassle of loading and caching images together with minimizing memory usage to provide a seamless user experience. We’ll take a look at two of the commonly used image loading libraries;
+Image loading libraries come in very handy to avoid high memory consumption cause by loading multiple images at the same time. Images are the greatest source of Out of Memory errors in Android development. These libraries, therefore, reduce the hassle of loading and caching images together with minimizing memory usage to provide a seamless user experience. Let's take a look at two of the commonly used image loading libraries: Glide and Picasso.
 
 ## Glide
 
