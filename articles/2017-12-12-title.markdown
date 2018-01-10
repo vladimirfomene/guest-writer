@@ -699,104 +699,119 @@ This test class checks to see if "Hello World!" is displayed when `MainActivity`
 
 From our study of the various test libraries, we deduce that JUnit competes with no one as it works together with other libraries. Espresso gives us a good platform for our user interface tests. Both Mockito and Roboelectric have similar capabilities, but Roboelectric achieves testing with less codes. Roboelectric also offers more functionalities like being able to test views. Roboelectric also has the advantage of being supported by Google engineers.
 
-# Database helpers
+## Android Libraries—Database Helpers
 
-Offline data persistence is very key to good user experience. It is almost always required in our applications to store an important information that will be required at next startup of the app or make data available when the user has no internet connection. Where data to be stored is more complex than just key value pairs results search for easier effective solutions. Numerous libraries have been created to make storing complex data easier in Android. In this article, we will look at one just released by Google in May, 2017, Room persistence library.
+Offline data persistence is very important to enhance user experience. We usually need our applications to store important information that will be required on a next startup of the app or to make data available when no internet connection is available. As storing data is more complex than just combining key and value pairs, numerous libraries have been created to make storing this task easier in Android. In this section, we will look at one great persistence library: Room.
 
-## Room
+### Room
 
-[Room](https://developer.android.com/topic/libraries/architecture/room.html) is a persistence library which is part of the Android [Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html) that provides local data persistence with minimal boilerplate code. It provides an abstraction layer over SQLite thereby making it easier to work with databases in our app. This library comes with a lot of advantages such as verifying SQL queries at compile time, rejecting database queries on the main thread except explicitly stated when initializing the database, providing implementation best practices among others.
+[Room](https://developer.android.com/topic/libraries/architecture/room.html) is a persistence library which is part of the Android [Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html). Room provides local data persistence with minimal boilerplate code. It provides an abstraction layer over SQLite, thereby making it easier to work with databases in our app. This library comes with a lot of advantages such as verifying SQL queries at compile time, rejecting database queries on the main thread (except when explicitly stated while initializing the database), providing implementation best practices, etc.
 
-Room is composed of three main components: the Database, the DAO (Data Access Objects), and the Entity. Each of them are co-related in order t make the library functional. The Entity class represents a database table. The variables in the class represents the colums the table will have. The Entity class is annotated with `@Entity` . The DAO is an interface that contains the methods used for accessing the database. Room uses the interface to generate an implementation class for us. There are four specific annotations for the basic DAO operations: `@Insert`, `@Update`, `@Delete`, and `@Query`. Then, we have the Database class. This is an abstract class annotated with `@Database`, which extends `RoomDatabase`.  The class defines the list of Entities and its DAOs to be used.
+Room is composed of three main components: the Database, the DAO (Data Access Objects), and Entities. Each of them are co-related in order to make the library functional. The `Entity` class represents a database table and has to be annotated with `@Entity`. The variables in the class represent the columns the table will have. The DAO is an interface that contains the methods used for accessing the database. Room uses the interface to generate an implementation class for us.
 
-**Sample Usage**
-We first add the Google Maven repository in our project `build.gradle` file. Recent android projects are pre-configured with this though:
+There are four specific annotations for the basic DAO operations: `@Insert`, `@Update`, `@Delete`, and `@Query`. Then, we have the Database class. This is an abstract class annotated with `@Database` and that extends `RoomDatabase`. This class defines the list of entities and their DAOs to be used.
 
+#### Using Room
 
-    allprojects {
-        repositories {
-            ...
-            google()
-        }
+To use Room, we first need to add the Google Maven repository in our project `build.gradle` file. Note that recent Android projects are pre-configured with this though:
+
+```groovy
+allprojects {
+    repositories {
+        // ... other repositories
+        google()
+    }
+}
+```
+
+Then, we add the Room dependencies in our app-module `build.gradle` file:
+
+```groovy
+implementation "android.arch.persistence.room:runtime:1.0.0"
+annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+```
+
+Next, we create our `Entity` class. As usual, we will go for something pretty simple. We will have two columns: `id` and `name`. The  `id` column will be our primary key and it will be auto generated to make every row added unique.
+
+```java
+@Entity(tableName = Person.TABLE_NAME)
+public class Person {
+    public static final String TABLE_NAME = "person";
+    String name;
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+}
+```
+
+It's a best practice to name our tables with lowercase letters all through. As this is not the same convention when naming Java classes, we can use a custom name for our tables. Ordinarily, Room uses the class name as the table name. Thereafter, we create our DAO. The DAO is going to give an interface into the database itself, and will take care of querying and storing our data. Next, we create our DAO to contain the methods to be used for the database manipulation:
+
+```java
+@Dao
+public interface PersonDao {
+    // Adds a person to the database
+    @Insert
+    void insert(Person person);
+
+    // Removes a person from the database
+    @Delete
+    void delete(Person person);
+
+    // Gets all people in the database
+    @Query("SELECT * FROM "+Person.TABLE_NAME)
+    List<Person> getAllPeople();
+}
+```
+
+The interface is self explanatory with the annotations placed on its various methods. Thereafter, we can create the database class. This is an abstract class responsible for maintaining the database and providing instances to our DAOs :
+
+```java
+@Database(entities = {Person.class}, version = 1)
+public abstract class AppDatabase extends RoomDatabase {
+    public abstract PersonDao getPersonDao();
+}
+```
+
+With these classes in place, we can get an instance of our database and start making queries. It's recommended to make just one instance of our database throughout the app life-cycle. We can do this in our `Application` class:
+
+```java
+public class App extends Application {
+    private static AppDatabase appDatabase;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        // initialize the db once during the app lifecycle
+        appDatabase =  Room.databaseBuilder(
+            getApplicationContext(),
+            AppDatabase.class,
+            "person.db"
+        ).build();
     }
 
-Then we add the Room dependencies in our app-module `build.gradle` file:
-
-    implementation "android.arch.persistence.room:runtime:1.0.0"
-    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
-
-Next up, we create our Entity class. As usual, we will go for something pretty simple. We will have two columns; `id` and `name` where `id`  will be our primary key and it will be auto generated to make every row added unique.
-
-
-    @Entity(tableName = Person.TABLE_NAME)
-    public class Person {
-        public static final String TABLE_NAME = "person";
-        String name;
-        @PrimaryKey(autoGenerate = true)
-        public int id;
+    public static AppDatabase provideDb(){
+        return appDatabase;
     }
+}
+```
 
-It is best practice to name your tables with small letters all through and this is not the same convention when naming Java classes so we uses a custom name for our table. Ordinarily, Room uses the class name as the table name. Thereafter, we create our DAO. The DAO is going to give an interface into the database itself, and will take care of querying and storing our data. Next, we create our DAO to contain the methods to be used for the database manipulation:
+Then we can insert data into our database by accessing the database instance. This is done by calling the `insert` method of our DAO class:
 
-
-    @Dao
-    public interface PersonDao {
-
-        // Adds a person to the database
-        @Insert
-        void insert(Person person);
-
-        // Removes a person from the database
-        @Delete
-        void delete(Person person);
-
-        // Gets all people in the database
-        @Query("SELECT * FROM "+Person.TABLE_NAME)
-        List<Person> getAllPeople();
-
+```java
+Executors.newSingleThreadExecutor().execute(new Runnable() {
+    @Override
+    public void run() {
+        // insert into the database
+        Person person = new Person();
+        person.name= "Idorenyin Obong"
+        App.provideDb().getPersonDao().insert(person);
     }
+});
+```
 
-The interface is self explanatory with the annotations placed on the various methods. Thereafter, we create the database class. This is an abstract class responsible for maintaining the database and providing instances to our DAOs :
+Here, we created an instance of `Person` and inserted into the database. We only assigned the name because the `id`, as mentioned before, will be automatically generated for us. Notice that we also created a new thread to execute the query in a background. We can equally adopt the above pattern to perform other manipulating operations on the database.
 
-
-    @Database(entities = {Person.class}, version = 1)
-    public abstract class AppDatabase extends RoomDatabase {
-        public abstract PersonDao getPersonDao();
-    }
-
-With this, we can get an instance of our database and start making queries. It is recommended to make just one instance of your database throughout the app life-cycle. We can do this in our `Application` class:
-
-
-    public class App extends Application {
-        private static AppDatabase appDatabase;
-        @Override
-        public void onCreate() {
-            super.onCreate();
-            // initialize the db once during the app lifecycle
-           appDatabase =  Room.databaseBuilder(
-                    getApplicationContext(),
-                    AppDatabase.class,
-                    "person.db")
-                    .build();
-        }
-        public static AppDatabase provideDb(){
-            return appDatabase;
-        }
-
-Then we can insert data into our database by accessing the database instance, then calling our `DAO`  and finally calling the insert method:
-
-
-    Executors.newSingleThreadExecutor().execute(new Runnable() {
-        @Override
-        public void run() {
-            // insert into the database
-            Person person = new Person();
-            person.name= "Idorenyin Obong"
-            App.provideDb().getPersonDao().insert(person);
-        }
-    });
-
-We created an instance of `Person`  and inserted into the database. We only assigned the name because the `id` will be automatically generated for us. Notice that we also created a new thread to execute the query in a background. We can equally adopt the above pattern to perform other manipulating operations on the database. Google offers a [code-lab](https://codelabs.developers.google.com/codelabs/android-persistence/#0) to help you get started with this library.
+Google offers a [nice tutorial](https://codelabs.developers.google.com/codelabs/android-persistence/#0) to help use get started with this library.
 
 # Custom Fonts
 
