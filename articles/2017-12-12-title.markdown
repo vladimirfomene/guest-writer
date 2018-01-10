@@ -14,8 +14,9 @@ related:
 
 **TL;DR:** In this article, we will take a brief look into 15 libraries that can help us on our day-to-day Android development. With them, we will be able to create app that perform better and that provide better user experience.
 
-# Common Libraries Used in Android Development
-Libraries are major game changers in software development irrespective of platform or stack. With libraries, we leverage the efforts of other developers to perform actions/functions faster, more effective and with lesser boilerplate codes. In this article, we will look at various categories in Android development and the common libraries used in them.
+## Popular Android Libraries
+
+Libraries are major game changers in software development irrespective of platform or stack. With libraries, we leverage the efforts of other developers to perform actions/functions faster, more effective, and with lesser boilerplate codes. In this article, we will look at various categories in Android development and the common libraries used in them.
 
 # Image Loading
 
