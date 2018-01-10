@@ -558,131 +558,146 @@ We then clear resources when our activity is in the background to avoid memory l
 
 There is a basic, but interesting, tutorial by Mindorks to help you get started with RxJava2 [here](https://mindorks.com/course/learn-rxjava).
 
-# Testing
+## Android Libraries—Testing
 
-Testing is simply executing a software with the aim of finding bugs. Testing has evolved overtime and has gone beyond just being one of the final stages of a software development process. In-fact, it could be adopted as an early part of the coding stage where tests are written first, then the logic of the software is then implemented to only pass the test. This is usually referred to as “Test Driven Development”. It is good practice to write tests for your application as it helps you to spot bugs quickly and enhance your application. There are a number of test libraries with different strengths available for Android development.
+Testing is simply executing a software with the aim of finding bugs. Testing has evolved overtime and has gone beyond just being one of the final stages of a software development process. In fact, testing could be adopted as an early part of the coding stage where tests are written first, then the logic of the software is then implemented to only pass what the test expects. This is usually referred to as [_Test Driven Development_](https://en.wikipedia.org/wiki/Test-driven_development). It is good practice to write tests for our applications as it helps us to spot bugs quickly and enhance our application. There are a number of test libraries with different strengths available for Android development. Let's take a look into four of them: JUnit, Mockito, Roboelectric, and Espresso.
 
-## JUnit
+### JUnit
 
-[JUnit](http://junit.org/) is a framework used for unit tests. Unit testing is a type of testing where individual units of the source code is tested. The framework contains a set of `assert` methods to check an expected result against the actual result. JUnit makes use of annotations. Just to name a few, we have  `@Test` - to identify a test method, `@Before` - to show a method that should be called before a test is called, `@After` - to show a method that should be called after a test.
+[JUnit](http://junit.org/) is a framework used for unit testing. Unit testing is a type of testing where individual units of the source code is tested. The framework contains a set of `assert` methods to check an expected result against the actual result. JUnit makes heavy use of annotations. Just to name a few, we have `@Test` (to identify a test method), `@Before` (to declare a method that should be called before a test is called), and `@After` (to declare a method that should be called after a test).
 
-**Sample usage**
-Add the dependency in our app-module `build.gradle` file:
+#### Using JUnit
 
+First, we add the dependency in our app-module `build.gradle` file:
 
-    testImplementation 'junit:junit:4.12'
+```groovy
+testImplementation 'junit:junit:4.12'
+```
 
 Then our sample test class looks like this:
 
-    public class ExampleUnitTest {
-        @Test
-        public void addition_isCorrect() throws Exception {
-            assertEquals(4, 2 + 2);
-        }
+```java
+public class ExampleUnitTest {
+    @Test
+    public void additionIsCorrect() throws Exception {
+        assertEquals(4, 2 + 2);
     }
+}
+```
 
-Here, we checked to affirm that the addition of two and two equals four. JUnit test are usually very fast because they run on the JVM and don’t require the device/emulator. You can learn more about JUnit testing [here](http://www.vogella.com/tutorials/JUnit/article.html).
+Here, we checked to affirm that the addition of two and two equals four. JUnit test are usually very fast because they run on the JVM and don’t require the device or an emulator. We can learn more about JUnit testing [here](http://www.vogella.com/tutorials/JUnit/article.html).
 
-## Mockito
+### Mockito
 
-Most times, the classes we intend to write tests for depend on other classes and configuring these classes just for this purpose can be hectic. This is where Mockito comes in. It is a mocking framework that helps you create and configure mock(fake) objects. It is usually used with together with JUnit.
+Most times, the classes we intend to write tests for depend on other classes. Configuring these classes just for this purpose can be hectic. This is where Mockito comes in. It is a mocking framework that helps us create and configure mock (fake) objects. It is usually used with together with JUnit.
 
-**Sample Usage**
-Make sure the JCenter repository,  `jcenter()` is in your project `build.gradle` file. Next, we add the dependencies to the app-module `build.gradle` file and sync:
+### Using Mockito
 
+First, we need to make sure the JCenter repository, `jcenter()` is in our project `build.gradle` file. Next, we add the dependencies to the app-module `build.gradle` file and sync:
 
-    testCompile 'junit:junit:4.12'
-    // required if you want to use Mockito for unit tests
-    testCompile 'org.mockito:mockito-core:2.13.0'
-    // required if you want to use Mockito for Android tests
-    androidTestCompile 'org.mockito:mockito-android:2.13.0'
+```groovy
+testCompile 'junit:junit:4.12'
+// required if we want to use Mockito for unit tests
+testCompile 'org.mockito:mockito-core:2.13.0'
+// required if we want to use Mockito for Android tests
+androidTestCompile 'org.mockito:mockito-android:2.13.0'
+```
 
-Then we have a sample test class:
+Then we use Mockito like that:
 
+```java
+@Test
+public void mockitoTest throws Exception {
+    List mockedList = mock(List.class);
+
+    //using mock object
+    mockedList.add("one");
+    mockedList.clear();
+
+    //verification
+    verify(mockedList).add("one");
+    verify(mockedList).clear();
+}
+```
+
+Here, we mocked a list, added data to it, and cleared it. We then verified that these actions were performed. We can learn more testing with Mockito in the official [documentation](http://static.javadoc.io/org.mockito/mockito-core/2.13.0/org/mockito/Mockito.html#0.1).
+
+### Roboelectric
+
+[Roboelectric](http://robolectric.org/) is another unit testing library. The difference to JUnit is that this Roboelectrict was created aiming to help Android developers. Roboelectrict handles inflation of views, resource loading, and lots of other stuff. This allows tests to do most things we could do on a real device that have Android framework dependencies without launching a device as in Espresso. In a way, Roboelectric simulates the Android SDK for our tests. With Roboelectric, we do not need additional mocking frameworks such as Mockito.
+
+#### Using Roboelectric
+
+To use Robolectric, we add the dependency in our app `build.gradle` file:
+
+```groovy
+testCompile "org.robolectric:robolectric:3.6.1"
+```
+
+Then we create a sample test class:
+
+```java
+@RunWith(RobolectricTestRunner.class)
+@Config(constants = BuildConfig.class)
+public class MyActivityTest {
+
+  @Test
+  public void checkActivityNotNull() throws Exception {
+    Activity activity = Robolectric.setupActivity(MyActivity.class);
+    assertNotNull( activity );
+  }
+}
+```
+
+This is a very basic test that sets up our activity and just checks that it is not null. We can learn more about testing with Roboelectric right [here](http://www.vogella.com/tutorials/Robolectric/article.html)!
+
+### Espresso
+
+[Espresso](https://developer.android.com/training/testing/espresso/index.html) is a test framework which is part of the [Android Testing Support Library](https://developer.android.com/tools/testing-support-library/index.html). This test framework allows us to create user interface tests for our Android apps. This means that, with Espresso, we can write tests that can check if the text of a `TextView` matches another text. Espresso tests run on both actual devices and emulators and behave as if an actual user was using the app.
+
+#### Using Espresso
+
+First, we add these dependencies to our app-module `build.gradle` file:
+
+```groovy
+androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
+androidTestCompile 'com.android.support.test:runner:1.0.1'
+```
+
+Then, still in the same `gradle` file, we set the instrumentation runner. Let's not forget to sync our Gradle files after that:
+
+```groovy
+defaultConfig {
+    applicationId "com.my.awesome.app"
+    minSdkVersion 15
+    targetSdkVersion 26
+    versionCode 1
+    versionName "1.0"
+
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+}
+```
+
+Then, we can create a test file (e.g. `EspressoSampleTest`) that will look like this:
+
+```java
+@RunWith(AndroidJUnit4.class)
+public class EspressoSampleTest {
+    @Rule
+    public ActivityTestRule<MainActivity> mActivityRule =
+            new ActivityTestRule(MainActivity.class);
 
     @Test
-    public void mockitoTest throws Exception {
-        List mockedList = mock(List.class);
-
-        //using mock object
-        mockedList.add("one");
-        mockedList.clear();
-
-        //verification
-        verify(mockedList).add("one");
-        verify(mockedList).clear();
+    public void isHelloWorldDisplayed() {
+        onView(withText("Hello world!"))
+          .check(matches(isDisplayed()));
     }
+}
+```
 
-Here, we mocked a list, added data to it and cleared it. We then verified that these actions were performed. You can learn more testing with Mockito in the official [docs](http://static.javadoc.io/org.mockito/mockito-core/2.13.0/org/mockito/Mockito.html#0.1).
+This test class checks to see if "Hello World!" is displayed when `MainActivity` is opened.
 
-## Roboelectric
-
-[Roboelectric](http://robolectric.org/) is a local unit test framework. It handles inflation of views, resource loading, and lots of other stuff. This allows tests to do most things you could do on a real device that have Android framework dependencies without launching a device as in Espresso. In a way, Roboelectric simulates the Android SDK for our tests. With Roboelectric, we do not need additional mocking frameworks such as Mockito.
-
-**Sample Usage**
-
-We add the dependency in our app `build.gradle` file:
-
-    testCompile "org.robolectric:robolectric:3.6.1"
-
-And a sample test class will look like this:
-
-
-    @RunWith(RobolectricTestRunner.class)
-    @Config(constants = BuildConfig.class)
-    public class MyActivityTest {
-
-      @Test
-      public void checkActivityNotNull() throws Exception {
-        Activity activity = Robolectric.setupActivity(MyActivity.class);
-        assertNotNull( activity );
-      }
-    }
-
-This is a very basic test setting up our activity and just checking that it is not null. You can learn more about testing with Roboelectric right [here](http://www.vogella.com/tutorials/Robolectric/article.html)!
-
-## Espresso
-
-[Espresso](https://developer.android.com/training/testing/espresso/index.html) is a test framework which is part of the [Android Testing Support Library](https://developer.android.com/tools/testing-support-library/index.html) that allows us to create user interface(UI) tests for our Android app. This means that with Espresso, we can write tests that can check if the text of a `TextView`  matches another text. Espresso tests run on both actual devices and emulators and behave as if an actual user is using the app. There are also called instrumentation based tests.
-
-**Sample usage**
-We add these dependencies to our app-module `build.gradle` file:
-
-
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
-    androidTestCompile 'com.android.support.test:runner:1.0.1'
-
-Still in the same `gradle` file, we set the instrumentation runner. Sync your gradle files after that.
-
-
-    defaultConfig {
-            applicationId "com.my.awesome.app"
-            minSdkVersion 15
-            targetSdkVersion 26
-            versionCode 1
-            versionName "1.0"
-
-            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        }
-
-Then our test file `EspressoSampleTest` looks like this:
-
-
-    @RunWith(AndroidJUnit4.class)
-    public class EspressoSampleTest {
-        @Rule
-        public ActivityTestRule<MainActivity> mActivityRule =
-                new ActivityTestRule(MainActivity.class);
-
-        @Test
-        public void isHelloWorldDisplayed() {
-            onView(withText("Hello world!")).check(matches(isDisplayed()));
-        }
-    }
-
-This test class checks to see if “Hello World!” is displayed when `MainActivity` is opened.
-
-From our study of the various test libraries, we deduce that, JUnit competes with no one as it works together with other libraries. Espresso gives us a good platform for our UI tests. Both Mockito and Roboelectric have similar capabilities but Roboelectric achieves testing with lesser codes. Roboelectric also offers more functionalities for instance, being able to test views. Roboelectric also enjoy the open source support of Google engineers.
+From our study of the various test libraries, we deduce that JUnit competes with no one as it works together with other libraries. Espresso gives us a good platform for our user interface tests. Both Mockito and Roboelectric have similar capabilities, but Roboelectric achieves testing with less codes. Roboelectric also offers more functionalities like being able to test views. Roboelectric also has the advantage of being supported by Google engineers.
 
 # Database helpers
 
