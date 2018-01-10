@@ -22,35 +22,40 @@ Libraries are major game changers in software development irrespective of platfo
 
 Image loading libraries come in very handy to avoid high memory consumption cause by loading multiple images at the same time. Images are the greatest source of Out of Memory errors in Android development. These libraries, therefore, reduce the hassle of loading and caching images together with minimizing memory usage to provide a seamless user experience. Let's take a look at two of the commonly used image loading libraries: Glide and Picasso.
 
-## Glide
+### Glide
 
-[Glide](https://github.com/bumptech/glide) is an image loading library for Android focused on smooth scrolling. Glide ensures image loading is both as fast and as smooth as possible by applying smart automatic down-sampling and caching to minimize storage overhead and decode times. It also re-uses resources like byte arrays and releases application resources where necessary. Glide's latest version requires a minimum `SDK` of API 14(Android 4.0) and requires a compile `SDK` of API 26(Android 8.0) or later.
+[Glide](https://github.com/bumptech/glide) is an image loading library focused on smooth scrolling. Glide ensures image loading is both as fast and as smooth as possible by applying smart automatic down-sampling and caching to minimize storage overhead and decode times. It also re-uses resources like byte arrays and automatically releases application resources where necessary. At the time of writing, Glide's latest version requires a minimum SDK of API 14 (Android 4.0) and requires a compile SDK of API 26 (Android 8.0) or later.
 
-**Sample usage**
-We first make sure we have the Maven and Google repository in our project `build.gradle` file:
+#### Using Glide 
 
+We first need to make sure we have the Maven and Google repositories in our project `build.gradle` file:
 
-    repositories {
-      mavenCentral()
-      google()
-    }
+```groovy
+repositories {
+  mavenCentral()
+  google()
+}
+```
 
-Then, we add the library dependency in our app-module `build.gradle` file and sync it to make it available for use:
+Then, we add the library dependency in our app-module `build.gradle` file and sync it to make the library available for use:
 
+```groovy
+implementation 'com.github.bumptech.glide:glide:4.4.0'
+annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+```
 
-    implementation 'com.github.bumptech.glide:glide:4.4.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+We can then load an image from a remote URL with a single line of code:
 
-We can then load an image from a remote `URL` with a single line of code:
+```java
+GlideApp
+  .with(this)
+  .load("https://res.cloudinary.com/demo/video/upload/dog.png")
+  .into(imageView);
+```
 
+The `with` method can take a `Context`, `Activity`, `Fragment` or `View` object. The `load` method takes a remote URL or a drawable file (e.g `R.drawable.image`). The `imageView` instance, passed as an argument to the `into` method, should be of type [`ImageView`](https://developer.android.com/reference/android/widget/ImageView.html).
 
-    GlideApp.with(this).load("https://res.cloudinary.com/demo/video/upload/dog.png").into(imageView);
-
-The `with` method can take a context, Activity, Fragment or View, the load method takes a remote `URL` or a drawable file e.g `R.drawable.image` and the `imageView` should be of type `ImageView`.
-
-
-> If your `gradle` version is below 3.0, you should use the `compile` keyword  instead of `implementation` to add dependencies.
-
+> __Note that__, if your `gradle` version is below 3.0, you should use the `compile` keyword instead of `implementation` to add dependencies.
 
 ## Picasso
 
