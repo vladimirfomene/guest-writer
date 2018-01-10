@@ -26,7 +26,7 @@ Image loading libraries come in very handy to avoid high memory consumption caus
 
 [Glide](https://github.com/bumptech/glide) is an image loading library focused on smooth scrolling. Glide ensures image loading is both as fast and as smooth as possible by applying smart automatic down-sampling and caching to minimize storage overhead and decode times. It also re-uses resources like byte arrays and automatically releases application resources where necessary. At the time of writing, Glide's latest version requires a minimum SDK of API 14 (Android 4.0) and requires a compile SDK of API 26 (Android 8.0) or later.
 
-#### Using Glide 
+#### Using Glide
 
 We first need to make sure we have the Maven and Google repositories in our project `build.gradle` file:
 
@@ -57,37 +57,36 @@ The `with` method can take a `Context`, `Activity`, `Fragment` or `View` object.
 
 > __Note that__, if your `gradle` version is below 3.0, you should use the `compile` keyword instead of `implementation` to add dependencies.
 
-## Picasso
+### Picasso
 
-[Picasso](http://square.github.io/picasso/) is an image library for Android. It's created and maintained by [Square](http://square.github.io/), that caters to image loading and processing. It simplifies the process of displaying images from external locations. Picasso supports complex image transformations, automatic caching to disk, `ImageView`  recycling, and download cancellation in an adapter.
+[Picasso](http://square.github.io/picasso/) is another great image library for Android. It's created and maintained by [Square](http://square.github.io/), a company that is heavily dependent and contributor to the open source world, that caters to image loading and processing. By using Picasso, the process of displaying images from external locations is simplified. Picasso supports complex image transformations, automatic caching to disk, `ImageView` recycling, and download cancellation in an adapter.
 
-The library handles every stage of the process, from the initial HTTP request to the caching of the image just as Glide does.
+The library handles every stage of the process. It starts by handling HTTP requests and also handles the caching of the image. Just as Glide does.
 
-**Sample Usage**
+#### Using Picasso
 
-We add the Picasso dependency in our app-module `build.gradle`  file:
+First thing we need to do is to add the Picasso dependency in our app-module `build.gradle` file:
 
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+```groovy
+implementation 'com.squareup.picasso:picasso:2.5.2'
+```
 
-We sync our `gradle` file and load an image resource with also a single line of code:
+After that, we sync our `gradle` file and load an image resource with a single line of code:
 
+```java
+Picasso
+  .with(this)
+  .load("https://res.cloudinary.com/demo/video/upload/dog.png")
+  .into(imageView);
+```
 
-    Picasso.with(this).load("https://res.cloudinary.com/demo/video/upload/dog.png").into(imageView);
-
-The implementation of Picasso is very similar to that of Glide's. The only difference is with the starting word.
+As we can see, the API provided by Picasso is very similar to the one provided by Glide.
 
 Overtime, there has been series of arguments and controversies as to which library performs better. Below is a table showing the strengths and flaws of them both.
 
-| **Features**          | **Glide**                                                                                                            | **Picasso**                                                             |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Size and Method Count | Has a bigger .jar size and more methods                                                                              | Has smaller .jar size and methods.                                      |
-| Disk Caching          | It  downloads the image from the given URL, resize it to the size of the image view and stores it to the disk cache. | It ****downloads the image and stores the full-size image in the cache. |
-| Memory                | More memory efficient.                                                                                               | Less memory efficient as compared to Glide                              |
-| Image Load time       | Loads slower from remote `URLs` but faster from cache.                                                               | Faster from remote `URLs` but slower from cache.                        |
-| Other features        | Animated GIF support, Thumbnail support, Configurations and customizations
-                                            |                                                                         
+![Android Image Libraries Comparison](https://cdn.auth0.com/blog/android-libraries/glide-picasso-comparison.png)                                            
 
-*source: https://medium.com/@multidots/glide-vs-picasso-930eed42b81d*
+[*source: Glide vs Picasso*](https://medium.com/@multidots/glide-vs-picasso-930eed42b81d)
 
 # Videos
 
