@@ -813,85 +813,91 @@ Here, we created an instance of `Person` and inserted into the database. We only
 
 Google offers a [nice tutorial](https://codelabs.developers.google.com/codelabs/android-persistence/#0) to help use get started with this library.
 
-# Custom Fonts
+## Android Libraries-Custom Fonts
 
-Almost every Android developer is passionate about the looks and feel of his/her app. Sometimes we might need to go the extra mile into choosing a unique font for the app to give your app same feel across all devices. In situations like this, libraries like these help us to use a custom font for all our texts in the app.
+Almost every Android developer is passionate about the look and feel of their app. Sometimes we might need to go the extra mile into choosing a unique font for the app to give it the same feel across all devices. In situations like this, there are some libraries that can help us to use a custom font for all our texts in the app.
 
-## Calligraphy
+### Calligraphy
 
-[Calligraphy](https://github.com/chrisjenx/Calligraphy) is one of the most popular custom font library available and it is quite easy to get along with. With this library, we can easily declare a single font across our whole application or define fonts individually to a text.
+[Calligraphy](https://github.com/chrisjenx/Calligraphy) is one of the most popular custom font libraries available and it is quite easy to get along with. With this library, we can easily declare a single font across our whole application or define fonts individually to a text.
 
-**Sample Usage**
+### Using Calligraphy
+
 As usual, we add the dependency in our app-module  `build.gradle` file and sync it:
 
+```groovy
+implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
+```
 
-    implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
+Then, we create an `assets` folder and insert our custom font there. We can do that by right clicking the app root folder in our project directory in Android Studio, select "New", choose "Folder", and then "Assets Folder". This will generate an assets folder. Thereafter, we initialize the library and set our default font in the `Application` class:
 
-We then create an `assets` folder and insert our custom font there. You can do that by right clicking the app root folder in our project directory in android studio, select new and choose folder and then assets folder. This will generate an assets folder. Thereafter we initialize the library and set our default font in the `Application` class:
-
-
-    public class App extends Application {
-        @Override
-        public void onCreate() {
-            super.onCreate();
-            CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                    .setDefaultFontPath("red-velvet.ttf")
-                    .setFontAttrId(R.attr.fontPath)
-                    .build()
-            );
-        }
+```java
+public class App extends Application {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("red-velvet.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
     }
+}
+```
 
 Finally, we override the `attachBaseContext` method in each of our activities:
 
+```java
+@Override
+protected void attachBaseContext(Context newBase) {
+    super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+}
+```
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
+And we are good to go! This gives us the Red Velvet font as our app’s default font. We can also decide to apply a particular font to a single text like this:
 
-And, we are good to go! This gives us the Red Velvet font as our app’s default font. We can also decide to apply a particular font to a single text like
+```xml
+<TextView
+    android:text="@string/hello_world"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    fontPath="fonts/red-velvet.ttf"/>
+```
 
+### Custom Fonts with Support Library
 
-    <TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        fontPath="fonts/red-velvet.ttf"/>
+Thanks to the Android Support Library, from version `26` upward, we can make use of custom fonts without having to increase our app dependencies. This is so because in one way or the other we find the `appcompat` dependency in our `build.gradle` file. It is automatically added when creating a new Android project.
 
+```groovy
+implementation 'com.android.support:appcompat-v7:26.1.0'
+```
 
-## Custom Fonts with Support Library
+#### Using Custom Fonts with Support Library
 
-Thanks to the Android support library, from version 26 upward, we can make use of custom fonts without having to increase our app dependencies. This is so because in one way or the other we find the appcompat dependency in our `build.gradle` file. It is automatically added when creating a new Android project.
+First, we create a `fonts` resource folder. We can do this by right clicking the `res` folder and then choose "New → Android resource" directory. After that, we have to choose font as the resource type and select OK. We then add the desired font files in the `font` resource directory (e.g. `redvelvet`).
 
+We can apply the custom fonts directly in our XML layouts:
 
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+```xml
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:fontFamily="@font/redvelvet"/>
+```
 
-**Sample usage**
-First, we create a `fonts` resource folder. You can do this by right clicking the `res` folder, choose new → Android resource directory. Choose font as the resource type and select OK.  We then add our downloaded fonts in the `font` resource directory in our own case redvelvet .
+Additionally, we can create a new font family. A font family is a set of font files along with their style and weight details. Right click on the font source folder, select "New" and then "New Font Resource File", insert a name and select OK. A sample font family looks like this:
 
-We can apply the custom fonts directly in out XML layouts:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font
+        app:font="@font/redvelvet"
+        app:fontStyle="normal"
+        app:fontWeight="400" />
+</font-family>
+```
 
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/redvelvet"/>
-
-Additionally, we can create a new font family. A font family is a set of font files along with its style and weight details. Right click on the font source folder, select new and then new font resource file, insert a name and select OK.  A sample font family looks like this:
-
-
-    <?xml version="1.0" encoding="utf-8"?>
-    <font-family xmlns:app="http://schemas.android.com/apk/res-auto">
-        <font
-            app:font="@font/redvelvet"
-            app:fontStyle="normal"
-            app:fontWeight="400" />
-    </font-family>
-
-So, when we apply a font our `XML` layout and apply a text style, the system picks the correct font based on the text style we used. Apart from applying the fonts in the `XML` layouts, we can also apply them programmatically and in multiple forms as we see in the official [docs](https://developer.android.com/guide/topics/ui/look-and-feel/fonts-in-xml.html) and [here](https://segunfamisa.com/posts/custom-fonts-with-android-support-library).
-
-The support library is less cumbersome and definitely easier and faster to use without having to increase our application dependencies.
+When we apply a font to our `XML` layout, the system picks the correct font based on the text style we used. Apart from applying the fonts in the `XML` layouts, we can also apply them programmatically and in multiple forms as we can see in the official [docs](https://developer.android.com/guide/topics/ui/look-and-feel/fonts-in-xml.html). Another great resource about using custom fonts with Support Library can be found [here](https://segunfamisa.com/posts/custom-fonts-with-android-support-library).
 
 # Job Scheduling
 
