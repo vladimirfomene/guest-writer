@@ -491,65 +491,72 @@ The Android Databinding Library offers a replacement for `onClick` listeners tog
 
 These two libraries, ButterKnife and Android Databinding Library, significantly reduce the amount of code written to access views. However, the Android DataBinding library looks like a winner here because it is easier to setup, it achieves the result with less codes as compared to ButterKnife and offers more functionalities.
 
-# Reactive Programming
+## Android Libraries—Reactive Programming
 
-Reactive programming is a paradigm where data is emitted from a component (source) to another component(the subscriber). This helps us to handle asynchronous tasks effectively. Reactive programming libraries are therefore libraries that help in passing the data from the source to the subscriber.
+Reactive programming is a paradigm where data is emitted from a component (a source) to another component (a subscriber). This helps us to handle asynchronous tasks effectively. Reactive programming libraries are, therefore, libraries that help in passing the data from sources to subscribers. The most popular alternative available for Android developers is RxJava2 and RxAndroid. As such, let's take a look into them.
 
-## RxJava2 & RxAndroid
+### RxJava2 & RxAndroid
 
-[RxJava](https://github.com/ReactiveX/RxJava) is a library that lets you implement reactive programming and as such create reactive applications. [RxJava2](https://github.com/ReactiveX/RxJava/wiki/What%27s-different-in-2.0) is an update to earlier version of RxJava. In RxJava2, we have the Observables, Observers, and the Schedulers.
+[RxJava](https://github.com/ReactiveX/RxJava) is a library that lets us implement reactive programming and, as such, create reactive applications. [RxJava2](https://github.com/ReactiveX/RxJava/wiki/What%27s-different-in-2.0) is an update to earlier version of RxJava. In RxJava2, we have `Observables`, `Observers`, and `Schedulers`.
 
-The Observables are  the data sources and they exist in various types - Observer, Single, Flowable, Maybe, and Completable. Each of them has its unique use case which you can read more about [here](https://mindorks.com/course/demo/learn-rxjava/chapter/id/2). Notably, the Flowable comes with a backpressure support. Backpressure is when an Observable emits values faster than an Observer is able to handle. The Observers are the data receivers/consumers while the Schedulers help to manage threads.
+`Observables` are the data sources and they exist in various types: `Observer`, `Single`, `Flowable`, `Maybe`, and `Completable`. Each of these types has a unique use case which we can read more about [here](https://mindorks.com/course/demo/learn-rxjava/chapter/id/2).
 
-[RxAndroid](https://github.com/ReactiveX/RxAndroid) on the other hand is an extension of RxJava2. It offers functionalities just peculiar to the Android framework like the provision of a `Scheduler` that schedules on the main thread or any given `Looper`.
+Notably, the `Flowable` comes with a [backpressure](https://github.com/ReactiveX/RxJava/wiki/Backpressure) support. Backpressure is when an `Observer` can signal to the `Observable` that the latter is emitting values too fast. `Observers` are the data receivers (or consumers) while `Schedulers` help to manage threads.
 
-**Sample Usage**
-We add the dependency to our app-module `build.gradle` file:
+[RxAndroid](https://github.com/ReactiveX/RxAndroid), on the other hand, is an extension of RxJava2. It offers functionalities just peculiar to the Android platform, like the provision of a `Scheduler` that schedules on the main thread or any given `Looper`.
 
+#### Using RxAndroid
 
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    // Because RxAndroid releases are few and far between, it is recommended you also
-    // explicitly depend on RxJava's latest version for bug fixes and new features.
-    compile 'io.reactivex.rxjava2:rxjava:2.1.7'
+To use RxAndroid, we need to add the dependency to our app-module `build.gradle` file:
 
-We create an instance of a `CompositeDisposable` in our class. The `CompositeDisposable` is simply a container that can hold multiple disposables.
+```groovy
+compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+// Because RxAndroid releases are few and far between, it is recommended you also
+// explicitly depend on RxJava's latest version for bug fixes and new features.
+compile 'io.reactivex.rxjava2:rxjava:2.1.7'
+```
 
+Then, we create an instance of a `CompositeDisposable` in our class. The `CompositeDisposable` is simply a container that can hold multiple disposables:
 
-    disposables.add(
-            Observable.just("Hello world!")
-            // Run on a background thread
-            .subscribeOn(Schedulers.io())
-            // Be notified on the main thread
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(new DisposableObserver<String>() {
-                @Override
-                public void onComplete() {
+```java
+disposables.add(
+  Observable.just("Hello world!")
+  // Run on a background thread
+  .subscribeOn(Schedulers.io())
+  // Be notified on the main thread
+  .observeOn(AndroidSchedulers.mainThread())
+  .subscribeWith(new DisposableObserver<String>() {
+      @Override
+      public void onComplete() {
 
-                }
+      }
 
-                @Override
-                public void onError(Throwable e) {
+      @Override
+      public void onError(Throwable e) {
 
-                }
+      }
 
-                @Override
-                public void onNext(String value) {
+      @Override
+      public void onNext(String value) {
 
-                }
-            }));
+      }
+  })
+);
+```
 
-What we added to our `disposables` variable consists of the data source which will emit one string, the thread where the process will take place, the thread where our observer will be notified of the result result and our subscriber/observer . The `DisposableObserver<String>` is our observer which provides us with three implemented methods. First is the `onNext` which is called whenever data is emitted, next is the `onError` to show that an error occured and finally `onCompleted` to show that the Observable has finished emitting data and won't call `onNext`.
+In the code snippet above, what we added to our `disposables` variable consists of the data source which will emit one string, the thread where the process will take place, the thread where our observer will be notified of the result result, and our subscriber/observer. The `DisposableObserver<String>` is our observer, which provides us with three implemented methods. First is `onNext` which is called whenever data is emitted, next is `onError` to show that an error occurred, and finally `onCompleted` to show that the `Observable` has finished emitting data and won't call `onNext` anymore.
 
 We then clear resources when our activity is in the background to avoid memory leaks:
 
-
+```java
     @Override
     protected void onPause() {
         super.onPause();
         disposables.clear();
     }
+```
 
-There is a basic tutorial by Mindorks to help you get started with RxJava2 [here](https://mindorks.com/course/learn-rxjava).
+There is a basic, but interesting, tutorial by Mindorks to help you get started with RxJava2 [here](https://mindorks.com/course/learn-rxjava).
 
 # Testing
 
