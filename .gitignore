@@ -2,3 +2,4 @@
 node_modules/
 .writer.json
 .DS_Store
+*.clear.txt

@@ -1,10 +1,17 @@
 const fs = require('fs');
 
-// ((\\*|.+)\s+)*
+// regex to recognize regular blocks of code (i.e. starting and ending with ```)
 const regex = /```\w{1,5}[\n.+]([^`]((\\*|.+)\s+))*```/g
+
+// regex to recognize html blocks
 const regex2 = /{% highlight html %}[\n\D\d]+?{% endhighlight %}/g
 
-fs.readFile("kim", "utf8", function(err, data) {
+if (!process.argv[2]) {
+  console.log('Please, inform what file you want to clean (just pass it as an argument to this script).');
+  process.exit(1);
+}
+
+fs.readFile(process.argv[2], 'utf8', function(err, data) {
   let cleanArticle = data;
 
   const blocksOfCode = data.match(regex) || [];
@@ -19,7 +26,7 @@ fs.readFile("kim", "utf8", function(err, data) {
     cleanArticle = cleanArticle.replace(block, '');
   });
 
-  fs.writeFile('kim_clear.txt', cleanArticle, (err) => {
+  fs.writeFile(`${process.argv[2]}.clear.txt`, cleanArticle, (err) => {
     if (err) throw err;
     console.log('The file has been saved!');
   });
