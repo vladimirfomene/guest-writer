@@ -2,7 +2,7 @@
 
 ## Originality
 
-Guest Authors have to produce **original articles**. That is, the content has be written with the authors' words and **no plagiarism will be accepted**. It is normal and totally ok to use and quote external references. Actually, this is desired, as it makes the article more reliable from an SEO perspective (articles will rank better when linking trustworthy sources of information).
+Guest Authors have to produce **original articles**. That is, authors have to write content with their own words and **no plagiarism will be accepted**. It is normal and totally ok to use and quote external references. Actually, this is desired, as it makes the article more reliable from an SEO perspective (articles will rank better when linking trustworthy sources of information).
 
 However, authors have to study, learn, and understand the technologies involved to a point where they can explain these topics with their own words. Authors also have to strive to produce explanations better than those found on the web. This is what it makes an article valuable.
 
@@ -36,7 +36,7 @@ You can use a transition word (e.g. _next_ or _now_) to make it more fluid:
 
 Another example is related to moving from one explanation to an action. In that case, a preposition phrase can make the content more friendly:
 
-> With that covered, open a terminal a install the `create-react-app` package.
+> With that covered, open a terminal and install the `create-react-app` package.
 
 In this case, _"with that covered"_ is the prepositional phrase.
 
@@ -81,7 +81,7 @@ Enhances readability when compared to this:
 
 ### Formatting Inline Code
 
-When writing a technical article, you will ofter refer to things like filenames, directories, library names, etc. If you need to refer to them inside a sentence, please, format them as inline code (like `this`). Formatting these elements as inline code will make it easier for readers to identify important things in your article.
+When writing a technical article, you will often refer to things like filenames, directories, library names, etc. If you need to refer to them inside a sentence, please, format them as inline code (like `this`). Formatting these elements as inline code will make it easier for readers to identify important things in your article.
 
 So, to clarify, this is a quasi-complete list of elements that you have to format as inline code:
 
