@@ -71,6 +71,14 @@ While writing your content, please, add a blank line before and after the follow
 
 However, **don't add blank lines** between sentences in the same paragraph (actually, leave sentences in the same paragraph in the line) and between items on the same list. Also, **avoid** adding multiple blank lines. They don't add value to readability.
 
+For example, adding blank lines like in this screenshot:
+
+![Add blank lines when writing markdown files](https://cdn.auth0.com/blog/guest-writer/with-blank-lines.png)
+
+Enhances readability when compared to this:
+
+![Avoid cluttering everything together](https://cdn.auth0.com/blog/guest-writer/without-blank-lines.png)
+
 ### Formatting Inline Code
 
 When writing a technical article, you will ofter refer to things like filenames, directories, library names, etc. If you need to refer to them inside a sentence, please, format them as inline code (like `this`). Formatting these elements as inline code will make it easier for readers to identify important things in your article.
