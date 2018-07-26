@@ -24,7 +24,7 @@ The thing is, it doesn't really matter which one you will choose. What is import
 
 Writers often forget to give the proper attention to punctuation. Punctuation helps readers to understand what the author is trying to explain. So, please, **do use** commas, full stops, colons, parentheses, and so on where appropriate. Not using punctuation generally leads to [run-on sentences](http://grammar.ccc.commnet.edu/grammar/runons.htm) that are hard to understand.
 
-## Transition Words and Preposition Phrases
+## Transition Words and Prepositional Phrases
 
 Use [transition words](http://www.smart-words.org/linking-words/transition-words.html) and prepositional phrases to make content more fluid and friendly. For example, when telling readers to update a file to add some code, instead of writing like this:
 
