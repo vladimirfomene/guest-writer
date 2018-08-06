@@ -1,16 +1,28 @@
-## Auth0 Blog for Guest Authors
+# Auth0 Blog for Guest Authors
 
-This repository exists to support Guest Authors. To become a guest author, please, apply through [the Guest Author Program webpage](https://auth0.com/guest-authors). The process is simple and fully described in this page.
+This repository exists to support Guest Authors. To become a guest author, please, apply through [the Guest Author Program webpage](https://auth0.com/guest-authors). The process is simple and fully described in the referenced page.
 
-### Frequently Asked Questions (FAQs)
+## Writing to Auth0
 
-The following list shows FAQs and links to their answers:
+After implementing the sample application and defining an outline to your article, please, follow the instructions in this section to start writing your article:
 
-- [After being selected, what is the process of writing articles to Auth0?](https://github.com/auth0-blog/guest-writer/blob/master/faq/process.md)
-- [What is important to note when writing articles to Auth0?](https://github.com/auth0-blog/guest-writer/blob/master/faq/tips-about-writing.md)
-- [Is there a specific deadline?](https://github.com/auth0-blog/guest-writer/blob/master/faq/deadline.md)
+1. [Fork](https://help.github.com/articles/fork-a-repo/) this repository.
+2. [Clone](https://help.github.com/articles/cloning-a-repository/) your fork to your machine.
+3. Create a branch with a name that references your article (e.g., `react-firebase`).
+4. Run `node src` and answer the questions asked.
+5. Find your article in the `./articles` directory (e.g. `articles/2018-04-10-title.markdown`).
+6. Start writing.
+7. Commit and push your branch to your fork.
+8. Create a pull request to [the original repository](https://github.com/auth0-blog/guest-writer).
+9. Share with your editor.
 
-### Useful Commands
+> **Note:** You can commit, create the pull request, and share it with your editor even before you finish writing. Like that, the editor might be able to take a quick look and give you feedback before you proceed with the rest of the article.
+
+## Tips About Writing
+
+One of the most important resources that [you **must** read before start writing is this one](https://github.com/auth0-blog/guest-writer/blob/master/faq/tips-about-writing.md). Please, make sure you understand everything written there and do ask questions if you have doubts.
+
+### Viewing the Article in Real-Time
 
 Before executing the commands shown below, please, be sure that [Docker](https://www.docker.com/community-edition) and [Node.js](https://nodejs.org/) are properly installed and that both `docker` and `node` commands are available.
 
