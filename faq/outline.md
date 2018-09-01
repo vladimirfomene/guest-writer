@@ -13,7 +13,7 @@ For example, lets say that your goal is to teach readers how MobX works and how 
 
 To illustrate better, take a look at the following outline. Here, you will see a complete outline that would be considered outstanding by the reviewers:
 
-```bash
+```markdown
 # Managing the State of React Apps with MobX
 
 **TL:DR:** A few words of what you are going to write about, how the sections are divided, etc.
