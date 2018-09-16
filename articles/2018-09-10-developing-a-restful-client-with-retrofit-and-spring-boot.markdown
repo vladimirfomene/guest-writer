@@ -65,10 +65,10 @@ In this section, you will create a Spring Boot application that can `GET`, `POST
 
 ```bash
 
-  git clone https://github.com/vladimirfomene/springboot-github-client.git
+git clone https://github.com/vladimirfomene/springboot-github-client.git
 
-  # Move into the application directory
-  cd springboot-github-client
+# Move into the application directory
+cd springboot-github-client
 
 ```
 
@@ -77,12 +77,12 @@ To ensure compatibility with Java 10, you have to add the following line to the 
 
 ```gradle
 
-  ...
+...
 
-  dependencies {
-  	...
-  	compile('javax.xml.bind:jaxb-api:2.3.0')
-  }
+dependencies {
+  ...
+  compile('javax.xml.bind:jaxb-api:2.3.0')
+}
 
 ```
 
@@ -105,96 +105,9 @@ This request will produce a JSON object list of your GitHub repositories. A JSON
   "id": 90119013,
   "node_id": "MDEwOlJlcG9zaXRvcnk5MDExOTAxMw==",
   "name": "algs4",
-  "full_name": "vladimirfomene/algs4",
-  "owner": {
-      "login": "vladimirfomene",
-      "id": 11140070,
-      "node_id": "MDQ6VXNlcjExMTQwMDcw",
-      "avatar_url": "https://avatars1.githubusercontent.com/u/11140070?v=4",
-      "gravatar_id": "",
-      "url": "https://api.github.com/users/vladimirfomene",
-      "html_url": "https://github.com/vladimirfomene",
-      "followers_url": "https://api.github.com/users/vladimirfomene/followers",
-      "following_url": "https://api.github.com/users/vladimirfomene/following{/other_user}",
-      "gists_url": "https://api.github.com/users/vladimirfomene/gists{/gist_id}",
-      "starred_url": "https://api.github.com/users/vladimirfomene/starred{/owner}{/repo}",
-      "subscriptions_url": "https://api.github.com/users/vladimirfomene/subscriptions",
-      "organizations_url": "https://api.github.com/users/vladimirfomene/orgs",
-      "repos_url": "https://api.github.com/users/vladimirfomene/repos",
-      "events_url": "https://api.github.com/users/vladimirfomene/events{/privacy}",
-      "received_events_url": "https://api.github.com/users/vladimirfomene/received_events",
-      "type": "User",
-      "site_admin": false
-  },
-  "private": false,
-  "html_url": "https://github.com/vladimirfomene/algs4",
-  "description": "Algorithms, 4th edition textbook code and libraries",
-  "fork": true,
-  "url": "https://api.github.com/repos/vladimirfomene/algs4",
-  "forks_url": "https://api.github.com/repos/vladimirfomene/algs4/forks",
-  "keys_url": "https://api.github.com/repos/vladimirfomene/algs4/keys{/key_id}",
-  "collaborators_url": "https://api.github.com/repos/vladimirfomene/algs4/collaborators{/collaborator}",
-  "teams_url": "https://api.github.com/repos/vladimirfomene/algs4/teams",
-  "hooks_url": "https://api.github.com/repos/vladimirfomene/algs4/hooks",
-  "issue_events_url": "https://api.github.com/repos/vladimirfomene/algs4/issues/events{/number}",
-  "events_url": "https://api.github.com/repos/vladimirfomene/algs4/events",
-  "assignees_url": "https://api.github.com/repos/vladimirfomene/algs4/assignees{/user}",
-  "branches_url": "https://api.github.com/repos/vladimirfomene/algs4/branches{/branch}",
-  "tags_url": "https://api.github.com/repos/vladimirfomene/algs4/tags",
-  "blobs_url": "https://api.github.com/repos/vladimirfomene/algs4/git/blobs{/sha}",
-  "git_tags_url": "https://api.github.com/repos/vladimirfomene/algs4/git/tags{/sha}",
-  "git_refs_url": "https://api.github.com/repos/vladimirfomene/algs4/git/refs{/sha}",
-  "trees_url": "https://api.github.com/repos/vladimirfomene/algs4/git/trees{/sha}",
-  "statuses_url": "https://api.github.com/repos/vladimirfomene/algs4/statuses/{sha}",
-  "languages_url": "https://api.github.com/repos/vladimirfomene/algs4/languages",
-  "stargazers_url": "https://api.github.com/repos/vladimirfomene/algs4/stargazers",
-  "contributors_url": "https://api.github.com/repos/vladimirfomene/algs4/contributors",
-  "subscribers_url": "https://api.github.com/repos/vladimirfomene/algs4/subscribers",
-  "subscription_url": "https://api.github.com/repos/vladimirfomene/algs4/subscription",
-  "commits_url": "https://api.github.com/repos/vladimirfomene/algs4/commits{/sha}",
-  "git_commits_url": "https://api.github.com/repos/vladimirfomene/algs4/git/commits{/sha}",
-  "comments_url": "https://api.github.com/repos/vladimirfomene/algs4/comments{/number}",
-  "issue_comment_url": "https://api.github.com/repos/vladimirfomene/algs4/issues/comments{/number}",
-  "contents_url": "https://api.github.com/repos/vladimirfomene/algs4/contents/{+path}",
-  "compare_url": "https://api.github.com/repos/vladimirfomene/algs4/compare/{base}...{head}",
-  "merges_url": "https://api.github.com/repos/vladimirfomene/algs4/merges",
-  "archive_url": "https://api.github.com/repos/vladimirfomene/algs4/{archive_format}{/ref}",
-  "downloads_url": "https://api.github.com/repos/vladimirfomene/algs4/downloads",
-  "issues_url": "https://api.github.com/repos/vladimirfomene/algs4/issues{/number}",
-  "pulls_url": "https://api.github.com/repos/vladimirfomene/algs4/pulls{/number}",
-  "milestones_url": "https://api.github.com/repos/vladimirfomene/algs4/milestones{/number}",
-  "notifications_url": "https://api.github.com/repos/vladimirfomene/algs4/notifications{?since,all,participating}",
-  "labels_url": "https://api.github.com/repos/vladimirfomene/algs4/labels{/name}",
-  "releases_url": "https://api.github.com/repos/vladimirfomene/algs4/releases{/id}",
-  "deployments_url": "https://api.github.com/repos/vladimirfomene/algs4/deployments",
-  "created_at": "2017-05-03T07:07:45Z",
-  "updated_at": "2017-05-03T07:07:47Z",
-  "pushed_at": "2017-04-17T00:50:38Z",
-  "git_url": "git://github.com/vladimirfomene/algs4.git",
-  "ssh_url": "git@github.com:vladimirfomene/algs4.git",
-  "clone_url": "https://github.com/vladimirfomene/algs4.git",
-  "svn_url": "https://github.com/vladimirfomene/algs4",
-  "homepage": "http://algs4.cs.princeton.edu/code/",
-  "size": 879,
-  "stargazers_count": 0,
-  "watchers_count": 0,
-  "language": "Java",
-  "has_issues": false,
-  "has_projects": true,
-  "has_downloads": true,
-  "has_wiki": true,
-  "has_pages": false,
-  "forks_count": 0,
-  "mirror_url": null,
-  "archived": false,
-  "open_issues_count": 0,
-  "license": {
-      "key": "gpl-3.0",
-      "name": "GNU General Public License v3.0",
-      "spdx_id": "GPL-3.0",
-      "url": "https://api.github.com/licenses/gpl-3.0",
-      "node_id": "MDc6TGljZW5zZTk="
-  },
+
+  ...
+
   "forks": 0,
   "open_issues": 0,
   "watchers": 0,
@@ -208,7 +121,7 @@ This request will produce a JSON object list of your GitHub repositories. A JSON
 
 ```
 
-Next, copy this JSON data and paste it in the [jsonschema2pojo](http://www.jsonschema2pojo.org/) tool, unselect the *Include getters and setters* option, select Gson as your annotation style, Java as your target language and name the class `GitHubRepository`. Then, click on the preview button at the bottom of the page. This will create the following classes in a modal.
+Next, copy this JSON data and paste it in the [jsonschema2pojo](http://www.jsonschema2pojo.org/) tool, unselect the *Include getters and setters* option, select Gson as your annotation style, Java as your target language and name the class `GitHubRepository`. Then, click on the preview button at the bottom of the page. This will create three classes with the following structure:
 
 ```java
 
@@ -223,217 +136,8 @@ public class GitHubRepository {
   @SerializedName("name")
   @Expose
   public String name;
-  @SerializedName("full_name")
-  @Expose
-  public String fullName;
-  @SerializedName("owner")
-  @Expose
-  public Owner owner;
-  @SerializedName("private")
-  @Expose
-  public Boolean _private;
-  @SerializedName("html_url")
-  @Expose
-  public String htmlUrl;
-  @SerializedName("description")
-  @Expose
-  public String description;
-  @SerializedName("fork")
-  @Expose
-  public Boolean fork;
-  @SerializedName("url")
-  @Expose
-  public String url;
-  @SerializedName("forks_url")
-  @Expose
-  public String forksUrl;
-  @SerializedName("keys_url")
-  @Expose
-  public String keysUrl;
-  @SerializedName("collaborators_url")
-  @Expose
-  public String collaboratorsUrl;
-  @SerializedName("teams_url")
-  @Expose
-  public String teamsUrl;
-  @SerializedName("hooks_url")
-  @Expose
-  public String hooksUrl;
-  @SerializedName("issue_events_url")
-  @Expose
-  public String issueEventsUrl;
-  @SerializedName("events_url")
-  @Expose
-  public String eventsUrl;
-  @SerializedName("assignees_url")
-  @Expose
-  public String assigneesUrl;
-  @SerializedName("branches_url")
-  @Expose
-  public String branchesUrl;
-  @SerializedName("tags_url")
-  @Expose
-  public String tagsUrl;
-  @SerializedName("blobs_url")
-  @Expose
-  public String blobsUrl;
-  @SerializedName("git_tags_url")
-  @Expose
-  public String gitTagsUrl;
-  @SerializedName("git_refs_url")
-  @Expose
-  public String gitRefsUrl;
-  @SerializedName("trees_url")
-  @Expose
-  public String treesUrl;
-  @SerializedName("statuses_url")
-  @Expose
-  public String statusesUrl;
-  @SerializedName("languages_url")
-  @Expose
-  public String languagesUrl;
-  @SerializedName("stargazers_url")
-  @Expose
-  public String stargazersUrl;
-  @SerializedName("contributors_url")
-  @Expose
-  public String contributorsUrl;
-  @SerializedName("subscribers_url")
-  @Expose
-  public String subscribersUrl;
-  @SerializedName("subscription_url")
-  @Expose
-  public String subscriptionUrl;
-  @SerializedName("commits_url")
-  @Expose
-  public String commitsUrl;
-  @SerializedName("git_commits_url")
-  @Expose
-  public String gitCommitsUrl;
-  @SerializedName("comments_url")
-  @Expose
-  public String commentsUrl;
-  @SerializedName("issue_comment_url")
-  @Expose
-  public String issueCommentUrl;
-  @SerializedName("contents_url")
-  @Expose
-  public String contentsUrl;
-  @SerializedName("compare_url")
-  @Expose
-  public String compareUrl;
-  @SerializedName("merges_url")
-  @Expose
-  public String mergesUrl;
-  @SerializedName("archive_url")
-  @Expose
-  public String archiveUrl;
-  @SerializedName("downloads_url")
-  @Expose
-  public String downloadsUrl;
-  @SerializedName("issues_url")
-  @Expose
-  public String issuesUrl;
-  @SerializedName("pulls_url")
-  @Expose
-  public String pullsUrl;
-  @SerializedName("milestones_url")
-  @Expose
-  public String milestonesUrl;
-  @SerializedName("notifications_url")
-  @Expose
-  public String notificationsUrl;
-  @SerializedName("labels_url")
-  @Expose
-  public String labelsUrl;
-  @SerializedName("releases_url")
-  @Expose
-  public String releasesUrl;
-  @SerializedName("deployments_url")
-  @Expose
-  public String deploymentsUrl;
-  @SerializedName("created_at")
-  @Expose
-  public String createdAt;
-  @SerializedName("updated_at")
-  @Expose
-  public String updatedAt;
-  @SerializedName("pushed_at")
-  @Expose
-  public String pushedAt;
-  @SerializedName("git_url")
-  @Expose
-  public String gitUrl;
-  @SerializedName("ssh_url")
-  @Expose
-  public String sshUrl;
-  @SerializedName("clone_url")
-  @Expose
-  public String cloneUrl;
-  @SerializedName("svn_url")
-  @Expose
-  public String svnUrl;
-  @SerializedName("homepage")
-  @Expose
-  public String homepage;
-  @SerializedName("size")
-  @Expose
-  public Integer size;
-  @SerializedName("stargazers_count")
-  @Expose
-  public Integer stargazersCount;
-  @SerializedName("watchers_count")
-  @Expose
-  public Integer watchersCount;
-  @SerializedName("language")
-  @Expose
-  public String language;
-  @SerializedName("has_issues")
-  @Expose
-  public Boolean hasIssues;
-  @SerializedName("has_projects")
-  @Expose
-  public Boolean hasProjects;
-  @SerializedName("has_downloads")
-  @Expose
-  public Boolean hasDownloads;
-  @SerializedName("has_wiki")
-  @Expose
-  public Boolean hasWiki;
-  @SerializedName("has_pages")
-  @Expose
-  public Boolean hasPages;
-  @SerializedName("forks_count")
-  @Expose
-  public Integer forksCount;
-  @SerializedName("mirror_url")
-  @Expose
-  public Object mirrorUrl;
-  @SerializedName("archived")
-  @Expose
-  public Boolean archived;
-  @SerializedName("open_issues_count")
-  @Expose
-  public Integer openIssuesCount;
-  @SerializedName("license")
-  @Expose
-  public License license;
-  @SerializedName("forks")
-  @Expose
-  public Integer forks;
-  @SerializedName("open_issues")
-  @Expose
-  public Integer openIssues;
-  @SerializedName("watchers")
-  @Expose
-  public Integer watchers;
-  @SerializedName("default_branch")
-  @Expose
-  public String defaultBranch;
-  @SerializedName("permissions")
-  @Expose
-  public Permissions permissions;
 
+  ...
 }
 
 public class License {
@@ -444,16 +148,8 @@ public class License {
   @SerializedName("name")
   @Expose
   public String name;
-  @SerializedName("spdx_id")
-  @Expose
-  public String spdxId;
-  @SerializedName("url")
-  @Expose
-  public String url;
-  @SerializedName("node_id")
-  @Expose
-  public String nodeId;
 
+  ...
 }
 
 public class Owner {
@@ -464,55 +160,8 @@ public class Owner {
   @SerializedName("id")
   @Expose
   public Integer id;
-  @SerializedName("node_id")
-  @Expose
-  public String nodeId;
-  @SerializedName("avatar_url")
-  @Expose
-  public String avatarUrl;
-  @SerializedName("gravatar_id")
-  @Expose
-  public String gravatarId;
-  @SerializedName("url")
-  @Expose
-  public String url;
-  @SerializedName("html_url")
-  @Expose
-  public String htmlUrl;
-  @SerializedName("followers_url")
-  @Expose
-  public String followersUrl;
-  @SerializedName("following_url")
-  @Expose
-  public String followingUrl;
-  @SerializedName("gists_url")
-  @Expose
-  public String gistsUrl;
-  @SerializedName("starred_url")
-  @Expose
-  public String starredUrl;
-  @SerializedName("subscriptions_url")
-  @Expose
-  public String subscriptionsUrl;
-  @SerializedName("organizations_url")
-  @Expose
-  public String organizationsUrl;
-  @SerializedName("repos_url")
-  @Expose
-  public String reposUrl;
-  @SerializedName("events_url")
-  @Expose
-  public String eventsUrl;
-  @SerializedName("received_events_url")
-  @Expose
-  public String receivedEventsUrl;
-  @SerializedName("type")
-  @Expose
-  public String type;
-  @SerializedName("site_admin")
-  @Expose
-  public Boolean siteAdmin;
 
+  ...
 }
 
 public class Permissions {
@@ -520,13 +169,8 @@ public class Permissions {
   @SerializedName("admin")
   @Expose
   public Boolean admin;
-  @SerializedName("push")
-  @Expose
-  public Boolean push;
-  @SerializedName("pull")
-  @Expose
-  public Boolean pull;
 
+  ...
 }
 
 ```
@@ -535,12 +179,12 @@ Create a `model` package in the `com.auth0.samples.springbootgithubclient` packa
 
 ```gradle
 
-  ...
+...
 
-  dependencies {
-  	...
-  	implementation('com.google.code.gson:gson:2.8.5')
-  }
+dependencies {
+  ...
+  implementation('com.google.code.gson:gson:2.8.5')
+}
 
 ```
 
@@ -566,8 +210,8 @@ Next, add the following imports to all the above class files.
 
 ```java
 
-  import com.google.gson.annotations.Expose;
-  import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 ```
 
@@ -575,12 +219,12 @@ Now, to add getters and setters auto-generation to your classes. You need to add
 
 ```gradle
 
-  ...
+...
 
-  dependencies {
-  	...
-  	compileOnly('org.projectlombok:lombok:1.18.2')
-  }
+dependencies {
+  ...
+  compileOnly('org.projectlombok:lombok:1.18.2')
+}
 
 ```
 
@@ -588,12 +232,12 @@ Next, add `@Data` at the top of all your model classes and import lombok like so
 
 ```java
 
-  import lombok.Data;
+import lombok.Data;
 
-  @Data
-  public class GithubRepository {
-    ...
-  }
+@Data
+public class GithubRepository {
+  ...
+}
 
 ```
 
@@ -646,12 +290,12 @@ Your IDE will immediately start complaining because it does not know these annot
 
 ```gradle
 
-  ...
+...
 
-  dependencies {
-  	...
-  	implementation('com.squareup.retrofit2:retrofit:2.4.0')
-  }
+dependencies {
+  ...
+  implementation('com.squareup.retrofit2:retrofit:2.4.0')
+}
 
 ```
 
@@ -659,12 +303,12 @@ Then add the following libraries to your `RepositoryInterface.java` file:
 
 ```java
 
-  import com.auth0.samples.springbootgithubclient.model.GitHubRepository;
-  import com.auth0.samples.springbootgithubclient.model.Status;
-  import retrofit2.Call;
-  import retrofit2.http.*;
+import com.auth0.samples.springbootgithubclient.model.GitHubRepository;
+import com.auth0.samples.springbootgithubclient.model.Status;
+import retrofit2.Call;
+import retrofit2.http.*;
 
-  import java.util.List;
+import java.util.List;
 
 ```
 
@@ -788,32 +432,34 @@ public class GitHubService implements APIConfiguration {
 This class includes your `APIConfiguration` interface and so has access to all the constants defined in there. The constructor to this class builds the `Retrofit` object that will implement all the methods in `RepositoryInterface.java`. The builder for this `Retrofit` object uses the API endpoint which is passed via the `API_BASE_URL` constant and Retrofit's version of Google's Gson library for parsing JSON to POJOs and vice-versa. But you have not added this library to your dependencies so your IDE has marked it red. Add it to your `build.gradle` with the following line:
 
 ```gradle
+
 ...
 
 dependencies {
 	...
 	implementation('com.squareup.retrofit2:converter-gson:2.4.0')
 }
+
 ```
 
 Then, add the following imports to include all the libraries and classes used in the `GitHubService.java` file:
 
 ```java
 
-  import com.auth0.samples.springbootgithubclient.model.GitHubRepository;
-  import com.auth0.samples.springbootgithubclient.model.Status;
-  import okhttp3.ResponseBody;
-  import org.slf4j.Logger;
-  import org.slf4j.LoggerFactory;
-  import org.springframework.beans.factory.annotation.Value;
-  import org.springframework.stereotype.Service;
-  import retrofit2.Call;
-  import retrofit2.Response;
-  import retrofit2.Retrofit;
-  import retrofit2.converter.gson.GsonConverterFactory;
+import com.auth0.samples.springbootgithubclient.model.GitHubRepository;
+import com.auth0.samples.springbootgithubclient.model.Status;
+import okhttp3.ResponseBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-  import java.io.IOException;
-  import java.util.List;
+import java.io.IOException;
+import java.util.List;
 
 ```
 
@@ -857,14 +503,14 @@ Your IDE will immediately complain about the annotations and unknown symbols, th
 
 ```java
 
-  import com.auth0.samples.springbootgithubclient.GitHubService.GitHubService;
-  import com.auth0.samples.springbootgithubclient.model.GitHubRepository;
-  import com.auth0.samples.springbootgithubclient.model.Status;
-  import org.springframework.beans.factory.annotation.Autowired;
-  import org.springframework.web.bind.annotation.*;
+import com.auth0.samples.springbootgithubclient.GitHubService.GitHubService;
+import com.auth0.samples.springbootgithubclient.model.GitHubRepository;
+import com.auth0.samples.springbootgithubclient.model.Status;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-  import java.io.IOException;
-  import java.util.List;
+import java.io.IOException;
+import java.util.List;
 
 ```
 
