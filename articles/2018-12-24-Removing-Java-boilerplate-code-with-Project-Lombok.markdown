@@ -605,7 +605,7 @@ When you run your program, the output from the vanilla Java `toString` should be
 
 ### EqualsAndHashCode Annotation
 
-The @EqualsAndHashCode annotation generates an `equals` and `hashcode` implementation of your POJOs. To experiment with this feature, create a `EqualsAndHashCode` package in `src/main/java`. In this package, create a `VanillaLecture.java` file and fill it with the following code.
+The @EqualsAndHashCode annotation generates an `equals` and `hashcode` implementation of your POJOs. To experiment with this feature, create a `EqualsAndHashCode` package in `src/main/java`. In this package, create a `VanillaLecture.java` file and fill it with the following code. This class contains an implementation of the `equals` and `hashcode` methods.
 
 ```Java
 package EqualsAndHashCode;
@@ -662,7 +662,7 @@ public class LombokLecture {
 
 Notice how the `equals` and `hashcode` does not appear in this version.
 
-To test these implementations, add the `testEqualsAndHashCode` method to the `TestLombok` class, then comment out all the other methods calls in `TestLombok`'s main class and finally place a call to your `testEqualsAndHashCode` method in main. Here is the code for the `testEqualsAndHashCode` method:
+To test these implementations, add the `testEqualsAndHashCode` method to the `src/main/java/TestLombok` class, then comment out all the other methods calls in `TestLombok`'s main class and finally place a call to your `testEqualsAndHashCode` method in main. Here is the code for the `testEqualsAndHashCode` method:
 
 ```Java
 public static void testEqualsAndHashCode(){
@@ -679,13 +679,13 @@ public static void testEqualsAndHashCode(){
 }
 ```
 
-Run your application and you should see your two implementation print their hashcodes and also the result of comparing objects using their `equals` methods.
+Run your application and you should see your two implementations print their hashcodes and also the result of comparing objects using their `equals` methods.
 
 ### NonNull Annotation
 
-When the @NonNull annotation is placed before a method parameter, it means that method will not accept a null object as an argument. If you pass it a null object, it will raise a *NullPointerException*.
+When the @NonNull annotation is placed before a method parameter, it means that method will not accept `null` as an argument. If you pass it a null object, it will raise a `NullPointerException`.
 
-To play around with this functionality, create a `NonNull` package in `src/main/java` directory. Next, create a `VanillaClient.java` file in this package and fill it with the following code:
+To use this functionality, create a `NonNull` package in `src/main/java` directory. Next, create a `VanillaClient.java` file in this package and fill it with the following code:
 
 ```java
 package NonNull;
@@ -731,7 +731,7 @@ public class LombokClient {
 }
 ```
 
-To test these implementations, add the `testNonNull` method to the `TestLombok` class, then comment out all the other methods calls in `TestLombok`'s main class and finally place a call to your `testNonNull` method in main. Here is the code for the `testNonNull` method:
+To test these implementations, add the `testNonNull` method to the `src/main/java/TestLombok` class, then comment out all the other methods calls in `TestLombok`'s main class and finally place a call to your `testNonNull` method in main. Here is the code for the `testNonNull` method:
 
 ```java
 public static void testNonNull(){
@@ -741,7 +741,7 @@ public static void testNonNull(){
 }
 ```
 
-When you first run your application, you will see that it throws a *NullPointerException* because you passed a null object. If you comment the `LombokClient` line and uncomment the `VanillaClient` line, then run your program again you will notice that it still throws a *NullPointerException* exception.
+When you first run your application, you will see that it throws a `NullPointerException` because you passed a null object. If you comment the `LombokClient` line and uncomment the `VanillaClient` line, then run your program again you will notice that it still throws a `NullPointerException` exception. Therefore the Project Lombok version of the implementation does exactly what the vanilla Java version does.
 
 ### Constructor Annotation
 
@@ -800,7 +800,7 @@ public class LombokCustomer {
 }
 ```
 
-To test these implementations, add the `testConstructor` method to the `TestLombok` class, then comment out all the other methods calls in `TestLombok`'s main class and finally place a call to your `testConstructor` method in main. Here is the code for the `testConstructor` method:
+To test these implementations, add the `testConstructor` method to the `src/main/java/TestLombok` class, then comment out all the other methods calls in `TestLombok`'s main class and finally place a call to your `testConstructor` method in main. Here is the code for the `testConstructor` method:
 
 ```Java
 public static void testConstructor(){
@@ -816,11 +816,11 @@ public static void testConstructor(){
 }
 ```
 
-If you run your application, you will notice that both implementations will print the same thing.
+If you run your application, you will notice that both implementations will print the same thing. Therefore Project Lombok implementation is same with the vanilla Java implementation.
 
 ### Data Annotation
 
-The @Data annotation combines the implementations of  @ToString, @EqualsAndHashCode, @Getter / @Setter and @RequiredArgsConstructor. To use this annotation, create a `Data` package, and create `User.java` file in this package. Fill this file with the following code:
+The @Data annotation combines the implementations of the @ToString, @EqualsAndHashCode, @Getter / @Setter and @RequiredArgsConstructor annotations. To use this annotation, create a `Data` package, and create `User.java` file in this package. Fill this file with the following code:
 
 
 ```java
@@ -840,7 +840,7 @@ public class User {
 }
 ```
 
-To test these implementations, add the `testData` method to the `TestLombok` class, then comment out all the other methods calls in `TestLombok`'s main class and finally place a call to your `testData` method in main. Here is the code for the `testData` method:
+To test these implementations, add the `testData` method to the `src/main/java/TestLombok` class, then comment out all the other methods calls in `TestLombok`'s main class and finally place a call to your `testData` method in main. Here is the code for the `testData` method:
 
 
 ```Java
@@ -904,7 +904,7 @@ public class LombokLog {
 
 Notice how with Project Lombok all you have to do is add the @Log annotation to your classes.
 
-To test the above implementations, add the `testLog` method to the `TestLombok` class, then comment out all the other methods calls in `TestLombok`'s main class and finally place a call to your `testLog` method in main. Here is the code for `testLog`:
+To test the above implementations, add the `testLog` method to the `src/main/java/TestLombok` class, then comment out all the other methods calls in `TestLombok`'s main class and finally place a call to your `testLog` method in main. Here is the code for `testLog`:
 
 ```java
 public static void testLog(){
@@ -924,7 +924,7 @@ Notice how when you run the app, both implementations produce the same result to
 
 ### Value Annotation
 
-According to Project Lombok, @Value is a variant for @Data except that it makes all the fields private and final. It also does not generate setters. To demonstrate how this annotation works, create a `Value` package in `src/main/java`. Then create a `VanillaStudent.java` POJO in ths package. The code for this file should look like so:
+According to Project Lombok's documentation, @Value is a variant for @Data except that it makes all the fields private and final. It also does not generate setters. To demonstrate how this annotation works, create a `Value` package in `src/main/java`. Then create a `VanillaStudent.java` POJO in ths package. The code for this file should look like so:
 
 
 ```java  
@@ -981,7 +981,7 @@ public class LombokStudent {
 This one annotation replaces all the method implementations in `VanillaStudent.java`.
 
 
-To test the above implementations, add the `testValue` method to the `TestLombok` class, then comment out all the other methods calls in `TestLombok`'s main class and finally place a call to your `testValue` method in main. Here is the code for `testValue`:
+To test the above implementations, add the `testValue` method to the `src/main/java/TestLombok` class, then comment out all the other methods calls in `TestLombok`'s main class and finally place a call to your `testValue` method in main. Here is the code for `testValue`:
 
 ```java
 public static void testValue(){
@@ -1000,7 +1000,7 @@ public static void testValue(){
 
 When you run the app, your two implementations should produce the same result.
 
-## Show how to add Project Lombok to a Spring Boot project.
+## Adding Project Lombok to a Spring Boot project.
 
 The team behind Spring Boot has added Project Lombok as one of their dependencies. If you are creating a Spring Boot project and you will like to add Project Lombok to it. Head to the [Spring Initializr](https://start.spring.io/) page to create a new Spring Boot project. While filling your application's requirement on the page, search for *Lombok* in the dependency section of the page and select the first option that appears.
 
