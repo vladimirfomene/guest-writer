@@ -18,14 +18,24 @@ Express-Validator. If you want to see the complete demo application take the loo
 [Expressjs-Validator](https://github.com/vladimirfomene/expressjs-validator)
 
 ## Prerequisites
+
 Softwares you need to install to follow the tutorial:
 
-* Node.js and npm (included in your Node.js download). Node.js v8.13.0 was used for this tutorial.
+* Node.js and npm (node package manager). Node.js v8.13.0 was used for this tutorial.
 * Any text editor or IDE of your choice.
 
-## What is express-validator?
-* Brief summary of express-validator based on the official website description of the tool.
-* Why is it important?
+## What is Express-Validator?
+
+According to the [official site](https://express-validator.github.io/docs/), express-validator is a set of [Express.js](http://expressjs.com/) middlewares that wraps [validator.js](https://github.com/chriso/validator.js) validator and sanitizer functions. Simply said, Express-Validator is a JavaScript library that can be incorporated in Express.js for server-side validation.
+
+### Why do we need server-side validation anyway?
+
+* Data coming from the client cannot always be trusted because it could have been compromised by an untrusted client (man-in-the-middle attack).
+* A malicious user might disable JavaScript in their browser so as to submit bogus data to the server. Therefore, front-end validation is not enough.
+
+>**Note:** Although you can declare your validation while declaring your application models, it is preferable to add validation in your application logic because it minimizes the round trips made to the database server and provides more responsive feedback to the user. 
+
+
 
 
 ## Setup your playground for express-validator
