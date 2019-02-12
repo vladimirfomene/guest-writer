@@ -33,14 +33,19 @@ According to the [official site](https://express-validator.github.io/docs/), exp
 * Data coming from the client cannot always be trusted because it could have been compromised by an untrusted client (man-in-the-middle attack).
 * A malicious user might disable JavaScript in their browser so as to submit bogus data to the server. Therefore, front-end validation is not enough.
 
->**Note:** Although you can declare your validation while declaring your application models, it is preferable to add validation in your application logic because it minimizes the round trips made to the database server and provides more responsive feedback to the user. 
+>**Note:** Although you can declare your validation while declaring your application models, it is preferable to add validation in your application logic because it minimizes the round trips made to the database server and provides more responsive feedback to the user.
 
 
 
 
 ## Setup your playground for express-validator
-* Fork the Express.js starter project.
-* Brief description of the starter project's functionality.
+
+To start playing with Express-Validator, open your terminal in a preferred directory and clone the skeleton code with the following command:
+
+```bash
+git clone https://github.com/vladimirfomene/expressjs-validator-starter.git
+```
+This is a simple Express.js application that does not do much apart from setting up an empty javascript file, routes and empty view templates. In this project, `views/index.js` represent our homepage and is rendered with the code in `routes/index.js`. There is also an empty route file `routes/users.js` which is where all our validation code will go. To setup for handling user interaction and AJAX, there is an empty JS file in `public/script.js`. The `app.js` file mounts the route files, setup the port on which the server will be listening on, sets up the templating engine [Pug](https://pugjs.org/api/getting-started.html) and tells Express.js where to find your JavaScript files.
 
 ## Build form for user input
 * Build homepage with form to be validated.
