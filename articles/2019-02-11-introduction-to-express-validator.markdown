@@ -144,22 +144,56 @@ $('#signup-btn').click(function () {
 On form submission, a POST request is made to the 'http://localhost:3000/users' with the data object in the `$.ajax` options object. If there is an error during validation, it will be added to a div with an *alert* class, otherwise successful validation will trigger an alert with message, **Your submission was successful**.
 
 ## Server-side validation with express-validator
-* Install express-validator
-* Setup routes for `/` and `/users`.
 
-### Validating Name field
-* validate the field and test it.
+Now that, you have your front-end set up, you need to validate user input. To do that you need to install the express-validator module in your Express.js application by running the following command in your application directory.
 
-### Validating Class Year field
+```bash
+npm install express-validator --save
+```
+You now need import the [check API](https://express-validator.github.io/docs/check-api.html) of Express-Validator to use its validation functions. To do that, add the following require statement to your `routes/users.js` file:
+
+```js
+//............leave everything else unchanged.
+const {check, validationResult} = require('express-validator/check');
+//.....leave everything else unchanged.
+```
+
+This will import the check API into your route. Now, that you have Express-Validator's check API's in place, go ahead and validated your different data fields.
+
+### Validate Field's existence and provide custom error messages
+
+To validate your user input, you need to pass an array in which you specify the fields that you want to validate as a second argument to your route handler for POST request to `/users` endpoint.
+
+```js
+router.post('/', [
+    check('name').exists().withMessage('Name must have more than 5 characters'),
+    check('classYear', 'Class Year should be a number').exists(),
+    check('email', 'Your email is not valid').exists(),
+    check('password', 'Your password must be at least 5 characters').exists(),
+  ],
+  function (req, res) {
+    const errors = validationResult(req);
+    console.log(req.body);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).jsonp(errors.array());
+    } else {
+      res.send({});
+    }
+  });
+```
+The string passed as argument to the check function specifies which data field you want to validate. The `exists()` functions specifies that this field should not be empty. The string argument to `withMessage()` specifies a custom error message which will be send back to our client if this particular field violates a validation requirement. You can also provide a custom error message by passing it as a second argument to the `check()` function. So far we have only specified how we want our field to be validated. You might be wondering where Express.js actually does the validation. Express.js does the validation in the request handler when it calls the `validationResult()` function.
+
+### Validating Field's length
 * validate the field and test it.
 
 ### Validating Weekday field
 * validate the field and test it.
 
-### Validating email field
+### Validating and sanitizing emails
 * validate the field and test it.
 
-### Validating password fields
+### Validating with custom validator
 * validate the field and test it.
 
 
