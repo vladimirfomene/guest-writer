@@ -12,22 +12,22 @@ related:
 - 2017-11-15-an-example-of-all-possible-elements
 ---
 
-**TL;DR:** This article is the first part of a two part series tutorial in which you will learn how to build modern web apps using Vue.js, Spring Boot Kotlin and GraphQL. In addtion, you will also learn how to secure your backend and frontend apps using [Auth0](https://auth0.com/). For a quick glance at the application you will be building in this series, clone this [GitHub repository](https://github.com/vladimirfomene/MovieReviewBoard-Part-1).
+**TL;DR:** This article is the first part of a two-part series tutorial in which you will learn how to build modern web apps using Vue.js, Spring Boot Kotlin and GraphQL. In addition, you will also learn how to secure your backend and frontend apps using [Auth0](https://auth0.com/). For a quick glance at the application you will be building in this series, clone this [GitHub repository](https://github.com/vladimirfomene/MovieReviewBoard-Part-1).
 
 ## Prerequisites
 
 To effectively follow this tutorial, you will need the following tools installed on your system.
 
 * JDK: Since [Kotlin](https://kotlinlang.org/) is a JVM based language and you will bootstrap Spring Boot with JDK 8, you need to have installed JDK 8 or above. If you don't have it installed, you can get it [here](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
-* Node.js and NPM for your frontend development. If you don't have Node.js installed, [checkout this resource](https://nodejs.org/en/download/). Don't worry for NPM, most Node.js installations come with NPM.
-* Vue CLI: Install it using this [resource](https://cli.vuejs.org/guide/installation.html) if you don't already have it. Vue CLI is a commandline tool for scaffolding Vue.js apps. It is Vue's equivalent of [Create React App](https://facebook.github.io/create-react-app/) for React.js.
+* Node.js and NPM for your frontend development. If you don't have Node.js installed, [checkout this resource](https://nodejs.org/en/download/). Don't worry about NPM, most Node.js installations come with NPM.
+* Vue CLI: Install it using this [resource](https://cli.vuejs.org/guide/installation.html) if you don't already have it. Vue CLI is a command line tool for scaffolding Vue.js apps. It is Vue's equivalent of [Create React App](https://facebook.github.io/create-react-app/) for React.js.
 * Finally, any text editor or IDE of your choice, though I will recommend [VSCode](https://code.visualstudio.com/) and [IntelliJ IDEA](https://www.jetbrains.com/idea/).
 
-In addition to these tools, this tutorial assumes beginner knowledge in [Spring Boot Kotlin](https://spring.io/guides/tutorials/spring-boot-kotlin/), [Vue.js](https://vuejs.org/), [Vuex](https://vuex.vuejs.org/) and [Vue-Router](https://router.vuejs.org/).
+In addition to these tools, this tutorial assumes beginner knowledge in [Spring Boot Kotlin](https://spring.io/guides/tutorials/spring-boot-kotlin/), [Vue.js](https://vuejs.org/), [Vuex](https://vuex.vuejs.org/), and [Vue-Router](https://router.vuejs.org/).
 
 ## Modern Web App Architecture
 
-Most modern web apps are built as Single Page Applications (SPA) which communicate with a backend API. Why SPA? SPAs are web apps where the server provides a single template to the browser and JavaScript is used to dynamically render other pages. Although SPAs usually take some time on initial page load, they provide a sleek user experience after initila page load. For content updates, SPAs rely on querying a backend API with JavaScript. Traditionally, APIs have been designed following the [REST pattern](https://en.wikipedia.org/wiki/Representational_state_transfer), nowadays many people build their APIs using [GraphQL](https://graphql.org/) mostly because it is efficient compared to REST. This is because GraphQL can convert multiple back-to-back REST API request into one API request. Now that you know the architecture, you must be asking yourself why Kotlin and Vue.js. Well, Kotlin because it provides great developer productivity and Vue.js because it is easy to pickup and has really good documentaton.
+Most modern web apps are built as Single Page Applications (SPA) which communicate with a backend API. Why SPA? SPAs are web apps where the server provides a single template to the browser and JavaScript is used to dynamically render other pages. Although SPAs usually take some time on initial page load, they provide a sleek user experience after the initial page load. For content updates, SPAs rely on querying a backend API with JavaScript. Traditionally, APIs have been designed following the [REST pattern](https://en.wikipedia.org/wiki/Representational_state_transfer), nowadays many people build their APIs using [GraphQL](https://graphql.org/) mostly because it is efficient compared to REST. This is because GraphQL can convert multiple back-to-back REST API request into one API request. Now that you know the architecture, you must be asking yourself why Kotlin and Vue.js. Well, Kotlin because it provides great developer productivity and Vue.js because it is easy to pick up and has really good documentation.
 
 ### What You Will Build
 
@@ -54,7 +54,7 @@ Then, on the Dependencies section, use the search box to include: the `Web`, `H2
 
 Now, go ahead and generate your project. This will download a .zip file in your browser. Unzip this folder and create a **backend** folder in it. The path to this backend folder should be `MovieReviewBoard/backend`. Then put all the content of your **MovieReviewBoard** folder in the backend folder. You can now load the content of the backend folder into your favorite Spring Boot IDE.
 
->**Note:** By default the servlet container in Spring Boot listens on port 8080, therefore your system will not allow any other program to listen on that port. Unfortunately Webpack (the server used by Vue.js) also runs on port 8080 so your system will not allow you to run both programs at the same time. To solve this problem, go to `/MovieReviewBoard/backend/src/main/resources/application.properties` file in your app and add `server.port=8888` to it. Now Spring Boot will listen on port 8888 instead of 8080.
+>**Note:** By default, the servlet container in Spring Boot listens on port 8080, therefore your system will not allow any other program to listen on that port. Unfortunately, Webpack (the server used by Vue.js) also runs on port 8080 so your system will not allow you to run both programs at the same time. To solve this problem, go to `/MovieReviewBoard/backend/src/main/resources/application.properties` file in your app and add `server.port=8888` to it. Now Spring Boot will listen on port 8888 instead of 8080.
 
 Next, create a helloworld endpoint in your Spring Boot app by creating a `HelloWorldController.kt` file in `com.example.MovieReviewBoard` package and adding the following code after package declaration.
 
@@ -96,7 +96,7 @@ class HelloWorldController {
 }
 ```
 
->**Note:** The `simpleCorsFilter()` method add cross origin support to your backend API. This method sets the `Access-Control-Allow-Origin` header on HTTP responses sent by your server. Setting the value of this header to `http://localhost:8080` signals the browser that it is okay for this domain to make request to your server. 
+>**Note:** The `simpleCorsFilter()` method adds cross-origin support to your backend API. This method sets the `Access-Control-Allow-Origin` header on HTTP responses sent by your server. Setting the value of this header to `http://localhost:8080` signals the browser that it is okay for this domain to make a request to your server. 
 
 With that in place, if you visit `http://localhost:8888/helloworld` in your browser you should see the following page.
 
@@ -114,7 +114,7 @@ This will create a dialog in your terminal with setup questions which you should
 
 ![Vue Scaffold Settings](./vue-scaffold-settings.png)
 
-Once you validate the answer to the last question, the Vue CLI will generate a **frontend** folder with your Vue app in it. Now, go ahead and add a button which consumes the helloworld endpoint of your backend API. To do this, you need to change the `MovieReviewBoard/frontend/src/views/About.vue` page as follows:
+Once you validate the answer to the last question, the Vue CLI will generate a **frontend** folder with your Vue app in it. Now, go ahead and add a button that consumes the helloworld endpoint of your backend API. To do this, you need to change the `MovieReviewBoard/frontend/src/views/About.vue` page as follows:
 
 ```html
 <template>
@@ -151,19 +151,19 @@ export default {
 </script>
 ```
 
-The .vue file above add a button to the template of the **About** page and it also adds the `callAPI()` method as an onClick event handler for this button when it sets the `@click` attribute to `callAPI`. When the **callAPI** method is called, it calls your helloworld endpoint from your backend and updates the greeting data attribute which reactively updates your template with the **helloworld!** message. Before you test this, add `axios` (the HTTP client module used in `callAPI()` to make calls to your backend API). Move to your `MovieReviewBoard/frontend/` directory on your commandline and run:
+The .vue file above adds a button to the template of the **About** page and it also adds the `callAPI()` method as an onClick event handler for this button when it sets the `@click` attribute to `callAPI`. When the **callAPI** method is called, it calls your helloworld endpoint from your backend and updates the greeting data attribute which reactively updates your template with the **helloworld!** message. Before you test this, add `axios` (the HTTP client module used in `callAPI()` to make calls to your backend API). Move to your `MovieReviewBoard/frontend/` directory on your command line and run:
 
 ```bash
 npm install axios --save
 ```
 
-With these changes in place, start your frontend server by running `npm run serve` in `MovieReviewBoard/frontend/` and your backend server by executing `./gradlew bootRun` in `MovieReviewBoard/backend/` via the commandline or running it in your IDE. Once both servers are running, navigate to your browser at `http://localhost:8080/#/about` and click on the **Call API** button and you will see the helloworld message from the server.
+With these changes in place, start your frontend server by running `npm run serve` in `MovieReviewBoard/frontend/` and your backend server by executing `./gradlew bootRun` in `MovieReviewBoard/backend/` via the command line or running it in your IDE. Once both servers are running, navigate to your browser at `http://localhost:8080/#/about` and click on the **Call API** button and you will see the helloworld message from the server.
 
 ![HelloWorld Message](./helloworld-from-server.png)
 
 ## Securing Spring Boot and Vue.js Applications
 
-Now, you need to secure your API because as it stands anyone can access your backend and this is not good for your business. To secure your API you will need an identity provider like Auth0. In order to use [Auth0](https://auth0.com/) for security you will need to [create an account](https://auth0.com/signup) if you don't already have one.
+Now, you need to secure your API because as it stands anyone can access your backend and this is not good for your business. To secure your API you will need an identity provider like Auth0. In order to use [Auth0](https://auth0.com/) for security, you will need to [create an account](https://auth0.com/signup) if you don't already have one.
 
 After signing up for your Auth0 account, you will need to create an API on Auth0 to represent your backend API and configure it to authenticate requests. To do this, head to the [APIs section on your Auth0 dashboard](https://manage.auth0.com/#/apis) and click on the **Create API** button. After that, the dashboard will show you a form where you will have to enter:
 
@@ -217,9 +217,9 @@ class SecurityConfig : ResourceServerConfigurerAdapter() {
 }
 ```
 
-The `@EnableResourceServer` annotation above is convenient for resource servers secured with OAuth 2.0. It automatically enable a Spring Security filter that authenticates incoming requests. For Spring Boot to do this, you need to register your Auth0 API identifier aka `resourceId` and specify which endpoint you want to secure (in this case `/helloworld`).
+The `@EnableResourceServer` annotation above is convenient for resource servers secured with OAuth 2.0. It automatically enables a Spring Security filter that authenticates incoming requests. For Spring Boot to do this, you need to register your Auth0 API identifier aka `resourceId` and specify which endpoint you want to secure (in this case `/helloworld`).
 
-Secondly you need to define the `resourceId` and an endpoint for your API to get public keys in order to validate access token sent to your API. To do this, open `application.properties` and add the following configuration: 
+Secondly, you need to define the `resourceId` and an endpoint for your API to get public keys in order to validate access token sent to your API. To do this, open `application.properties` and add the following configuration: 
 
 ```java
 # ...
@@ -304,7 +304,7 @@ export default new AuthService();
 As of now, this code might seem like gibberish but let me walk you through it. The above file starts by importing `auth0-js` authentication library, then a JSON file `auth_config.json` which contains some of your Auth0 application's settings (don't worry I will show you how to create this file) and a Vue event bus. Then it creates an Auth0 web authentication instance using the settings in `auth_config.json` and signals Auth0 to return the **id_token**, **access token** and **user profile**. Here are the functionalities of each method above:
 
 * `login`: Contacts Auth0 to start the login flow.
-* `handleAuthentication()`:  Once Auth0 authenticates you, you will be redirected to the `redirectUri` which was set in your Auth0 web authentication instance and their `id_token`, `access_token` and `expires_in` (expiration time for the access token) will be provided in the url on your browser. This method will get these values from your url, parse them and call `localLogin` to save them to memory.
+* `handleAuthentication()`:  Once Auth0 authenticates you, you will be redirected to the `redirectUri` which was set in your Auth0 web authentication instance and their `id_token`, `access_token` and `expires_in` (expiration time for the access token) will be provided in the URL on your browser. This method will get these values from your URL, parse them and call `localLogin` to save them to memory.
 
 Ouf!, that was a lot. Now, go ahead and create `auth_config.json` in `MovieReviewBoard/frontend/` and add your Auth0 application settings to it like this:
 
@@ -324,7 +324,7 @@ const EventBus = new Vue();
 export default EventBus;
 ```
 
-With this in place your application will be able to create and handle events using Vue's event bus. In your `authService.js` file you defined a `redirectUri` property in your Auth0 web authentication instance but you haven't created a route and component for this redirect url. To fix this issue, start by creating a route for it in your `MovieReviewBoard/frontend/src/router.js` file as below.
+With this in place, your application will be able to create and handle events using Vue's event bus. In your `authService.js` file, you defined a `redirectUri` property in your Auth0 web authentication instance but you haven't created a route and component for this redirect url. To fix this issue, start by creating a route for it in your `MovieReviewBoard/frontend/src/router.js` file as below.
 
 ```js
 // ..................
@@ -371,7 +371,7 @@ export default {
 <style scoped></style>
 ```
 
-When this component is created after authentication with Auth0, you will have your Auth0's tokens in the url which will be parsed by the `handleAuthentication()` method on your authentication service. `handleAuthentication()` will emit a **login** event through `locallogin()`. This event will then be handled above in the `created()` method by calling `handlelogin()` which redirects you to the about page. Now that you are on the about page and you have been authenticated you can now make authorized request to your Spring Boot API by changing your `About.vue` page like so.
+When this component is created after authentication with Auth0, you will have your Auth0's tokens in the URL which will be parsed by the `handleAuthentication()` method on your authentication service. `handleAuthentication()` will emit a **login** event through `locallogin()`. This event will then be handled above in the `created()` method by calling `handlelogin()` which redirects you to the about page. Now that you are on the about page and you have been authenticated you can now make authorized requests to your Spring Boot API by changing your `About.vue` page like so.
 
 ```html
 <!-- leaving everything else unchanged -->
@@ -409,7 +409,7 @@ export default {
 </script>
 ```
 
-Notice that with HTTP calls to your API you set an authorization header with your token. With that covered, your app should now be able to authenticate users right? Well note quite yet. You haven't added the login button that will kickstart the authentication process. To do this modify your `home.vue` page as follows.
+Notice that with HTTP calls to your API you set an authorization header with your token. With that covered, your app should now be able to authenticate users right? Well, not quite yet. You haven't added the login button that will kickstart the authentication process. To do this modify your `home.vue` page as follows.
 
 ```html
 <template>
@@ -439,10 +439,10 @@ export default {
 </script>
 ```
 
-Notice the addition of the break and button tag in the template. The button tag has an event listener `@click` which listen for click event on the button and calls the `login()` method which kickstarts the authentication process for your application. If you run both of your servers, authenticate and click on the **callAPI** button, you should see the following.
+Notice the addition of the break and button tag in the template. The button tag has an event listener `@click` which listens for a click event on the button and calls the `login()` method which kickstarts the authentication process for your application. If you run both of your servers, authenticate and click on the **callAPI** button, you should see the following.
 
 ![HelloWorld Message](./helloworld-from-server.png)
 
 ## Conclusion
 
-This marks the end of the first part of this series. In this part, you were able to lay the groundwork for part 2 of this series by bootstrapping both your frontend and backend. Securing them with Auth0 and showing how your frontend consumes data from your backend. In part 2, your focus will be on building a GraphQL API, managing state with Vuex, routing with Vue-Router and polishing your UI with Bootstrap, Google Fonts and Font Awesome.
+This marks the end of the first part of this series. In this part, you were able to lay the groundwork for part 2 of this series by bootstrapping both your frontend and backend. Securing them with Auth0 and showing how your frontend consumes data from your backend. In part 2, your focus will be on building a GraphQL API, managing state with Vuex, routing with Vue-Router and polishing your UI with Bootstrap, Google Fonts, and Font Awesome.
