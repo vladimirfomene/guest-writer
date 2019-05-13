@@ -409,7 +409,7 @@ export default {
 </script>
 ```
 
-Notice that with HTTP calls to your API you set an authorization header with your token. With that covered, your app should now be able to authenticate users right? Well, not quite yet. You haven't added the login button that will kickstart the authentication process. To do this modify your `home.vue` page as follows.
+Notice that with HTTP calls to your API you set an authorization header with your token. With that covered, your app should now be able to authenticate users, right? Well, not quite yet. You haven't added the login button that will kickstart the authentication process. To do this modify your `Home.vue` page as follows.
 
 ```html
 <template>
