@@ -12,7 +12,7 @@ related:
 - 2017-11-15-an-example-of-all-possible-elements
 ---
 
-**TL;DR:** This article is the first part of a two-part series tutorial in which you will learn how to build modern web apps using Vue.js, Spring Boot Kotlin and GraphQL. In addition, you will also learn how to secure your backend and frontend apps using [Auth0](https://auth0.com/). For a quick glance at the application you will be building in this series, clone this [GitHub repository](https://github.com/vladimirfomene/MovieReviewBoard-Part-1).
+**TL;DR:** This article is the first part of a two-part series tutorial in which you will learn how to build modern web apps using Vue.js, Spring Boot, Kotlin, and GraphQL. In addition, you will also learn how to secure your backend and frontend apps using [Auth0](https://auth0.com/). For a quick glance at the application you will be building in this series, clone this [GitHub repository](https://github.com/vladimirfomene/MovieReviewBoard-Part-1).
 
 ## Prerequisites
 
