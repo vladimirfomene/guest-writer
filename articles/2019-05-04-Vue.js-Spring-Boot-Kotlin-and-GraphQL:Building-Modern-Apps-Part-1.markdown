@@ -21,7 +21,7 @@ To effectively follow this tutorial, you will need the following tools installed
 * JDK: Since [Kotlin](https://kotlinlang.org/) is a JVM based language and you will bootstrap Spring Boot with JDK 8, you need to have installed JDK 8 or above. If you don't have it installed, you can get it [here](https://www.oracle.com/technetwork/java/javase/downloads/index.html)
 * Node.js and NPM for your frontend development. If you don't have Node.js installed, [checkout this resource](https://nodejs.org/en/download/). Don't worry about NPM, most Node.js installations come with NPM.
 * Vue CLI: Install it using this [resource](https://cli.vuejs.org/guide/installation.html) if you don't already have it. Vue CLI is a command line tool for scaffolding Vue.js apps. It is Vue's equivalent of [Create React App](https://facebook.github.io/create-react-app/) for React.js.
-* Finally, any text editor or IDE of your choice, though I will recommend [VSCode](https://code.visualstudio.com/) and [IntelliJ IDEA](https://www.jetbrains.com/idea/).
+* Finally, any text editor or IDE of your choice, though I will recommend [VSCode](https://code.visualstudio.com/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/).
 
 In addition to these tools, this tutorial assumes beginner knowledge in [Spring Boot Kotlin](https://spring.io/guides/tutorials/spring-boot-kotlin/), [Vue.js](https://vuejs.org/), [Vuex](https://vuex.vuejs.org/), and [Vue-Router](https://router.vuejs.org/).
 
