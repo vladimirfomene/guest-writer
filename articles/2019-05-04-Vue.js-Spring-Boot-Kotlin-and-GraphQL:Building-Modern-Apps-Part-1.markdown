@@ -31,7 +31,7 @@ Most modern web apps are built as Single Page Applications (SPA) which communica
 
 ### What You Will Build
 
-In this series, you will be building a Movie Review Board app which will be an application where users can see their favorite movies with their directors and rate them. As you might have guessed from the title of series, you will build a SPA with Vue.js, Vuex, Vue-Router, Vue's Event Bus and a backend API with Spring Boot Kotlin and GraphQL.
+In this series, you will be building a "Movie Review Board" app which will be an application where users can see their favorite movies with their directors and rate them. As you might have guessed from the title of series, you will build a SPA with Vue.js, Vuex, Vue Router, Vue's Event Bus and a backend API with Spring Boot, Kotlin and GraphQL.
 
 ## Bootstrap Your Spring Boot Application
 
