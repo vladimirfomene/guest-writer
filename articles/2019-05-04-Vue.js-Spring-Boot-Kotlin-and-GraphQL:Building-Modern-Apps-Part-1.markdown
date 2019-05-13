@@ -171,7 +171,7 @@ After signing up for your Auth0 account, you will need to create an API with Aut
 * Identifier:  This is the URL identifier of your API (in this case, it can be http://localhost:8888 or anything that resembles a valid URL);
 * Signing Algorithm: choose RS256 for this field.
 
-Then finalize the API creation by clicking the **Create** button. Next, open your `build.gradle` file and add the following code to it.
+Then finalize the API creation by clicking the **Create** button. Next, open your `backend/build.gradle` file and add the following code to it.
 
 ```gradle
 // ...
