@@ -48,7 +48,7 @@ Now that you have an idea on what you will build, head to [Spring Initializr](ht
 
 ![Spring Initializr Setting](./spring-initializr-settings.png)
 
-Then, on the Dependencies section, use the search box to include: the `Web`, `H2` and `JPA` libraries.
+Then, in the "Dependencies" section, use the search box to include: the `Web`, `H2` and `JPA` libraries.
 
 ![Dependencies Setting](./dependencies-settings.png)
 
