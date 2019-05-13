@@ -57,7 +57,7 @@ Now, go ahead and generate your project. This will download a .zip file in your 
 
 >**Note:** By default, the servlet container in Spring Boot listens on port 8080, therefore your system will not allow any other program to listen on that port. Unfortunately, Webpack (the server used by Vue.js) also runs on port 8080 so your system will not allow you to run both programs at the same time. To solve this problem, go to `/MovieReviewBoard/backend/src/main/resources/application.properties` file in your app and add `server.port=8888` to it. Now Spring Boot will listen on port 8888 instead of 8080.
 
-Next, create a helloworld endpoint in your Spring Boot app by creating a `HelloWorldController.kt` in your `src/main/kotlin/com/example/MovieReviewBoard` folder. After adding in the line package `com.example.MovieReviewBoard` to the top of that new file, add in the following code:.
+Next, create a helloworld endpoint in your Spring Boot app by creating a `HelloWorldController.kt` in your `com.example.MovieReviewBoard` package. After adding in the line package `com.example.MovieReviewBoard` to the top of that new file, add in the following code:.
 
 ```kotlin
 import org.springframework.boot.web.servlet.FilterRegistrationBean
@@ -99,7 +99,7 @@ class HelloWorldController {
 
 >**Note:** The `simpleCorsFilter()` method adds cross-origin support to your backend API. This method sets the `Access-Control-Allow-Origin` header on HTTP responses sent by your server. Setting the value of this header to `http://localhost:8080` signals the browser that it is okay for this domain to make a request to your server. 
 
-With that in place, run your backend server by executing `./gradlew bootRun` in `MovieReviewBoard/backend/` via the command line or running it in your IDE. If you now visit `http://localhost:8888/helloworld` in your browser you should see the following page.
+With that in place, run your backend server by executing `./gradlew bootRun` in `MovieReviewBoard/backend/` via the command line or running it in your IDE. If you now visit [http://localhost:8888/helloworld](http://localhost:8888/helloworld) in your browser you should see the following page.
 
 ![Helloworld Endpoint Page](./helloworld-endpoint.png)
 
@@ -185,7 +185,7 @@ dependencies {
 // ...
 ```
 
-This dependency will add functionality for you to secure your API with OAuth 2.0. To add the configuration necessary for using this library you have to do two things, first create a `security` package in `com.example.MovieReviewBoard` package and create a `SecurityConfig` class in it. Then, copy the following code into the `SecurityConfig.kt` file in your `com.example.MovieReviewBoard.security` package.
+This dependency will add functionality for you to secure your API with OAuth 2.0. To add the configuration necessary for using this library you have to do two things, first create a `security` package in `com.example.MovieReviewBoard` package and create a `SecurityConfig.kt` file in it. Then, copy the following code into your `SecurityConfig.kt` file in `com.example.MovieReviewBoard.security`.
 
 ```kotlin
 package com.example.MovieReviewBoard.security
@@ -228,7 +228,7 @@ security.oauth2.resource.id=<YOUR-AUTH0-API-IDENTIFIER>
 security.oauth2.resource.jwk.keySetUri=https://<YOUR-AUTH0-DOMAIN>/.well-known/jwks.json
 ```
 
-With that covered, the **helloworld** endpoint of your API is now secured. If you run both applications and then visit `http://localhost:8080/#/about` in your browser and click on the **callAPI** button, you should see the page display an error message with a 401 status which means you are not authorized to see the content at the **helloworld** endpoint. Now, your about page should look like the following: 
+With that covered, the **helloworld** endpoint of your API is now secured. If you run both applications and then visit [http://localhost:8080/#/about](http://localhost:8080/#/about) in your browser and click on the **callAPI** button, you should see the page display an error message with a 401 status which means you are not authorized to see the content at the **helloworld** endpoint. Now, your about page should look like the following: 
 
 ![Unauthorized Request](./unauthorized-request.png)
 
@@ -236,13 +236,13 @@ Having secured your API with Auth0, you now need an access token from Auth0 to m
 
 ![Auth0 application creation](./create-SPA-Auth0.png)
 
-Now, click on the **Create** button and then Auth0 will redirect you to the Quick Start section of your new app. From there, click on the Settings tab and add `http://localhost:8080/callback` to the Allowed Callback URLs field and `http://localhost:8080` to the Allowed Web Origins, Allowed Logout URLs and Allowed Origins (CORS) fields. Now, click on **Save Changes** to save your settings. Next, you need to integrate Auth0 in your SPA. To do this, start by installing `auth0.js` into your application by running the following command in your project's frontend directory.
+Now, click on the **Create** button and then Auth0 will redirect you to the Quick Start section of your new app. From there, click on the Settings tab and add `http://localhost:8080/callback` to the **Allowed Callback URLs** field and `http://localhost:8080` to the **Allowed Web Origins**, **Allowed Logout URLs** and **Allowed Origins (CORS)** fields. Now, click on **Save Changes** to save your settings. Next, you need to integrate Auth0 in your SPA. To do this, start by installing `auth0.js` into your application by running the following command in your project's frontend directory.
 
 ```bash
 npm install --save auth0-js
 ```
 
-Now that you have the auth0.js dependency in your project, you need to create an authentication service using it. To do that, create an `auth` directory in `MovieReviewBoard/frontend/` then create an `authService.js` file in it. Finally, add the following code to your file:
+Now that you have the auth0.js dependency in your project, you need to create an authentication service using it. To do that, create an `auth` directory in `MovieReviewBoard/frontend/` then create an `authService.js` file in it. Finally, add the following code to `authService.js`:
 
 ```js
 import auth0 from "auth0-js";
@@ -302,10 +302,10 @@ class AuthService {
 export default new AuthService();
 ```
 
-As of now, this code might seem like gibberish but let me walk you through it. The above file starts by importing `auth0-js` authentication library, then a JSON file `auth_config.json` which contains some of your Auth0 application's settings (don't worry I will show you how to create this file) and a Vue event bus. Then it creates an Auth0 web authentication instance using the settings in `auth_config.json` and signals Auth0 to return the **id_token**, **access token** and **user profile**. Here are the functionalities of each method above:
+As of now, this code might seem like gibberish but let me walk you through it. The above file starts by importing `auth0-js` authentication library, then a JSON file `auth_config.json` which contains some of your Auth0 application's settings (don't worry, I will show you how to create this file) and a Vue event bus. Then it creates an Auth0 web authentication instance using the settings in `auth_config.json` and signals Auth0 to return the **id_token**, **access token** and **user profile**. Here are the functionalities of each method above:
 
 * `login`: Contacts Auth0 to start the login flow.
-* `handleAuthentication()`:  Once Auth0 authenticates you, you will be redirected to the `redirectUri` which was set in your Auth0 web authentication instance and their `id_token`, `access_token` and `expires_in` (expiration time for the access token) will be provided in the URL on your browser. This method will get these values from your URL, parse them and call `localLogin` to save them to memory.
+* `handleAuthentication()`:  Once Auth0 authenticates you, you will be redirected to the `redirectUri` which was set in your Auth0 web authentication instance and your `id_token`, `access_token` and `expires_in` (expiration time for the access token) will be provided in your browser's URL. This method will get these values from your URL, parse them and call `localLogin` to save them to memory.
 
 Ouf!, that was a lot. Now, go ahead and create `auth_config.json` in `MovieReviewBoard/frontend/` and add your Auth0 application settings to it like this:
 
@@ -313,7 +313,7 @@ Ouf!, that was a lot. Now, go ahead and create `auth_config.json` in `MovieRevie
 {
 	"domain": "<Auth0-domain>",
 	"clientId": "<Auth0-App-ClientId>",
-	"audience": "<Spring-Boot-API-Domain>(in your case this is `http://localhost:8888`)" 
+	"audience": "<Auth0-API-IDENTIFIER>"
 }
 ```
 
@@ -329,6 +329,7 @@ With this in place, your application will be able to create and handle events us
 
 ```js
 // ..................
+import Callback from "./components/Callback.vue";
 
 export default new Router({
   mode: "history",
@@ -415,8 +416,8 @@ Notice that with HTTP calls to your API you set an authorization header with you
 ```html
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" /><br/>
-		<button @click="login">Login</button>
+    <img alt="Vue logo" src="../assets/logo.png" /><br />
+    <button @click="login">Login</button>
     <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>
 </template>
