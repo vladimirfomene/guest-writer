@@ -1,0 +1,1091 @@
+---
+layout: post
+title: "Vue.js, Spring Boot, Kotlin, and GraphQL: Building Modern Apps - Part 2"
+description: "Building modern web apps using Vue.js for the frontend and a Spring Boot Kotlin GraphQL API for the backend."
+date: "2019-05-15 08:30"
+author:
+  name: "Vladimir Fomene"
+  url: "vladimirfomene"
+  mail: "vladimirfomene@gmail.com"
+  avatar: "https://twitter.com/vladimirfomene/profile_image?size=original"
+related:
+- 2017-11-15-an-example-of-all-possible-elements
+---
+
+# Vue.js, Spring Boot, Kotlin, and GraphQL: Building Modern Apps - Part 2
+
+**TL:DR:** This article is the continuation of the series on building modern web apps using Vue.js for the frontend and a Spring Boot GraphQL API with Kotlin for the backend. In this part, you will create a GraphQL API using schemas, queries, mutations, and entities stored in a [H2](https://www.h2database.com/html/main.html) database engine. Learn how to manage the state of an application using Vuex, improve route handling and last but not the least, improve the UI of your application using [Bootstrap](https://getbootstrap.com/), [Font Awesome](https://fontawesome.com/) and [Google Fonts](https://fonts.google.com/). For a quick glance at the application you will have at the end of this series, [clone this GitHub repository](https://github.com/vladimirfomene/MovieReviewBoard)
+
+## Quick reminder of Part 1
+
+In part one of this series, you bootstrapped your frontend and backend and secured them with Auth0. You also saw how you could consume data from an unsecured and secured backend API. In this part, you will focus on improving state management with [Vuex](https://vuex.vuejs.org/), routing and improving your frontend's UI with Bootstrap, Google Fonts, and Font Awesome. On the backend, you will build a GraphQL API with Spring Boot and Kotlin. To follow along, you can fork the [completed application from the first part of this series on GitHub](https://github.com/vladimirfomene/MovieReviewBoard-Part-1) or just use the one you developed.
+
+## Build your GraphQL API
+
+Before you start building your API, you need to have a basic understanding of GraphQL. According to the [official website](https://graphql.org/), "GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data". What does this mean? Well, it means GraphQL will describe the data offered by your API by creating types, relationships, queries (operations to get data) and mutations(operations to modify data) in its schema and provide the necessary environment to run the queries and mutations. Before you start creating all the necessary ingredients for GraphQL, you first need to add GraphQL support to your Spring Boot app. To do that, add the following dependencies to your `build.gradle` file in `/MovieReviewBoard/backend/`
+
+```gradle
+//leave everything else unchanged
+
+dependencies {
+    //leave everything else unchanged
+    implementation 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
+		implementation 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
+		implementation 'com.graphql-java:graphql-java-tools:5.2.4'
+}
+//leave everything else unchanged
+```
+
+The `graphql-spring-boot-starter` dependency adds an implementation of the GraphQL specification to your project and a servlet that support `GET` and `POST` requests for GraphQL queries at [http://localhost:8888/graphql](http://localhost:8888/graphql), `graphiql-spring-boot-starter` adds a GraphQL in browser client which you can use to send queries to your API, and `graphql-java-tools` parses GraphQL schemas and maps them to Java entities.
+
+### Create Your GraphQL Schema And Supporting Entities
+
+With these dependencies in place, you need to create your [GraphQL schemas](https://graphql.org/learn/schema/). Schemas define your API's data types, the operations you can carry out on these data types and the relationship between these types. Start by creating a **graphql** directory in the `/MovieReviewBoard/backend/src/main/resources` directory. Next, create a `movie.qls` file in this directory and add the following code snippet to it:
+
+
+```graphqls
+type Movie {
+    id: ID!
+    title: String!
+    director: Director!
+    rating: Long
+    releaseDate: String!
+}
+
+type Query{
+    findAllMovies : [Movie]!
+    countMovies : Long!
+}
+
+type Mutation{
+    updateMovieRating(movieId: Long, vote: Long!) : Long!
+    newMovie(title: String!, directorId: ID!, releaseDate: String!, rating: Long) : Movie!
+}
+```
+
+This schema creates a **Movie** type for your **Movie** entity, defines all the types of the **Movie's** attributes. It also creates `findAllMovies` and `countMovies` which are query operations on the **Movie** data in your database. The schema defines two mutations `updateMovieRating` and `newMovie` which are operators to update a movie's rating and create a new movie respectively. In the code snippet above, the *director* attribute of the Movie type will create a relationship between your **Movie** and **Director** types. The exclamation mark on an attribute or parameter means that it is required and the square brackets show an expectation for a list of values. Next, go ahead and create a `director.qls` file in `/MovieReviewBoard/backend/src/main/resources` and add the following schema code to it:
+
+```graphqls
+type Director {
+    id: ID!
+    firstName: String!
+    lastName: String!
+}
+
+input DirectorInput {
+    firstName: String!
+    lastName: String!
+}
+
+extend type Query {
+    findMoviesByDirector(directorId: ID) : [Movie]!
+    countMoviesByDirector(directorId: ID) : Long!
+    findAllDirectors : [Director]!
+    countDirectors: Long!
+}
+
+extend type Mutation {
+    newDirector(directorId: ID, firstName: String!, lastName: String!) : Director
+    updateDirector(directorId: Long!, directorInput: DirectorInput!) : Director
+}
+```
+
+This schema code snippet creates a **Director** type by specifying its attributes and their types. This **Director** type represents the director entity you will create in your *H2* database. It also creates an *input* type, **DirectorInput** for creating new directors. By extending `Query` and `Mutation`, this schema is adding to the list of operators you created in your **Movie** schema.
+
+With your schemas in place, the `graphql-java-tools` library is now waiting for you to create entities it will map to these schemas. To create a **Movie** entity, create `movie` package in `com.example.MovieReviewBoard` package, then create a `Movie.kt` file and add the following code snippet to it:
+
+```kotlin
+package com.example.MovieReviewBoard.movie
+
+import com.example.MovieReviewBoard.director.Director
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.ManyToOne
+
+
+@Entity
+data class Movie(var title: String,
+                 @ManyToOne var director: Director,
+                 var rating: Long, var releaseDate: String, @Id @GeneratedValue var id: Long? = null)
+```
+
+In the code above, the `@Entity` annotation on top of the class declaration, signals [JPA (Java Persistence API)](https://www.oracle.com/technetwork/java/javaee/tech/persistence-jsp-140049.html) to automatically create a movie table in your database. All the attributes of the **Movie** entity have been defined in the class declaration. The class declaration also defines a many-to-one relationship between the **Movie** entity and the **Director** entity with the `@ManyToOne` annotation. The `@Id` and `@GeneratedValue` annotations signal JPA that the `id` property is the primary key and it should be autogenerated. What will an entity be good for, if you cannot query it? To add this functionality to your **Movie** entity, create a [Spring Data repository](https://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html) that automatically implements most of the methods you need to query your entity. To do that, create a `MovieRepository.kt` file in your `com.example.MovieReviewBoard.movie` package and add the following code snippet to it:
+
+```kotlin
+package com.example.MovieReviewBoard.movie
+
+import com.example.MovieReviewBoard.director.Director
+import org.springframework.data.repository.CrudRepository
+
+
+interface MovieRepository : CrudRepository<Movie, Long> {
+    fun findByDirector(director: Director): Iterable<Movie>
+    fun countByDirector(director: Director): Long
+}
+```
+
+Spring Boot will generate query methods like `findAll` and `findOne` for you. But in your case this is not enough because following your GraphQL schema, you need methods like `findByDirector` and `countByDirector`. Guess what? By just declaring the signature of these methods in your repository, Spring Boot will generate the implementations for you. It does this because the name of these methods are organized in a way that it understands how to generate their implementations. You can read more about it [here](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.details)
+
+Now that you have a movie entity and its repository, go ahead and create a **Director** entity by creating a `director` package in the `com.example.MovieReviewBoard` package. Then create a `Director.kt` file and add the following code to it:
+
+```kotlin
+package com.example.MovieReviewBoard.director
+
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+
+
+@Entity
+data class Director(var firstName: String, var lastName: String,
+                    @Id @GeneratedValue var id: Long? = null)
+```
+
+By now, this kind of code should be familiar to you. With the **Director** entity in place, go ahead and create a repository to query it. For that, create a `DirectorRepository.kt` file in the `com.example.MovieReviewBoard.director` package and add the following code snippet to it:
+
+```kotlin
+package com.example.MovieReviewBoard.director
+
+import org.springframework.data.repository.CrudRepository
+
+
+interface DirectorRepository : CrudRepository<Director, Long> {
+}
+```
+
+With your entities and repositories in place, you need to add some dummy data to your application, move your [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) support to your main class and delete the *HelloWorldController* in the `com.example.MovieReviewBoard` package. After doing that, your `MovieReviewBoardApplication.kt` file in the `com.example.MovieReviewBoard` package should look like below.
+
+```kotlin
+package com.example.MovieReviewBoard
+
+import com.example.MovieReviewBoard.director.DirectorRepository
+import com.example.MovieReviewBoard.movie.MovieRepository
+import com.example.MovieReviewBoard.resolver.Mutation
+import org.springframework.boot.CommandLineRunner
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
+import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.context.annotation.Bean
+import org.springframework.core.Ordered
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.filter.CorsFilter
+import java.util.*
+import javax.servlet.Filter
+
+@SpringBootApplication
+class MovieReviewBoardApplication {
+
+	@Bean
+	fun init(movieRepository: MovieRepository, directorRepository: DirectorRepository) = CommandLineRunner {
+		println("Initializing data for our movie and director database tables")
+		// save a couple of movie directors
+		val mutation = Mutation(directorRepository, movieRepository)
+		mutation.newDirector(1, "James", "Cameron")
+		mutation.newDirector(2, "Joe", "Russo")
+		mutation.newDirector(3, "Christopher", "Nolan")
+		mutation.newDirector(4, "Steven", "Spielberg")
+		mutation.newDirector(5, "Tyler", "Perry")
+
+		// save a couple of movies
+		mutation.newMovie("Titanic", 1, "18-11-1997", 7)
+		mutation.newMovie("Avengers Endgame", 2, "26-04-2019", 10)
+		mutation.newMovie("Inception", 3, "08-08-2010", 8)
+		mutation.newMovie("Jurassic Park", 4, "09-03-1993", 7)
+		mutation.newMovie("A Madea Family Funeral", 5, "01-03-2019", 7)
+	}
+
+	@Bean
+	fun simpleCorsFilter(): FilterRegistrationBean<*> {
+		val source = UrlBasedCorsConfigurationSource()
+		val config = CorsConfiguration()
+		config.allowCredentials = true
+		// *** URL below needs to match the Vue client URL and port ***
+		config.allowedOrigins = Collections.singletonList("http://localhost:8080")
+		config.allowedMethods = Collections.singletonList("*")
+		config.allowedHeaders = Collections.singletonList("*")
+		source.registerCorsConfiguration("/**", config)
+		val bean = FilterRegistrationBean<Filter>(CorsFilter(source))
+		bean.setOrder(Ordered.HIGHEST_PRECEDENCE)
+		return bean
+	}
+
+}
+
+fun main(args: Array<String>) {
+	runApplication<MovieReviewBoardApplication>(*args)
+}
+```
+
+### Creating GraphQL API Resolvers
+
+With your application data in place, you now need to create mutation and query resolvers that GraphQL will call each time a request comes in. To start, create a `resolver` package for these resolvers in your `com.example.MovieReviewBoard` package. Next, create a `Mutation.kt` file in this package and add the following mutations to it:
+
+```Kotlin
+package com.example.MovieReviewBoard.resolver
+
+import com.example.MovieReviewBoard.director.Director
+import com.example.MovieReviewBoard.director.DirectorRepository
+import com.example.MovieReviewBoard.movie.Movie
+import com.example.MovieReviewBoard.movie.MovieRepository
+import com.coxautodev.graphql.tools.GraphQLMutationResolver
+import org.springframework.stereotype.Component
+
+@Component
+class Mutation(val directorRepository: DirectorRepository, val movieRepository: MovieRepository) : GraphQLMutationResolver {
+
+    fun updateDirector(directorId: Long, director: Director): Director {
+
+        val oldDirector = directorRepository.findById(directorId)
+
+        oldDirector.ifPresent {
+            it.firstName = director.firstName
+            it.lastName = director.lastName
+        }
+
+
+        return oldDirector.get()
+    }
+
+    fun updateMovieRating(movieId: Long, vote: Long): Long {
+        val movie = movieRepository.findById(movieId)
+
+        movie.ifPresent {
+            it.rating = it.rating + vote
+            movieRepository.save(it)
+        }
+
+        return movie.get().rating
+
+    }
+
+    fun newMovie(title: String, directorID: Long, releaseDate: String, rating: Long): Movie {
+        val director = directorRepository.findById(directorID)
+        val movie = Movie(title, director.get(), rating, releaseDate)
+
+        return movieRepository.save(movie)
+    }
+
+    fun newDirector(directorId: Long, firstName: String, lastName: String): Director {
+        val director = Director(firstName, lastName, directorId)
+
+        return directorRepository.save(director)
+    }
+}
+```
+
+The above methods are just a Kotlin implementation of the mutations in your GraphQL schemas. Above methods, do exactly what their names suggest they do. Having created your mutation resolver, now you need to create your query resolver. To do that, create a `Query.kt` file in the `com.example.MovieReviewBoard.resolver` package and add the following queries to it:
+
+```kotlin
+package com.example.MovieReviewBoard.resolver
+
+import com.example.MovieReviewBoard.director.Director
+import com.example.MovieReviewBoard.director.DirectorRepository
+import com.example.MovieReviewBoard.movie.Movie
+import com.example.MovieReviewBoard.movie.MovieRepository
+import com.coxautodev.graphql.tools.GraphQLQueryResolver
+import org.springframework.stereotype.Component
+
+@Component
+class Query(val movieRepository: MovieRepository, val directorRepository: DirectorRepository) : GraphQLQueryResolver {
+
+    fun findAllMovies(): Iterable<Movie> {
+        return movieRepository.findAll()
+    }
+
+    fun findAllDirectors(): Iterable<Director> {
+        return directorRepository.findAll()
+    }
+
+    fun countMovies(): Long {
+        return movieRepository.count()
+    }
+
+    fun countDirectors(): Long {
+        return directorRepository.count()
+    }
+
+    fun findMoviesByDirector(directorId: Long): Iterable<Movie> {
+        val director = directorRepository.findById(directorId)
+        return movieRepository.findByDirector(director.get())
+    }
+
+    fun countMoviesByDirector(directorId: Long): Long {
+        val director = directorRepository.findById(directorId)
+        return movieRepository.countByDirector(director.get())
+    }
+}
+```
+
+With that covered, your GraphQL API is ready, but not secured. To secure it, you have to protect `/graphql` which is the endpoint through which your API will be receiving requests. To secure this endpoint
+update your `SecurityConfig.kt` file in the `com.example.MovieReviewBoard.security` package like so:
+
+```kotlin
+//leave everything else unchanged
+
+
+class SecurityConfig : ResourceServerConfigurerAdapter() {
+
+    //leave everything else unchanged
+
+    @Throws(Exception::class)
+    override fun configure(http: HttpSecurity) {
+        http.authorizeRequests()
+                .mvcMatchers("/graphql").authenticated()
+                .anyRequest().permitAll()
+    }
+
+    //leave everything else unchanged
+}
+```
+
+With that covered, if you open your [GraphQL client](http://localhost:8888/graphiql) in your browser and execute a query for all movies you should see a message as below. 
+
+![unauthorize api access](./unauthorized-api.png)
+
+## Add Routing And Enhance Your Frontend's UI
+
+With a fully functional GraphQL API, in this section, you will focus on creating a beautiful frontend and using Vuex's store to manage the state of your application.
+
+### Updating Your Frontend's UI
+
+To create your beautiful frontend, start by installing the [Bootstrap framework](https://getbootstrap.com/) on your frontend. To do that, navigate to `/MovieReviewBoard/frontend` in your command line and execute the following command:
+
+```bash
+npm install bootstrap --save
+```
+
+Then, add it to your Vue app by adding the following import to your `main.js` in `/MovieReviewBoard/frontend/src/`.
+
+```js
+//leave everything else unchanged
+import "bootstrap/dist/css/bootstrap.min.css";
+//...leave everything else unchanged
+```
+
+With this in place, you can now use Bootstrap in your Vue templates. Next, add [Google Fonts](https://fonts.google.com/) to your app by adding the following import in the style section of your `App.vue` file and remove all unnecessary styles from the style section of the view. With that your style section should look like so:
+
+```html
+<!-- leave everthing else unchanged -->
+<style>
+@import url("https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab");
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+</style>
+```
+
+Next, you need to install [Font Awesome](https://fontawesome.com), an icon library that you will be using for icons. To do that, move to your project's `MovieReviewBoard/frontend` directory on the command line and execute the following commands:
+
+```bash
+npm i --save @fortawesome/fontawesome-svg-core
+npm i --save @fortawesome/free-solid-svg-icons 
+npm i --save @fortawesome/vue-fontawesome
+```
+
+Once NPM is done installing these packages, add the icons to the library and register their Vue components with Vue in your `/MovieReviewBoard/frontend/src/main.js` file like so:
+
+```js
+//leave everything else unchanged
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+library.add(faAngleDown, faAngleUp);
+Vue.component("font-awesome-icon", FontAwesomeIcon);
+//leave everything else unchanged
+```
+
+Having installed all the tools to create a beautiful frontend installed, now go ahead and create your views and components. For starters, update the view of your homepage by replacing the code in `/MovieReviewBoard/frontend/src/views/Home.vue` with the following:
+
+```html
+<template>
+  <div class="home">
+    <NavBarComponent :brand-title="brandTitle" />
+    <LoginComponent />
+  </div>
+</template>
+
+<script>
+import NavBarComponent from "@/components/NavBarComponent.vue";
+import LoginComponent from "@/components/LoginComponent.vue";
+
+export default {
+  name: "home",
+  components: {
+    NavBarComponent,
+    LoginComponent
+  },
+  data() {
+    return {
+      brandTitle: "Movie Review Board"
+    };
+  }
+};
+</script>
+
+<style scoped></style>
+```
+
+This view has no style associated with it. It depends on two components *NavBarComponent*, *LoginComponent* which are part of the view's template and registered in the script of the view. This view also binds the `brandTitle` data property to the *NavBarComponent*. Now, you need to create the *NavBarComponent* and *LoginComponent*. To do that, go to your `/MovieReviewBoard/frontend/src/components/` directory and create a `NavBarComponent.vue` file with the following code:
+
+```html
+<template>
+  <div class="nav">
+    <nav class="navbar navbar-dark bg-primary" id="navbar">
+      <router-link to="/movieboard" class="navbar-brand" id="brand-title">{{
+        brandTitle
+      }}</router-link>
+      <ul v-show="isAuthenticated" class="nav justify-content-end">
+        <li class="nav-item">
+          <button
+            class="btn btn-secondary"
+            style="display: inline-block; margin-left: 10px;"
+            @click="goToProfile"
+          >
+            Profile
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            class="btn btn-secondary"
+            style="display: inline-block; margin-left: 10px;"
+            @click="logout"
+          >
+            Logout
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "navbarcomponent",
+  props: {
+    brandTitle: String
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logOut");
+    },
+    goToProfile() {
+      this.$router.push({ path: "/profile" });
+    }
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    }
+  }
+};
+</script>
+
+<style scoped>
+#brand-title {
+  font-family: "Roboto Slab", serif;
+}
+#navbar {
+  width: 100%;
+}
+</style>
+```
+
+This component gets the `brandTitle` data from `Home.vue` by declaring a [props](https://vuejs.org/v2/guide/components-props.html) property in the script tag of the component. The component's template registers the `logout` click event handler by declaring `logout` as the value of the `@click` attribute on the log out button in the template. The `logout` method calls the `logOut` action from the Vuex store. The component also registers `goToProfile()` on the profile button which helps the user navigate to the profile view using Vue Router. The unordered list of the template has a `v-show` attribute with a value of `isAuthenticated`. This means Vue will call the `isAuthenticated()` computed property and if it returns a truthy value it will render the list, otherwise, it will not render it. Notice how your component's style finally makes use of the Roboto font from Google Fonts. Next, create your *LoginComponent* by creating a `LoginComponent.vue` file in `/MovieReviewBoard/frontend/src/` with the following code:
+
+```html
+<template>
+  <div class="card" id="login-card">
+    <div class="card-body">
+      <p class="card-text" id="welcome-text">
+        Sign in to start rating your favorite movies.
+      </p>
+      <a href="#" class="btn btn-primary" id="login-btn" @click.prevent="login"
+        >Login Here</a
+      >
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "logincomponent",
+  methods: {
+    login() {
+      this.$store.dispatch("login");
+    }
+  }
+};
+</script>
+
+<style scoped>
+#login-btn {
+  font-family: "Open Sans", sans-serif;
+}
+#welcome-text {
+  font-family: "Roboto Slab", serif;
+}
+#login-card {
+  max-width: 50%;
+  margin: 10% auto;
+}
+</style>
+```
+
+This component's style changes the font of the welcome text and button and then centralizes the login card. The template adds a **Login Here** button with an anchor tag and also specifies *login* method as the value to `@click.prevent` (*.prevent* is a modifier which prevents the default action of an anchor tag which is to take the user to the specified link) attribute on the anchor tag. This ensures that the *login* method is called when this anchor tag is clicked. This method dispatches to the login action of the Vuex store you will create. Next, go ahead and create a `Profile.vue` file in `/MovieReviewBoard/frontend/src/views/Profile.vue` and the following code snippet for your profile view:
+
+```html
+<template>
+  <div v-if="profile">
+    <NavBarComponent :brand-title="brandTitle" />
+    <div class="card" style="width: 18rem;">
+      <img
+        class="card-img-top"
+        :src="userProfile.picture"
+        alt="Card image cap"
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{ userProfile.name }}</h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{ userProfile.nickname }}</li>
+        <li class="list-group-item">{{ userProfile.gender }}</li>
+        <li class="list-group-item">{{ userProfile.email }}</li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+import NavBarComponent from "@/components/NavBarComponent.vue";
+
+export default {
+  name: "profile",
+  components: {
+    NavBarComponent
+  },
+  data() {
+    return {
+      profile: {},
+      brandTitle: "Movie Review Board"
+    };
+  },
+  computed: {
+    ...mapGetters(["userProfile"])
+  }
+};
+</script>
+
+<style scoped>
+.card {
+  margin: 5% auto;
+}
+</style>
+```
+
+This view registers and uses the *NavBarComponent*. It also gets the `userProfile` from the Vuex store using `mapGetters`, which is a function which maps getters from the Vuex store to computed properties. Its style centralizes the profile details of a user on the page.
+
+Last but not least, you need to create a view to show the movies with their corresponding director and icons for rating them. To do that, create a `MovieBoard.vue` file in `/MovieReviewBoard/frontend/src/views` and add the following code to it:
+
+```html
+<template>
+  <div class="movie-board">
+    <NavBarComponent :brand-title="brandTitle" />
+    <div class="card-columns">
+      <MovieComponent v-for="movie in movies" :movie="movie" :key="movie.id" />
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+import NavBarComponent from "@/components/NavBarComponent.vue";
+import MovieComponent from "@/components/MovieComponent.vue";
+
+export default {
+  name: "movieboard",
+  components: {
+    NavBarComponent,
+    MovieComponent
+  },
+  data() {
+    return {
+      brandTitle: "Movie Review Board"
+    };
+  },
+  computed: {
+    ...mapGetters(["movies", "accessToken"])
+  },
+  created() {
+    if (this.accessToken) {
+      this.$store.dispatch("getMovies", this.accessToken);
+    }
+  }
+};
+</script>
+
+<style scoped>
+.card-columns {
+  margin: 3% 2% 3% 2%;
+}
+</style>
+```
+
+This view registers the *NavBarComponent* and the *MovieComponent* because its template depends on them. It uses the Vue instance's *created* hook to call the *getMovies* action of your Vuex store if there is an access token in memory. While calling this `getMovies` action, the view passes the access token to be used for authentication on the API. This ensures the movies from your GraphQL API are available in this view. This view then uses the `v-for` directive to render the data for each movie in a *Moviecomponent*. To create this component, create a `MovieComponent.vue` file in your `/MovieReviewBoard/frontend/src/components/` directory and add the following code to it.
+
+```html
+<template>
+  <div class="card text-left">
+    <div class="card-header">
+      <h4 class="card-heading">{{ movie.title }}</h4>
+      <div class="rating-arrow" style="display: inline-block">
+        <font-awesome-icon
+          size="2x"
+          icon="angle-up"
+          @click="updateMovieRating(1)"
+        />
+        <font-awesome-icon
+          size="2x"
+          icon="angle-down"
+          @click="updateMovieRating(-1)"
+        />
+      </div>
+    </div>
+    <div class="card-body">
+      <span class="card-text">Rating: {{ movie.rating }}</span
+      ><br />
+      <a href="#" class="card-link">Release Date: {{ movie.releaseDate }}</a
+      ><br />
+      <a href="#" class="card-link">Director: {{ fullName(movie.director) }}</a
+      ><br />
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+
+export default {
+  name: "moviecomponent",
+  props: ["movie"],
+  computed: {
+    ...mapGetters(["accessToken"])
+  },
+  methods: {
+    fullName(director) {
+      return `${director.firstName} ${director.lastName}`;
+    },
+    updateMovieRating(vote) {
+      this.$store.dispatch("updateMovieRating", {
+        id: this.movie.id,
+        vote,
+        accessToken: this.accessToken
+      });
+    }
+  }
+};
+</script>
+
+<style scoped>
+h4.card-heading {
+  display: inline-block;
+  text-align: left;
+}
+.rating-arrow {
+  float: right;
+}
+</style>
+```
+
+This component accepts a *movie* prop from your *MovieBoard* view and it binds the up and down arrow icons (Font Awesome icons) with the `updateMovieRating` method which uses the access token to update the rating of the movie on the API. Before you move on to defining routes, update your `/MovieReviewBoard/frontend/src/components/Callback.vue` component to use the authentication module in your state management like so.
+
+```html
+<template>
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</template>
+
+<script>
+import EventBus from "../../event-bus";
+
+export default {
+  name: "callback",
+  methods: {
+    handleLogin() {
+      this.$router.push("/movieboard");
+    }
+  },
+  created() {
+    this.$store.dispatch("handleAuthentication");
+    EventBus.$on("login", () => this.handleLogin());
+  }
+};
+</script>
+
+<style scoped>
+div.spinner-border {
+  margin: 10% auto;
+}
+</style>
+```
+
+Next, remove the navigation section from your `App.vue` view so that it now looks like below:
+
+```html
+<template>
+  <div id="app">
+    <router-view />
+  </div>
+</template>
+```
+
+### Update Routes With Vue-Router
+
+After adding all these views, update your `router.js` file in your `/MovieReviewBoard/frontend/src/` directory like so:
+
+```js
+import Vue from "vue";
+import Router from "vue-router";
+import Home from "@/views/Home.vue";
+import MovieBoard from "@/views/MovieBoard.vue";
+import Callback from "@/components/Callback.vue";
+import store from "@/store";
+
+Vue.use(Router);
+
+const router = new Router({
+  mode: "history",
+  base: process.env.BASE_URL,
+  routes: [
+    {
+      path: "/callback",
+      name: "callback",
+      component: Callback
+    },
+    {
+      path: "/",
+      name: "home",
+      component: Home
+    },
+    {
+      path: "/profile",
+      name: "profile",
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () =>
+        import(/* webpackChunkName: "about" */ "./views/Profile.vue")
+    },
+    {
+      path: "/movieboard",
+      name: "movieboard",
+      component: MovieBoard
+    }
+  ]
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.path === "/movieboard" && !store.getters.isAuthenticated) {
+    store.dispatch("login", { target: to.path });
+  }
+
+  return next();
+});
+
+export default router;
+```
+
+This file defines routes for your profile and movieboard views. It also defines a *beforeEach* navigation guard that prompts a user to login if they are trying to access the movieboard view and they are not logged in.
+
+## Improving State Management And Consuming The API With Vue.js
+
+In this section, you will move all application-wide state management to your Vuex store. You will create a module that manages the authentication state and another that manages your movies. For starters, delete the `/MovieReviewBoard/frontend/src/store.js` file that was generated when you scaffolded your Vue app in part 1. Then, create a store directory in `/MovieReviewBoard/frontend/src/`. In this directory, create an `index.js` file and add the following code for registering your **auth** and **movie** modules with the Vuex store:
+
+```js
+import Vue from "vue";
+import Vuex from "vuex";
+import movie from "./modules/movie";
+import auth from "./modules/auth";
+
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+  modules: {
+    movie,
+    auth
+  }
+});
+```
+
+Having referenced the **auth** and **movie** modules, you need to create them. To create your **auth** module, transfer all the methods in your authentication service to actions in the **auth** module. To do that, delete the *auth* directory in `/MovieReviewBoard/frontend/` and create a **modules** directory in `/MovieReviewBoard/frontend/src/store`. In the modules directory, create an *auth* directory and add the following code snipped in an `index.js` file:
+
+```js
+import authConfig from "./../../../../auth_config.json";
+import auth0 from "auth0-js";
+import EventBus from "./../../../../event-bus";
+
+const webAuth = new auth0.WebAuth({
+  domain: authConfig.domain,
+  redirectUri: `${window.location.origin}/callback`,
+  clientID: authConfig.clientId,
+  audience: authConfig.audience,
+  responseType: "token id_token",
+  scope: "openid profile email"
+});
+
+const state = {
+  userProfile: {},
+  accessToken: null,
+  idToken: null,
+  tokenExpiry: null
+};
+
+const mutations = {
+  SET_ACCESS_TOKEN(state, payload) {
+    state.accessToken = payload;
+  },
+  SET_USER_PROFILE(state, payload) {
+    state.userProfile = payload;
+  },
+  SET_ID_TOKEN(state, payload) {
+    state.idToken = payload;
+  },
+  SET_TOKEN_EXPIRY(state, payload) {
+    state.tokenExpiry = payload;
+  }
+};
+const actions = {
+  localLogin(context, payload) {
+    context.commit("SET_ID_TOKEN", payload.idToken);
+    context.commit("SET_ACCESS_TOKEN", payload.accessToken);
+    context.commit("SET_USER_PROFILE", payload.idTokenPayload);
+
+    // Convert the JWT expiry time from seconds to milliseconds
+    context.commit(
+      "SET_TOKEN_EXPIRY",
+      new Date(payload.idTokenPayload.exp * 1000)
+    );
+
+    localStorage.setItem("loggedIn", "true");
+
+    EventBus.$emit("login");
+  },
+  logOut(context) {
+    localStorage.removeItem("loggedIn", "true");
+    context.state.accessToken = null;
+    context.state.idToken = null;
+    context.state.tokenExpiry = null;
+    context.state.profile = null;
+
+    webAuth.logout({
+      returnTo: window.location.origin,
+      clientID: authConfig.clientId
+    });
+  },
+  handleAuthentication(context) {
+    return new Promise((resolve, reject) => {
+      webAuth.parseHash((err, authResult) => {
+        if (err) {
+          reject(err);
+        } else {
+          context.dispatch("localLogin", authResult);
+          resolve(authResult.idToken);
+        }
+      });
+    });
+  },
+  renewTokens(context) {
+    return new Promise((resolve, reject) => {
+      if (localStorage.getItem("loggedIn") !== "true") {
+        return reject("Not logged in");
+      }
+
+      webAuth.checkSession({}, (err, authResult) => {
+        if (err) {
+          reject(err);
+        } else {
+          context.dispatch("localLogin", authResult);
+          resolve(authResult);
+        }
+      });
+    });
+  },
+  login(context, customState) {
+    webAuth.authorize({
+      appState: customState
+    });
+  }
+};
+const getters = {
+  userProfile: state => state.userProfile,
+  accessToken: state => state.accessToken,
+  isAuthenticated: state => {
+    return (
+      Date.now() < state.tokenExpiry &&
+      localStorage.getItem("loggedIn") === "true"
+    );
+  }
+};
+
+const authModule = {
+  state,
+  mutations,
+  actions,
+  getters
+};
+
+export default authModule;
+```
+
+This module keeps a state object with all the authentication state, like the user profile, access token, and others. Then, it defines *mutations* which are the only methods that can directly modify the state. Then, it adds an *actions* which are methods from your authentication service which implement authentication and call mutations anytime they need to update state. Finally, this module defines a *getters* object which defines all the getters for state variables in your store. Notice the additions of new actions like *logOut* (implements log out) and *renewTokens* (renews tokens once they expire).
+
+With the *auth* module in place, you need to create the *movie* module. For that, go ahead and create a movie directory in `/MovieReviewBoard/frontend/src/store/modules`. Then, create an `index.js` file in it, with the following code snippet:
+
+```js
+import axios from "axios";
+
+const SERVER_URL = "http://localhost:8888/graphql";
+
+const state = {
+  movies: []
+};
+
+const mutations = {
+  UPDATE_MOVIES(state, payload) {
+    state.movies = payload;
+  },
+  UPDATE_MOVIE_RATING(state, payload) {
+    if (state.movies.length > 0) {
+      state.movies.forEach(movie => {
+        if (payload.id == movie.id) {
+          movie.rating = payload.rating;
+        }
+      });
+    }
+  }
+};
+
+const actions = {
+  getMovies(context, payload) {
+    axios({
+      method: "POST",
+      url: SERVER_URL,
+      data: {
+        query: `
+					{
+						findAllMovies{
+							id
+							title
+							director{
+								firstName
+								lastName
+							}
+							rating
+							releaseDate
+						}
+					}`
+      },
+      headers: { authorization: `Bearer ${payload}` }
+    })
+      .then(response => {
+        context.commit("UPDATE_MOVIES", response.data.data.findAllMovies);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  updateMovieRating(context, payload) {
+    axios({
+      method: "POST",
+      url: SERVER_URL,
+      data: {
+        query: `
+					mutation {
+						updateMovieRating(movieId: ${payload.id}, vote: ${payload.vote})
+					}`
+      },
+      headers: { Authorization: `Bearer ${payload.accessToken}` }
+    })
+      .then(response => {
+        payload.rating = response.data.data.updateMovieRating;
+        context.commit("UPDATE_MOVIE_RATING", payload);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+};
+const getters = {
+  movies: state => state.movies
+};
+
+const movieModule = {
+  state,
+  mutations,
+  actions,
+  getters
+};
+
+export default movieModule;
+```
+
+This module only keeps the state of your movies. It implements mutations to update `movies` state variables and also to update the rating of a particular movie. It has two actions, one for getting the movies from the API and updating the `movies` state variable and another for updating the rating of a particular movie using the `UPDATE_MOVIE_RATING` mutation. 
+
+With that covered, if you run both of your applications, open your browser and visit your frontend at [http://localhost:8080](http://localhost:8080)
+
+![MovieReviewBoard Homepage](homepage.png)
+
+If you click the **Login Here** button and log in, you should see the following *movieboard* page:
+
+![MovieReviewBoard Page](movieboard.png)
+
+Then, click the profile button, you should see a view like the following:
+
+![Profile page](profile.png)
+
+
+## Managing App Refresh Through Silent Authentication
+
+Right now, if you refresh your *movieboard* view, your page will become blank. This is because your access token is stored in your browser's memory and on reload it is lost. To solve this issue, you need to renew your tokens on page refresh if you are still authenticated. To do that, add the following code snippet to the script tag of your `App.vue` file.
+
+```html
+<script>
+import { mapGetters } from "vuex";
+
+export default {
+  name: "app",
+  created() {
+		
+    if (localStorage.getItem("loggedIn") === "true" && !this.accessToken) {
+      this.$store
+        .dispatch("renewTokens")
+        .then(() => {
+          this.$store.dispatch("getMovies", this.accessToken);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  },
+  computed: {
+    ...mapGetters(["accessToken", "isAuthenticated"])
+  }
+};
+</script>
+```
+
+With this code in place, your application should now display your content on refresh.
+
+# Conclusion
+
+This marks the end of this series on Vue.js, Spring Boot, Kotlin and GraphQL. In this part, you learned how to create your views using components, manage application wide state using Vuex store, polish the UI of your application using Bootstrap, Font Awesome, and Google Fonts. On the backend, you learned how to create GraphQL API using schemas and resolvers. To learn more about Vue.js visit the [official home page](https://vuejs.org/). In addition, to learn more about Spring Boot and Kotlin visit this [guide from the Spring team](https://spring.io/guides/tutorials/spring-boot-kotlin/). Last but not least, if you want to learn more about GraphQL, check out their [official homepage](https://graphql.org/).
+
+
