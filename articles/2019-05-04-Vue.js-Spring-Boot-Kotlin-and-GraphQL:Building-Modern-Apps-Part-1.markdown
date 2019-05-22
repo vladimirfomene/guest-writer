@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Vue.js, Spring Boot, Kotlin, and GraphQL: Building Modern Apps - Part 1"
-description: "Building modern web apps using Vue.js for the frontend and a Spring Boot Kotlin GraphQL API for the backend."
+description: "Building modern web apps using Vue.js for the frontend and a Spring Boot, Kotlin, GraphQL API for the backend."
 date: "2019-05-04 08:30"
 author:
   name: "Vladimir Fomene"
@@ -21,7 +21,7 @@ To effectively follow this tutorial, you will need the following tools installed
 * JDK: Since [Kotlin](https://kotlinlang.org/) is a JVM based language and you will bootstrap Spring Boot with JDK 8, you need to have installed JDK 8 or above. If you don't have it installed, you can get it [here](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * Node.js and NPM for your frontend development. If you don't have Node.js installed, [checkout this resource](https://nodejs.org/en/download/). To check if you have it installed run `node -v` in your command line and you should see the version of Node.js that was installed. Don't worry about NPM, most Node.js installations come with NPM.
 * Vue CLI: Install it using this [resource](https://cli.vuejs.org/guide/installation.html) if you don't already have it. This page also shows you how to inspect which version of Vue is installed on your system. Vue CLI is a command line tool for scaffolding Vue.js apps. It is Vue's equivalent of [Create React App](https://facebook.github.io/create-react-app/) for React.js.
-* Finally, any text editor or IDE of your choice, though I will recommend [VSCode](https://code.visualstudio.com/) and [IntelliJ IDEA](https://www.jetbrains.com/idea/).
+* Finally, any text editor or IDE of your choice, though I will recommend [VSCode](https://code.visualstudio.com/) or [IntelliJ IDEA](https://www.jetbrains.com/idea/).
 
 In addition to these tools, this tutorial assumes beginner knowledge in [Spring Boot and Kotlin](https://spring.io/guides/tutorials/spring-boot-kotlin/), [Vue.js](https://vuejs.org/), [Vuex](https://vuex.vuejs.org/), and [Vue Router](https://router.vuejs.org/).
 
@@ -57,7 +57,7 @@ Now, go ahead and generate your project. This will download a .zip file in your 
 
 >**Note:** By default, the servlet container in Spring Boot listens on port 8080, therefore your system will not allow any other program to listen on that port. Unfortunately, Webpack (the server used by Vue.js) also runs on port 8080 so your system will not allow you to run both programs at the same time. To solve this problem, go to `/MovieReviewBoard/backend/src/main/resources/application.properties` file in your app and add `server.port=8888` to it. Now Spring Boot will listen on port 8888 instead of 8080.
 
-Next, create a helloworld endpoint in your Spring Boot app by creating a `HelloWorldController.kt` in your `com.example.MovieReviewBoard` package. After adding in the line package `com.example.MovieReviewBoard` to the top of that new file, add in the following code:.
+Next, create a helloworld endpoint in your Spring Boot app by creating a `HelloWorldController.kt` in your `com.example.MovieReviewBoard` package. After adding the line `package com.example.MovieReviewBoard` to the top of that new file, add in the following code:.
 
 ```kotlin
 import org.springframework.boot.web.servlet.FilterRegistrationBean
