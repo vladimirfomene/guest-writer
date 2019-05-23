@@ -43,7 +43,7 @@ Now that you have an idea on what you will build, head to [Spring Initializr](ht
 
 * Project: Gradle Project
 * Language: Kotlin
-* Spring Boot: 2.1.4
+* Spring Boot: 2.1.5
 * Group: com.example
 * Artifact: MovieReviewBoard
 
