@@ -228,7 +228,7 @@ security.oauth2.resource.id=<YOUR-AUTH0-API-IDENTIFIER>
 security.oauth2.resource.jwk.keySetUri=https://<YOUR-AUTH0-DOMAIN>/.well-known/jwks.json
 ```
 
-With that covered, the **helloworld** endpoint of your API is now secured. If you run both applications and then visit [http://localhost:8080/#/about](http://localhost:8080/#/about) in your browser and click on the **call API** button, you should see the page display an error message with a 401 status which means you are not authorized to see the content at the **helloworld** endpoint. Now, your about page should look like the following: 
+With that covered, the **helloworld** endpoint of your API is now secured. If you run both applications and then visit [http://localhost:8080/#/about](http://localhost:8080/#/about) in your browser and click on the **Call API** button, you should see the page display an error message with a 401 status which means you are not authorized to see the content at the **helloworld** endpoint. Now, your about page should look like the following: 
 
 ![Unauthorized Request](./unauthorized-request.png)
 
@@ -441,7 +441,7 @@ export default {
 </script>
 ```
 
-Notice the addition of the break and button tag in the template. The button tag has an event listener `@click` which listens for a click event on the button and calls the `login()` method which kickstarts the authentication process for your application. If you run both of your servers, authenticate and click on the **call API** button, you should see the following.
+Notice the addition of the break and button tag in the template. The button tag has an event listener `@click` which listens for a click event on the button and calls the `login()` method which kickstarts the authentication process for your application. If you run both of your servers, authenticate and click on the **Call API** button, you should see the following.
 
 ![HelloWorld Message](./helloworld-from-server.png)
 
