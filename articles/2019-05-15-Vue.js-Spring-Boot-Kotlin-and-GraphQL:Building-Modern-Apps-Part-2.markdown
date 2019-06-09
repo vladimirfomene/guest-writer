@@ -275,7 +275,7 @@ class Mutation(val directorRepository: DirectorRepository, val movieRepository: 
 }
 ```
 
-The above methods are just a Kotlin implementation of the mutations in your GraphQL schemas. Above methods, do exactly what their names suggest they do. Having created your mutation resolver, now you need to create your query resolver. To do that, create a `Query.kt` file in the `com.example.MovieReviewBoard.resolver` package and add the following queries to it:
+The above methods are just a Kotlin implementation of the mutations in your GraphQL schemas that do exactly what their names suggest they do. Having created your mutation resolver, now you need to create your query resolver. To do that, create a `Query.kt` file in the `com.example.MovieReviewBoard.resolver` package and add the following queries to it:
 
 ```kotlin
 package com.example.MovieReviewBoard.resolver
