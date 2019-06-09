@@ -16,7 +16,7 @@ related:
 
 ## Quick Reminder of Part 1
 
-In part one of this series, you bootstrapped your frontend and backend and secured them with Auth0. You also saw how you could consume data from an unsecured and secured backend API. In this part, you will focus on improving state management with [Vuex](https://vuex.vuejs.org/), routing and improving your frontend's UI with Bootstrap, Google Fonts, and Font Awesome. On the backend, you will build a GraphQL API with Spring Boot and Kotlin. To follow along, you can fork the [completed application from the first part of this series on GitHub](https://github.com/vladimirfomene/MovieReviewBoard-Part-1) or just use the one you developed.
+In part one of this series, you bootstrapped your frontend and backend and secured them with Auth0. You also saw how you could consume data from an unsecured and secured backend API. In this part, you will focus on improving state management with [Vuex](https://vuex.vuejs.org/), routing and improving your frontend's UI with Bootstrap, Google Fonts, and Font Awesome. On the backend, you will build a GraphQL API with Spring Boot and Kotlin. To follow along, you can fork and clone the [completed application from the first part of this series on GitHub](https://github.com/vladimirfomene/MovieReviewBoard-Part-1) or just use the one you developed.
 
 ## Build Your GraphQL API
 
@@ -28,16 +28,16 @@ Before you start building your API, you need to have a basic understanding of Gr
 
 dependencies {
     //leave everything else unchanged
-    implementation 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
-		implementation 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
-		implementation 'com.graphql-java:graphql-java-tools:5.2.4'
+  implementation 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
+	implementation 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
+	implementation 'com.graphql-java:graphql-java-tools:5.2.4'
 }
 //leave everything else unchanged
 ```
 
-The `graphql-spring-boot-starter` dependency adds an implementation of the GraphQL specification to your project and a servlet that support `GET` and `POST` requests for GraphQL queries at [http://localhost:8888/graphql](http://localhost:8888/graphql), `graphiql-spring-boot-starter` adds a GraphQL in browser client which you can use to send queries to your API, and `graphql-java-tools` parses GraphQL schemas and maps them to Java entities.
+The `graphql-spring-boot-starter` dependency adds an implementation of the GraphQL specification to your project and a servlet that supports `GET` and `POST` requests for GraphQL queries at [http://localhost:8888/graphql](http://localhost:8888/graphql), `graphiql-spring-boot-starter` adds a GraphQL in browser client which you can use to send queries to your API, and `graphql-java-tools` parses GraphQL schemas and maps them to Java entities.
 
-### Create Your GraphQL Schema And Supporting Entities
+### Create your GraphQL schema and supporting entities
 
 With these dependencies in place, you need to create your [GraphQL schemas](https://graphql.org/learn/schema/). Schemas define your API's data types, the operations you can carry out on these data types and the relationship between these types. Start by creating a **graphql** directory in the `/MovieReviewBoard/backend/src/main/resources` directory. Next, create a `movie.qls` file in this directory and add the following code snippet to it:
 
@@ -91,7 +91,7 @@ extend type Mutation {
 
 This schema code snippet creates a **Director** type by specifying its attributes and their types. This **Director** type represents the director entity you will create in your *H2* database. It also creates an *input* type, **DirectorInput** for creating new directors. By extending `Query` and `Mutation`, this schema is adding to the list of operators you created in your **Movie** schema.
 
-With your schemas in place, the `graphql-java-tools` library is now waiting for you to create entities it will map to these schemas. To create a **Movie** entity, create `movie` package in `com.example.MovieReviewBoard` package, then create a `Movie.kt` file and add the following code snippet to it:
+With your schemas in place, the `graphql-java-tools` library is now waiting for you to create entities that will map to these schemas. To create a **Movie** entity, create `movie` package in `com.example.MovieReviewBoard` package, then create a `Movie.kt` file and add the following code snippet to it:
 
 ```kotlin
 package com.example.MovieReviewBoard.movie
@@ -219,7 +219,7 @@ fun main(args: Array<String>) {
 
 ### Creating GraphQL API Resolvers
 
-With your application data in place, you now need to create mutation and query resolvers that GraphQL will call each time a request comes in. To start, create a `resolver` package for these resolvers in your `com.example.MovieReviewBoard` package. Next, create a `Mutation.kt` file in this package and add the following mutations to it:
+With your application's data in place, you now need to create mutation and query resolvers that GraphQL will call each time a request comes in. To start, create a `resolver` package for these resolvers in your `com.example.MovieReviewBoard` package. Next, create a `Mutation.kt` file in this package and add the following mutations to it:
 
 ```Kotlin
 package com.example.MovieReviewBoard.resolver
@@ -274,7 +274,7 @@ class Mutation(val directorRepository: DirectorRepository, val movieRepository: 
 }
 ```
 
-The above methods are just a Kotlin implementation of the mutations in your GraphQL schemas. Above methods, do exactly what their names suggest they do. Having created your mutation resolver, now you need to create your query resolver. To do that, create a `Query.kt` file in the `com.example.MovieReviewBoard.resolver` package and add the following queries to it:
+The above methods are just a Kotlin implementation of the mutations in your GraphQL schemas that do exactly what their names suggest they do. Having created your mutation resolver, now you need to create your query resolver. To do that, create a `Query.kt` file in the `com.example.MovieReviewBoard.resolver` package and add the following queries to it:
 
 ```kotlin
 package com.example.MovieReviewBoard.resolver
@@ -346,7 +346,7 @@ With that covered, if you open your [GraphQL client](http://localhost:8888/graph
 
 With a fully functional GraphQL API, in this section, you will focus on creating a beautiful frontend and using Vuex's store to manage the state of your application.
 
-### Updating Your Frontend's UI
+### Updating your frontend's UI
 
 To create your beautiful frontend, start by installing the [Bootstrap framework](https://getbootstrap.com/) on your frontend. To do that, navigate to `/MovieReviewBoard/frontend` in your command line and execute the following command:
 
@@ -354,7 +354,7 @@ To create your beautiful frontend, start by installing the [Bootstrap framework]
 npm install bootstrap --save
 ```
 
-Then, add it to your Vue app by adding the following import to your `main.js` in `/MovieReviewBoard/frontend/src/`.
+Then, add it to your Vue app by adding the following import to your `/MovieReviewBoard/frontend/src/main.js` file:
 
 ```js
 //leave everything else unchanged
@@ -399,7 +399,7 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 //leave everything else unchanged
 ```
 
-Having installed all the tools to create a beautiful frontend installed, now go ahead and create your views and components. For starters, update the view of your homepage by replacing the code in `/MovieReviewBoard/frontend/src/views/Home.vue` with the following:
+Having installed all the tools to create a beautiful frontend, go ahead and create your views and components. For starters, update the view of your homepage by replacing the code in `/MovieReviewBoard/frontend/src/views/Home.vue` with the following:
 
 ```html
 <template>
@@ -430,7 +430,7 @@ export default {
 <style scoped></style>
 ```
 
-This view has no style associated with it. It depends on two components *NavBarComponent*, *LoginComponent* which are part of the view's template and registered in the script of the view. This view also binds the `brandTitle` data property to the *NavBarComponent*. Now, you need to create the *NavBarComponent* and *LoginComponent*. To do that, go to your `/MovieReviewBoard/frontend/src/components/` directory and create a `NavBarComponent.vue` file with the following code:
+This view has no style associated with it. It depends on two components *NavBarComponent* and *LoginComponent* which are part of the view's template and registered in the script of the view. This view also binds the `brandTitle` data property to the *NavBarComponent*. Now, you need to create the *NavBarComponent* and *LoginComponent*. To do that, go to your `/MovieReviewBoard/frontend/src/components/` directory and create a `NavBarComponent.vue` file with the following code:
 
 ```html
 <template>
