@@ -92,7 +92,7 @@ extend type Mutation {
 
 This schema code snippet creates a **Director** type by specifying its attributes and their types. This **Director** type represents the director entity you will create in your *H2* database. It also creates an *input* type, **DirectorInput** for creating new directors. By extending `Query` and `Mutation`, this schema is adding to the list of operators you created in your **Movie** schema.
 
-With your schemas in place, the `graphql-java-tools` library is now waiting for you to create entities it will map to these schemas. To create a **Movie** entity, create `movie` package in `com.example.MovieReviewBoard` package, then create a `Movie.kt` file and add the following code snippet to it:
+With your schemas in place, the `graphql-java-tools` library is now waiting for you to create entities that will map to these schemas. To create a **Movie** entity, create `movie` package in `com.example.MovieReviewBoard` package, then create a `Movie.kt` file and add the following code snippet to it:
 
 ```kotlin
 package com.example.MovieReviewBoard.movie
