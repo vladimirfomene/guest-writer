@@ -811,7 +811,7 @@ This file defines routes for your profile and movieboard views. It also defines 
 
 ## Improving State Management And Consuming The API With Vue.js
 
-In this section, you will move all application-wide state management to your Vuex store. You will create a module that manages the authentication state and another that manages your movies. For starters, delete the `/MovieReviewBoard/frontend/src/store.js` file that was generated when you scaffolded your Vue app in part 1. Then, create a store directory in `/MovieReviewBoard/frontend/src/`. In this directory, create an `index.js` file and add the following code for registering your **auth** and **movie** modules with the Vuex store:
+In this section, you will move all application-wide state management to your Vuex store. You will create a module that manages the authentication state and another that manages your movies. For starters, delete the `/MovieReviewBoard/frontend/src/store.js` file that was generated when you scaffolded your Vue app in part 1. Then, create a `store` directory in `/MovieReviewBoard/frontend/src/`. In this directory, create an `index.js` file and add the following code for registering your **auth** and **movie** modules with the Vuex store:
 
 ```js
 import Vue from "vue";
