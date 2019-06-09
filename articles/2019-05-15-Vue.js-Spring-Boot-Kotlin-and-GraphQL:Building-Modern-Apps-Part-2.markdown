@@ -401,7 +401,7 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 //leave everything else unchanged
 ```
 
-Having installed all the tools to create a beautiful frontend installed, now go ahead and create your views and components. For starters, update the view of your homepage by replacing the code in `/MovieReviewBoard/frontend/src/views/Home.vue` with the following:
+Having installed all the tools to create a beautiful frontend, go ahead and create your views and components. For starters, update the view of your homepage by replacing the code in `/MovieReviewBoard/frontend/src/views/Home.vue` with the following:
 
 ```html
 <template>
