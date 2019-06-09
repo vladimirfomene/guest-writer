@@ -338,7 +338,7 @@ class SecurityConfig : ResourceServerConfigurerAdapter() {
 }
 ```
 
-With that covered, if you open your [GraphQL client](http://localhost:8888/graphiql) in your browser and execute a query for all movies you should see a message as below. 
+With that covered, run your backend server by executing `./gradlew bootRun` in `MovieReviewBoard/backend/` via the command line or running it in your IDE. Now, open your [GraphQL client](http://localhost:8888/graphiql) in your browser and execute a query for all movies like so. 
 
 ![unauthorize api access](./unauthorized-api.png)
 
@@ -495,7 +495,7 @@ export default {
 </style>
 ```
 
-This component gets the `brandTitle` data from `Home.vue` by declaring a [props](https://vuejs.org/v2/guide/components-props.html) property in the script tag of the component. The component's template registers the `logout` click event handler by declaring `logout` as the value of the `@click` attribute on the log out button in the template. The `logout` method calls the `logOut` action from the Vuex store. The component also registers `goToProfile()` on the profile button which helps the user navigate to the profile view using Vue Router. The unordered list of the template has a `v-show` attribute with a value of `isAuthenticated`. This means Vue will call the `isAuthenticated()` computed property and if it returns a truthy value it will render the list, otherwise, it will not render it. Notice how your component's style finally makes use of the Roboto font from Google Fonts. Next, create your *LoginComponent* by creating a `LoginComponent.vue` file in `/MovieReviewBoard/frontend/src/` with the following code:
+This component gets the `brandTitle` data from `Home.vue` by declaring a [props](https://vuejs.org/v2/guide/components-props.html) property in the script tag of the component. The component's template registers the `logout` click event handler by declaring `logout` as the value of the `@click` attribute on the log out button in the template. The `logout` method calls the `logOut` action from the Vuex store. The component also registers `goToProfile()` on the profile button which helps the user navigate to the profile view using Vue Router. The unordered list of the template has a `v-show` attribute with a value of `isAuthenticated`. This means Vue will call the `isAuthenticated()` computed property and if it returns a truthy value it will render the list, otherwise, it will not render it. Notice how your component's style finally makes use of the Roboto font from Google Fonts. Next, create your *LoginComponent* by creating a `LoginComponent.vue` file in `/MovieReviewBoard/frontend/src/components/` with the following code:
 
 ```html
 <template>
@@ -636,7 +636,7 @@ export default {
 </style>
 ```
 
-This view registers the *NavBarComponent* and the *MovieComponent* because its template depends on them. It uses the Vue instance's *created* hook to call the *getMovies* action of your Vuex store if there is an access token in memory. While calling this `getMovies` action, the view passes the access token to be used for authentication on the API. This ensures the movies from your GraphQL API are available in this view. This view then uses the `v-for` directive to render the data for each movie in a *Moviecomponent*. To create this component, create a `MovieComponent.vue` file in your `/MovieReviewBoard/frontend/src/components/` directory and add the following code to it.
+This view registers the *NavBarComponent* and the *MovieComponent* because its template depends on them. It uses the Vue instance's *created* hook to call the *getMovies* action of your Vuex store if there is an access token in memory. While calling this `getMovies` action, the view passes the access token to be used for authentication on the API. This ensures the movies from your GraphQL API are available in this view. This view then uses the `v-for` directive to render the data for each movie in a *MovieComponent*. To create this component, create a `MovieComponent.vue` file in your `/MovieReviewBoard/frontend/src/components/` directory and add the following code to it.
 
 ```html
 <template>
@@ -1037,7 +1037,7 @@ export default movieModule;
 
 This module only keeps the state of your movies. It implements mutations to update `movies` state variables and also to update the rating of a particular movie. It has two actions, one for getting the movies from the API and updating the `movies` state variable and another for updating the rating of a particular movie using the `UPDATE_MOVIE_RATING` mutation. 
 
-With that covered, if you run both of your applications, open your browser and visit your frontend at [http://localhost:8080](http://localhost:8080)
+With that covered, run your backend server by executing `./gradlew bootRun` in `MovieReviewBoard/backend/` via the command line or running it in your IDE, and your frontend by executing `npm run serve` in `MovieReviewBoard/frontend/`. Now, open your browser and visit your frontend at [http://localhost:8080](http://localhost:8080)
 
 ![MovieReviewBoard Homepage](homepage.png)
 
