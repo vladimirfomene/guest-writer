@@ -951,7 +951,7 @@ export default authModule;
 
 This module keeps a state object with all the authentication state, like the user profile, access token, and others. Then, it defines *mutations* which are the only methods that can directly modify the state. Then, it adds an *actions* which are methods from your authentication service which implement authentication and call mutations anytime they need to update state. Finally, this module defines a *getters* object which defines all the getters for state variables in your store. Notice the additions of new actions like *logOut* (implements log out) and *renewTokens* (renews tokens once they expire).
 
-With the *auth* module in place, you need to create the *movie* module. For that, go ahead and create a movie directory in `/MovieReviewBoard/frontend/src/store/modules`. Then, create an `index.js` file in it, with the following code snippet:
+With the *auth* module in place, you need to create the *movie* module. For that, go ahead and create a `movie` directory in `/MovieReviewBoard/frontend/src/store/modules`. Then, create an `index.js` file in it, with the following code snippet:
 
 ```js
 import axios from "axios";
