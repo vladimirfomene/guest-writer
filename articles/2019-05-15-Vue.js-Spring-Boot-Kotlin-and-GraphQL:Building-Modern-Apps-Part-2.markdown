@@ -220,7 +220,7 @@ fun main(args: Array<String>) {
 
 ### Creating GraphQL API Resolvers
 
-With your application data in place, you now need to create mutation and query resolvers that GraphQL will call each time a request comes in. To start, create a `resolver` package for these resolvers in your `com.example.MovieReviewBoard` package. Next, create a `Mutation.kt` file in this package and add the following mutations to it:
+With your application's data in place, you now need to create mutation and query resolvers that GraphQL will call each time a request comes in. To start, create a `resolver` package for these resolvers in your `com.example.MovieReviewBoard` package. Next, create a `Mutation.kt` file in this package and add the following mutations to it:
 
 ```Kotlin
 package com.example.MovieReviewBoard.resolver
