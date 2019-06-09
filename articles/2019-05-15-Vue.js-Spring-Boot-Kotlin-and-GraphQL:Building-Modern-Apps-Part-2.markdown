@@ -432,7 +432,7 @@ export default {
 <style scoped></style>
 ```
 
-This view has no style associated with it. It depends on two components *NavBarComponent*, *LoginComponent* which are part of the view's template and registered in the script of the view. This view also binds the `brandTitle` data property to the *NavBarComponent*. Now, you need to create the *NavBarComponent* and *LoginComponent*. To do that, go to your `/MovieReviewBoard/frontend/src/components/` directory and create a `NavBarComponent.vue` file with the following code:
+This view has no style associated with it. It depends on two components *NavBarComponent* and *LoginComponent* which are part of the view's template and registered in the script of the view. This view also binds the `brandTitle` data property to the *NavBarComponent*. Now, you need to create the *NavBarComponent* and *LoginComponent*. To do that, go to your `/MovieReviewBoard/frontend/src/components/` directory and create a `NavBarComponent.vue` file with the following code:
 
 ```html
 <template>
