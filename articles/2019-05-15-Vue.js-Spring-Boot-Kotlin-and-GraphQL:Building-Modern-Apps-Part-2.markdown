@@ -751,7 +751,7 @@ Next, remove the navigation section from your `App.vue` view so that it now look
 </template>
 ```
 
-### Update Routes With Vue-Router
+## Update Routes With Vue-Router
 
 After adding all these views, update your `router.js` file in your `/MovieReviewBoard/frontend/src/` directory like so:
 
