@@ -356,7 +356,7 @@ To create your beautiful frontend, start by installing the [Bootstrap framework]
 npm install bootstrap --save
 ```
 
-Then, add it to your Vue app by adding the following import to your `main.js` in `/MovieReviewBoard/frontend/src/`.
+Then, add it to your Vue app by adding the following import to your `/MovieReviewBoard/frontend/src/main.js` file:
 
 ```js
 //leave everything else unchanged
