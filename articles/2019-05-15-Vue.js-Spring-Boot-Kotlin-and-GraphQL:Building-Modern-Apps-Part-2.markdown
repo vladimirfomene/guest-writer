@@ -536,7 +536,11 @@ export default {
 </style>
 ```
 
-This component's style changes the font of the welcome text and button and then centralizes the login card. The template adds a **Login Here** button with an anchor tag and also specifies *login* method as the value to `@click.prevent` (*.prevent* is a modifier which prevents the default action of an anchor tag which is to take the user to the specified link) attribute on the anchor tag. This ensures that the *login* method is called when this anchor tag is clicked. This method dispatches to the login action of the Vuex store you will create. Next, go ahead and create a `Profile.vue` file in `/MovieReviewBoard/frontend/src/views/Profile.vue` and the following code snippet for your profile view:
+This component's style changes the font of the welcome text and button and then centralizes the login card. The template adds a **Login Here** button with an anchor tag and also specifies *login* method as the value to `@click.prevent` attribute on the anchor tag. 
+
+> **Note**: *.prevent* is a modifier which prevents the default action of an anchor tag which is to take the user to the specified link
+
+This ensures that the *login* method is called when this anchor tag is clicked. This method dispatches to the login action of the Vuex store you will create. Next, go ahead and create a `Profile.vue` file in `/MovieReviewBoard/frontend/src/views/Profile.vue` and the following code snippet for your profile view:
 
 ```html
 <template>
@@ -745,7 +749,7 @@ Next, remove the navigation section from your `App.vue` view so that it now look
 </template>
 ```
 
-### Update Routes With Vue-Router
+## Update Routes With Vue-Router
 
 After adding all these views, update your `router.js` file in your `/MovieReviewBoard/frontend/src/` directory like so:
 
@@ -805,7 +809,7 @@ This file defines routes for your profile and movieboard views. It also defines 
 
 ## Improving State Management And Consuming The API With Vue.js
 
-In this section, you will move all application-wide state management to your Vuex store. You will create a module that manages the authentication state and another that manages your movies. For starters, delete the `/MovieReviewBoard/frontend/src/store.js` file that was generated when you scaffolded your Vue app in part 1. Then, create a store directory in `/MovieReviewBoard/frontend/src/`. In this directory, create an `index.js` file and add the following code for registering your **auth** and **movie** modules with the Vuex store:
+In this section, you will move all application-wide state management to your Vuex store. You will create a module that manages the authentication state and another that manages your movies. For starters, delete the `/MovieReviewBoard/frontend/src/store.js` file that was generated when you scaffolded your Vue app in part 1. Then, create a `store` directory in `/MovieReviewBoard/frontend/src/`. In this directory, create an `index.js` file and add the following code for registering your **auth** and **movie** modules with the Vuex store:
 
 ```js
 import Vue from "vue";
@@ -945,7 +949,7 @@ export default authModule;
 
 This module keeps a state object with all the authentication state, like the user profile, access token, and others. Then, it defines *mutations* which are the only methods that can directly modify the state. Then, it adds an *actions* which are methods from your authentication service which implement authentication and call mutations anytime they need to update state. Finally, this module defines a *getters* object which defines all the getters for state variables in your store. Notice the additions of new actions like *logOut* (implements log out) and *renewTokens* (renews tokens once they expire).
 
-With the *auth* module in place, you need to create the *movie* module. For that, go ahead and create a movie directory in `/MovieReviewBoard/frontend/src/store/modules`. Then, create an `index.js` file in it, with the following code snippet:
+With the *auth* module in place, you need to create the *movie* module. For that, go ahead and create a `movie` directory in `/MovieReviewBoard/frontend/src/store/modules`. Then, create an `index.js` file in it, with the following code snippet:
 
 ```js
 import axios from "axios";
@@ -1082,7 +1086,7 @@ export default {
 
 With this code in place, your application should now display your content on refresh.
 
-# Conclusion
+## Conclusion
 
 This marks the end of this series on Vue.js, Spring Boot, Kotlin and GraphQL. In this part, you learned how to create your views using components, manage application wide state using Vuex store, polish the UI of your application using Bootstrap, Font Awesome, and Google Fonts. On the backend, you learned how to create GraphQL API using schemas and resolvers. To learn more about Vue.js visit the [official home page](https://vuejs.org/). In addition, to learn more about Spring Boot and Kotlin visit this [guide from the Spring team](https://spring.io/guides/tutorials/spring-boot-kotlin/). Last but not least, if you want to learn more about GraphQL, check out their [official homepage](https://graphql.org/).
 
