@@ -154,7 +154,7 @@ interface DirectorRepository : CrudRepository<Director, Long> {
 }
 ```
 
-With your entities and repositories in place, you need to add some dummy data to your application, move your [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) support to your main class and delete the *HelloWorldController* in the `com.example.MovieReviewBoard` package. After doing that, your `MovieReviewBoardApplication.kt` file in the `com.example.MovieReviewBoard` package should look like below.
+With your entities and repositories in place, you need to add some dummy data to your application. Move your [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) support (`simpleCorsFilter()`) from *HelloWorldController* to *MovieReviewBoardApplication*. Once that is done, delete the *HelloWorldController* in the `com.example.MovieReviewBoard` package. After doing that, your `MovieReviewBoardApplication.kt` file in the `com.example.MovieReviewBoard` package should look like the following:
 
 ```kotlin
 package com.example.MovieReviewBoard
