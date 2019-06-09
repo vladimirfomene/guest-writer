@@ -348,7 +348,7 @@ With that covered, if you open your [GraphQL client](http://localhost:8888/graph
 
 With a fully functional GraphQL API, in this section, you will focus on creating a beautiful frontend and using Vuex's store to manage the state of your application.
 
-### Updating Your Frontend's UI
+### Updating your frontend's UI
 
 To create your beautiful frontend, start by installing the [Bootstrap framework](https://getbootstrap.com/) on your frontend. To do that, navigate to `/MovieReviewBoard/frontend` in your command line and execute the following command:
 
