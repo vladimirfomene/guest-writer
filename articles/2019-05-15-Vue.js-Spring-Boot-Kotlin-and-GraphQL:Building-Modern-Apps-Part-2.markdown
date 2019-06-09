@@ -538,7 +538,11 @@ export default {
 </style>
 ```
 
-This component's style changes the font of the welcome text and button and then centralizes the login card. The template adds a **Login Here** button with an anchor tag and also specifies *login* method as the value to `@click.prevent` (*.prevent* is a modifier which prevents the default action of an anchor tag which is to take the user to the specified link) attribute on the anchor tag. This ensures that the *login* method is called when this anchor tag is clicked. This method dispatches to the login action of the Vuex store you will create. Next, go ahead and create a `Profile.vue` file in `/MovieReviewBoard/frontend/src/views/Profile.vue` and the following code snippet for your profile view:
+This component's style changes the font of the welcome text and button and then centralizes the login card. The template adds a **Login Here** button with an anchor tag and also specifies *login* method as the value to `@click.prevent` attribute on the anchor tag. 
+
+> **Note**: *.prevent* is a modifier which prevents the default action of an anchor tag which is to take the user to the specified link
+
+This ensures that the *login* method is called when this anchor tag is clicked. This method dispatches to the login action of the Vuex store you will create. Next, go ahead and create a `Profile.vue` file in `/MovieReviewBoard/frontend/src/views/Profile.vue` and the following code snippet for your profile view:
 
 ```html
 <template>
