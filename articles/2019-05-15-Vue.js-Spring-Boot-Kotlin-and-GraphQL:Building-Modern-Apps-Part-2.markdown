@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Vue.js, Spring Boot, Kotlin, and GraphQL: Building Modern Apps - Part 2"
-description: "Building modern web apps using Vue.js for the frontend and a Spring Boot Kotlin GraphQL API for the backend."
+description: "The second part in the series for building modern web apps using Vue.js for the frontend and a Spring Boot Kotlin GraphQL API for the backend."
 date: "2019-05-15 08:30"
 author:
   name: "Vladimir Fomene"
@@ -12,19 +12,18 @@ related:
 - 2017-11-15-an-example-of-all-possible-elements
 ---
 
-# Vue.js, Spring Boot, Kotlin, and GraphQL: Building Modern Apps - Part 2
+**TL:DR:** This article is the continuation of the series on building modern web apps using Vue.js for the frontend and a Spring Boot GraphQL API with Kotlin for the backend. In this part, you will create a GraphQL API using schemas, queries, mutations, and entities stored in a [H2](https://www.h2database.com/html/main.html) database engine. Learn how to manage the state of an application using Vuex, improve route handling and last but not the least, improve the UI of your application using [Bootstrap](https://getbootstrap.com/), [Font Awesome](https://fontawesome.com/) and [Google Fonts](https://fonts.google.com/). For a quick glance of the application you will have at the end of this series, [clone this GitHub repository.](https://github.com/vladimirfomene/MovieReviewBoard)
 
-**TL:DR:** This article is the continuation of the series on building modern web apps using Vue.js for the frontend and a Spring Boot GraphQL API with Kotlin for the backend. In this part, you will create a GraphQL API using schemas, queries, mutations, and entities stored in a [H2](https://www.h2database.com/html/main.html) database engine. Learn how to manage the state of an application using Vuex, improve route handling and last but not the least, improve the UI of your application using [Bootstrap](https://getbootstrap.com/), [Font Awesome](https://fontawesome.com/) and [Google Fonts](https://fonts.google.com/). For a quick glance at the application you will have at the end of this series, [clone this GitHub repository](https://github.com/vladimirfomene/MovieReviewBoard)
-
-## Quick reminder of Part 1
+## Quick Reminder of Part 1
 
 In part one of this series, you bootstrapped your frontend and backend and secured them with Auth0. You also saw how you could consume data from an unsecured and secured backend API. In this part, you will focus on improving state management with [Vuex](https://vuex.vuejs.org/), routing and improving your frontend's UI with Bootstrap, Google Fonts, and Font Awesome. On the backend, you will build a GraphQL API with Spring Boot and Kotlin. To follow along, you can fork the [completed application from the first part of this series on GitHub](https://github.com/vladimirfomene/MovieReviewBoard-Part-1) or just use the one you developed.
 
-## Build your GraphQL API
+## Build Your GraphQL API
 
-Before you start building your API, you need to have a basic understanding of GraphQL. According to the [official website](https://graphql.org/), "GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data". What does this mean? Well, it means GraphQL will describe the data offered by your API by creating types, relationships, queries (operations to get data) and mutations(operations to modify data) in its schema and provide the necessary environment to run the queries and mutations. Before you start creating all the necessary ingredients for GraphQL, you first need to add GraphQL support to your Spring Boot app. To do that, add the following dependencies to your `build.gradle` file in `/MovieReviewBoard/backend/`
+Before you start building your API, you need to have a basic understanding of GraphQL. According to the [official website](https://graphql.org/), "GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data". What does this mean? Well, it means GraphQL will describe the data offered by your API by creating types, relationships, queries (operations to get data) and mutations (operations to modify data) in its schema and provide the necessary environment to run the queries and mutations. Before you start creating all the necessary ingredients for GraphQL, you first need to add GraphQL support to your Spring Boot app. To do that, add the following dependencies to your `build.gradle` file in `/MovieReviewBoard/backend/`
 
 ```gradle
+// backend/build.gradle
 //leave everything else unchanged
 
 dependencies {
@@ -154,7 +153,7 @@ interface DirectorRepository : CrudRepository<Director, Long> {
 }
 ```
 
-With your entities and repositories in place, you need to add some dummy data to your application, move your [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) support to your main class and delete the *HelloWorldController* in the `com.example.MovieReviewBoard` package. After doing that, your `MovieReviewBoardApplication.kt` file in the `com.example.MovieReviewBoard` package should look like below.
+With your entities and repositories in place, you need to add some dummy data to your application, move your [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) support to your main class and delete the *HelloWorldController* in the `com.example.MovieReviewBoard` package. After doing that, your `MovieReviewBoardApplication.kt` file in the `com.example.MovieReviewBoard` package should look like below. Notice the addition of an `init` function which is used to persist some movie data to your application.
 
 ```kotlin
 package com.example.MovieReviewBoard
@@ -318,8 +317,7 @@ class Query(val movieRepository: MovieRepository, val directorRepository: Direct
 }
 ```
 
-With that covered, your GraphQL API is ready, but not secured. To secure it, you have to protect `/graphql` which is the endpoint through which your API will be receiving requests. To secure this endpoint
-update your `SecurityConfig.kt` file in the `com.example.MovieReviewBoard.security` package like so:
+With that covered, your GraphQL API is ready, but not secured. To secure it, you have to protect `/graphql` which is the endpoint through which your API will be receiving requests. To secure this endpoint update your `SecurityConfig.kt` file in the `com.example.MovieReviewBoard.security` package like so:
 
 ```kotlin
 //leave everything else unchanged
@@ -367,7 +365,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 With this in place, you can now use Bootstrap in your Vue templates. Next, add [Google Fonts](https://fonts.google.com/) to your app by adding the following import in the style section of your `App.vue` file and remove all unnecessary styles from the style section of the view. With that your style section should look like so:
 
 ```html
-<!-- leave everthing else unchanged -->
+<!-- leave everything else unchanged -->
 <style>
 @import url("https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab");
 #app {
