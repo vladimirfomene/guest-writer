@@ -1088,7 +1088,7 @@ export default {
 
 With this code in place, your application should now display your content on refresh.
 
-# Conclusion
+## Conclusion
 
 This marks the end of this series on Vue.js, Spring Boot, Kotlin and GraphQL. In this part, you learned how to create your views using components, manage application wide state using Vuex store, polish the UI of your application using Bootstrap, Font Awesome, and Google Fonts. On the backend, you learned how to create GraphQL API using schemas and resolvers. To learn more about Vue.js visit the [official home page](https://vuejs.org/). In addition, to learn more about Spring Boot and Kotlin visit this [guide from the Spring team](https://spring.io/guides/tutorials/spring-boot-kotlin/). Last but not least, if you want to learn more about GraphQL, check out their [official homepage](https://graphql.org/).
 
