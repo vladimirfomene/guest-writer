@@ -36,7 +36,7 @@ dependencies {
 //leave everything else unchanged
 ```
 
-The `graphql-spring-boot-starter` dependency adds an implementation of the GraphQL specification to your project and a servlet that support `GET` and `POST` requests for GraphQL queries at [http://localhost:8888/graphql](http://localhost:8888/graphql), `graphiql-spring-boot-starter` adds a GraphQL in browser client which you can use to send queries to your API, and `graphql-java-tools` parses GraphQL schemas and maps them to Java entities.
+The `graphql-spring-boot-starter` dependency adds an implementation of the GraphQL specification to your project and a servlet that supports `GET` and `POST` requests for GraphQL queries at [http://localhost:8888/graphql](http://localhost:8888/graphql), `graphiql-spring-boot-starter` adds a GraphQL in browser client which you can use to send queries to your API, and `graphql-java-tools` parses GraphQL schemas and maps them to Java entities.
 
 ### Create Your GraphQL Schema And Supporting Entities
 
