@@ -38,7 +38,7 @@ dependencies {
 
 The `graphql-spring-boot-starter` dependency adds an implementation of the GraphQL specification to your project and a servlet that supports `GET` and `POST` requests for GraphQL queries at [http://localhost:8888/graphql](http://localhost:8888/graphql), `graphiql-spring-boot-starter` adds a GraphQL in browser client which you can use to send queries to your API, and `graphql-java-tools` parses GraphQL schemas and maps them to Java entities.
 
-### Create Your GraphQL Schema And Supporting Entities
+### Create your GraphQL schema and supporting entities
 
 With these dependencies in place, you need to create your [GraphQL schemas](https://graphql.org/learn/schema/). Schemas define your API's data types, the operations you can carry out on these data types and the relationship between these types. Start by creating a **graphql** directory in the `/MovieReviewBoard/backend/src/main/resources` directory. Next, create a `movie.qls` file in this directory and add the following code snippet to it:
 
