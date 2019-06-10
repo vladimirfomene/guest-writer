@@ -28,9 +28,9 @@ Before you start building your API, you need to have a basic understanding of Gr
 
 dependencies {
     //leave everything else unchanged
-  implementation 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
-	implementation 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
-	implementation 'com.graphql-java:graphql-java-tools:5.2.4'
+    implementation 'com.graphql-java:graphql-spring-boot-starter:5.0.2'
+    implementation 'com.graphql-java:graphiql-spring-boot-starter:5.0.2'
+    implementation 'com.graphql-java:graphql-java-tools:5.2.4'
 }
 //leave everything else unchanged
 ```
@@ -188,44 +188,44 @@ import javax.servlet.Filter
 @SpringBootApplication
 class MovieReviewBoardApplication {
 
-	@Bean
-	fun init(movieRepository: MovieRepository, directorRepository: DirectorRepository) = CommandLineRunner {
-		println("Initializing data for our movie and director database tables")
-		// save a couple of movie directors
-		val mutation = Mutation(directorRepository, movieRepository)
-		mutation.newDirector(1, "James", "Cameron")
-		mutation.newDirector(2, "Joe", "Russo")
-		mutation.newDirector(3, "Christopher", "Nolan")
-		mutation.newDirector(4, "Steven", "Spielberg")
-		mutation.newDirector(5, "Tyler", "Perry")
+    @Bean
+    fun init(movieRepository: MovieRepository, directorRepository: DirectorRepository) = CommandLineRunner {
+        println("Initializing data for our movie and director database tables")
+        // save a couple of movie directors
+        val mutation = Mutation(directorRepository, movieRepository)
+        mutation.newDirector(1, "James", "Cameron")
+        mutation.newDirector(2, "Joe", "Russo")
+        mutation.newDirector(3, "Christopher", "Nolan")
+        mutation.newDirector(4, "Steven", "Spielberg")
+        mutation.newDirector(5, "Tyler", "Perry")
 
-		// save a couple of movies
-		mutation.newMovie("Titanic", 1, "18-11-1997", 7)
-		mutation.newMovie("Avengers Endgame", 2, "26-04-2019", 10)
-		mutation.newMovie("Inception", 3, "08-08-2010", 8)
-		mutation.newMovie("Jurassic Park", 4, "09-03-1993", 7)
-		mutation.newMovie("A Madea Family Funeral", 5, "01-03-2019", 7)
-	}
+        // save a couple of movies
+        mutation.newMovie("Titanic", 1, "18-11-1997", 7)
+        mutation.newMovie("Avengers Endgame", 2, "26-04-2019", 10)
+        mutation.newMovie("Inception", 3, "08-08-2010", 8)
+        mutation.newMovie("Jurassic Park", 4, "09-03-1993", 7)
+        mutation.newMovie("A Madea Family Funeral", 5, "01-03-2019", 7)
+    }
 
-	@Bean
-	fun simpleCorsFilter(): FilterRegistrationBean<*> {
-		val source = UrlBasedCorsConfigurationSource()
-		val config = CorsConfiguration()
-		config.allowCredentials = true
-		// *** URL below needs to match the Vue client URL and port ***
-		config.allowedOrigins = Collections.singletonList("http://localhost:8080")
-		config.allowedMethods = Collections.singletonList("*")
-		config.allowedHeaders = Collections.singletonList("*")
-		source.registerCorsConfiguration("/**", config)
-		val bean = FilterRegistrationBean<Filter>(CorsFilter(source))
-		bean.setOrder(Ordered.HIGHEST_PRECEDENCE)
-		return bean
-	}
+    @Bean
+    fun simpleCorsFilter(): FilterRegistrationBean<*> {
+        val source = UrlBasedCorsConfigurationSource()
+        val config = CorsConfiguration()
+        config.allowCredentials = true
+        // *** URL below needs to match the Vue client URL and port ***
+        config.allowedOrigins = Collections.singletonList("http://localhost:8080")
+        config.allowedMethods = Collections.singletonList("*")
+        config.allowedHeaders = Collections.singletonList("*")
+        source.registerCorsConfiguration("/**", config)
+        val bean = FilterRegistrationBean<Filter>(CorsFilter(source))
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE)
+        return bean
+    }
 
 }
 
 fun main(args: Array<String>) {
-	runApplication<MovieReviewBoardApplication>(*args)
+    runApplication<MovieReviewBoardApplication>(*args)
 }
 ```
 
@@ -1013,18 +1013,18 @@ const actions = {
       url: SERVER_URL,
       data: {
         query: `
-					{
-						findAllMovies{
-							id
-							title
-							director{
-								firstName
-								lastName
-							}
-							rating
-							releaseDate
-						}
-					}`
+                    {
+                        findAllMovies{
+                            id
+                            title
+                            director{
+                                firstName
+                                lastName
+                            }
+                            rating
+                            releaseDate
+                        }
+                    }`
       },
       headers: { authorization: `Bearer ${payload}` }
     })
@@ -1041,9 +1041,9 @@ const actions = {
       url: SERVER_URL,
       data: {
         query: `
-					mutation {
-						updateMovieRating(movieId: ${payload.id}, vote: ${payload.vote})
-					}`
+                    mutation {
+                        updateMovieRating(movieId: ${payload.id}, vote: ${payload.vote})
+                    }`
       },
       headers: { Authorization: `Bearer ${payload.accessToken}` }
     })
@@ -1097,7 +1097,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "app",
   created() {
-		
+
     if (localStorage.getItem("loggedIn") === "true" && !this.accessToken) {
       this.$store
         .dispatch("renewTokens")
@@ -1121,5 +1121,3 @@ With this code in place, your application should now display your content on ref
 ## Conclusion
 
 This marks the end of this series on Vue.js, Spring Boot, Kotlin and GraphQL. In this part, you learned how to create your views using components, manage application wide state using Vuex store, polish the UI of your application using Bootstrap, Font Awesome, and Google Fonts. On the backend, you learned how to create GraphQL API using schemas and resolvers. To learn more about Vue.js visit the [official home page](https://vuejs.org/). In addition, to learn more about Spring Boot and Kotlin visit this [guide from the Spring team](https://spring.io/guides/tutorials/spring-boot-kotlin/). Last but not least, if you want to learn more about GraphQL, check out their [official homepage](https://graphql.org/).
-
-
